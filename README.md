@@ -7,5 +7,5 @@ KonfDB uses an efficient data model that can be modelled and used as per your ap
 For more information about this product, visit www.konfdb.com
 
 Regards,
+
 Punit Ganshani
-Microsoft MVP
