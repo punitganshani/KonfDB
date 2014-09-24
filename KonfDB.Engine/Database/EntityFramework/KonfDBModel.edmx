@@ -1,0 +1,1318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="KonfDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Audit">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuditAreaId" Type="int" Nullable="false" />
+          <Property Name="AuditIdentity" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ActionAtUtc" Type="datetime" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Metadata1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Metadata2" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AuditArea">
+          <Key>
+            <PropertyRef Name="AuditAreaId" />
+          </Key>
+          <Property Name="AuditAreaId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AuditAreaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationId" Type="bigint" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Environment">
+          <Key>
+            <PropertyRef Name="EnvironmentId" />
+          </Key>
+          <Property Name="EnvironmentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EnvironmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EnvironmentTypeId" Type="int" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EnvironmentType">
+          <Key>
+            <PropertyRef Name="EnvironmentTypeId" />
+          </Key>
+          <Property Name="EnvironmentTypeId" Type="int" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mapping">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="EnvironmentId" Type="bigint" Nullable="false" />
+          <Property Name="ApplicationId" Type="bigint" Nullable="false" />
+          <Property Name="RegionId" Type="bigint" Nullable="false" />
+          <Property Name="ServerId" Type="bigint" Nullable="false" />
+          <Property Name="CategoryId" Type="bigint" />
+          <Property Name="ParameterId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parameter">
+          <Key>
+            <PropertyRef Name="ParameterId" />
+          </Key>
+          <Property Name="ParameterId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryId" Type="bigint" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="ParameterName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParameterValue" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsEncrypted" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Server">
+          <Key>
+            <PropertyRef Name="ServerId" />
+          </Key>
+          <Property Name="ServerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="ServerName" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Suite">
+          <Key>
+            <PropertyRef Name="SuiteId" />
+          </Key>
+          <Property Name="SuiteId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteName" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="UsesSysEncryption" Type="bit" Nullable="false" />
+          <Property Name="PublicKey" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PrivateKey" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="Timestamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="SuiteType" Type="int" />
+        </EntityType>
+        <EntityType Name="SuiteUsers">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SuiteId" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="ISO2" Type="varchar" MaxLength="2" />
+          <Property Name="ISO3" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <Association Name="FK_Application_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Audit_AuditArea">
+          <End Role="AuditArea" Type="Self.AuditArea" Multiplicity="1" />
+          <End Role="Audit" Type="Self.Audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AuditArea">
+              <PropertyRef Name="AuditAreaId" />
+            </Principal>
+            <Dependent Role="Audit">
+              <PropertyRef Name="AuditAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Category_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="SuiteUsers" Type="Self.SuiteUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SuiteUsers">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="SuiteUsers" Type="Self.SuiteUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="SuiteUsers">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="SuiteUsers" Type="Self.SuiteUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="SuiteUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Environment_EnvironmentType">
+          <End Role="EnvironmentType" Type="Self.EnvironmentType" Multiplicity="1" />
+          <End Role="Environment" Type="Self.Environment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EnvironmentType">
+              <PropertyRef Name="EnvironmentTypeId" />
+            </Principal>
+            <Dependent Role="Environment">
+              <PropertyRef Name="EnvironmentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Environment_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Environment" Type="Self.Environment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Environment">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Environment">
+          <End Role="Environment" Type="Self.Environment" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environment">
+              <PropertyRef Name="EnvironmentId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Mapping">
+          <End Role="Parameter" Type="Self.Parameter" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parameter">
+              <PropertyRef Name="ParameterId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ParameterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Region">
+          <End Role="Region" Type="Self.Region" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Server">
+          <End Role="Server" Type="Self.Server" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Server">
+              <PropertyRef Name="ServerId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Mapping" Type="Self.Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parameter_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Parameter" Type="Self.Parameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Parameter">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reference_City_Reference_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Region" Type="Self.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Server_Suite">
+          <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
+          <End Role="Server" Type="Self.Server" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Server">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserIdMembership">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Membership" Type="Self.Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KonfDBModelStoreContainer">
+          <EntitySet Name="Membership" EntityType="Self.Membership" Schema="Account" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="Account" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="Account" store:Type="Tables" />
+          <EntitySet Name="Application" EntityType="Self.Application" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Audit" EntityType="Self.Audit" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="AuditArea" EntityType="Self.AuditArea" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Environment" EntityType="Self.Environment" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="EnvironmentType" EntityType="Self.EnvironmentType" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Mapping" EntityType="Self.Mapping" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Parameter" EntityType="Self.Parameter" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Region" EntityType="Self.Region" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Server" EntityType="Self.Server" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="Suite" EntityType="Self.Suite" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="SuiteUsers" EntityType="Self.SuiteUsers" Schema="Config" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="Reference" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="Reference" store:Type="Tables" />
+          <AssociationSet Name="FK_Application_Suite" Association="Self.FK_Application_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Audit_AuditArea" Association="Self.FK_Audit_AuditArea">
+            <End Role="AuditArea" EntitySet="AuditArea" />
+            <End Role="Audit" EntitySet="Audit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Category_Application" Association="Self.FK_Category_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Roles" Association="Self.FK_Config_SuiteUsers_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="SuiteUsers" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Suite" Association="Self.FK_Config_SuiteUsers_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="SuiteUsers" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Users" Association="Self.FK_Config_SuiteUsers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="SuiteUsers" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Environment_EnvironmentType" Association="Self.FK_Environment_EnvironmentType">
+            <End Role="EnvironmentType" EntitySet="EnvironmentType" />
+            <End Role="Environment" EntitySet="Environment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Environment_Suite" Association="Self.FK_Environment_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Environment" EntitySet="Environment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Application" Association="Self.FK_Mapping_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Environment" Association="Self.FK_Mapping_Environment">
+            <End Role="Environment" EntitySet="Environment" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Mapping" Association="Self.FK_Mapping_Mapping">
+            <End Role="Parameter" EntitySet="Parameter" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Region" Association="Self.FK_Mapping_Region">
+            <End Role="Region" EntitySet="Region" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Server" Association="Self.FK_Mapping_Server">
+            <End Role="Server" EntitySet="Server" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Suite" Association="Self.FK_Mapping_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parameter_Suite" Association="Self.FK_Parameter_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reference_City_Reference_Country"
+                          Association="Self.FK_Reference_City_Reference_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="City" EntitySet="City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Suite" Association="Self.FK_Region_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Region" EntitySet="Region" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Server_Suite" Association="Self.FK_Server_Suite">
+            <End Role="Suite" EntitySet="Suite" />
+            <End Role="Server" EntitySet="Server" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserIdMembership" Association="Self.fk_UserIdMembership">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Membership" EntitySet="Membership" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KonfDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false"
+              xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="KonfDBEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public"
+                         xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <EntitySet Name="Memberships" EntityType="KonfDBModel.Membership" />
+          <EntitySet Name="Roles" EntityType="KonfDBModel.Role" />
+          <EntitySet Name="Users" EntityType="KonfDBModel.User" />
+          <EntitySet Name="Applications" EntityType="KonfDBModel.Application" />
+          <EntitySet Name="Audits" EntityType="KonfDBModel.Audit" />
+          <EntitySet Name="AuditAreas" EntityType="KonfDBModel.AuditArea" />
+          <EntitySet Name="Categories" EntityType="KonfDBModel.Category" />
+          <EntitySet Name="Environments" EntityType="KonfDBModel.Environment" />
+          <EntitySet Name="EnvironmentTypes" EntityType="KonfDBModel.EnvironmentType" />
+          <EntitySet Name="Mappings" EntityType="KonfDBModel.Mapping" />
+          <EntitySet Name="Parameters" EntityType="KonfDBModel.Parameter" />
+          <EntitySet Name="Regions" EntityType="KonfDBModel.Region" />
+          <EntitySet Name="Servers" EntityType="KonfDBModel.Server" />
+          <EntitySet Name="Suites" EntityType="KonfDBModel.Suite" />
+          <EntitySet Name="SuiteUsers" EntityType="KonfDBModel.SuiteUser" />
+          <EntitySet Name="Cities" EntityType="KonfDBModel.City" />
+          <EntitySet Name="Countries" EntityType="KonfDBModel.Country" />
+          <AssociationSet Name="fk_UserIdMembership" Association="KonfDBModel.fk_UserIdMembership">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Membership" EntitySet="Memberships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Roles" Association="KonfDBModel.FK_Config_SuiteUsers_Roles">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="SuiteUser" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Users" Association="KonfDBModel.FK_Config_SuiteUsers_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SuiteUser" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Application_Suite" Association="KonfDBModel.FK_Application_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Application" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Category_Application" Association="KonfDBModel.FK_Category_Application">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="Category" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Application" Association="KonfDBModel.FK_Mapping_Application">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Audit_AuditArea" Association="KonfDBModel.FK_Audit_AuditArea">
+            <End Role="AuditArea" EntitySet="AuditAreas" />
+            <End Role="Audit" EntitySet="Audits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Environment_EnvironmentType"
+                          Association="KonfDBModel.FK_Environment_EnvironmentType">
+            <End Role="EnvironmentType" EntitySet="EnvironmentTypes" />
+            <End Role="Environment" EntitySet="Environments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Environment_Suite" Association="KonfDBModel.FK_Environment_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Environment" EntitySet="Environments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Environment" Association="KonfDBModel.FK_Mapping_Environment">
+            <End Role="Environment" EntitySet="Environments" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Mapping" Association="KonfDBModel.FK_Mapping_Mapping">
+            <End Role="Parameter" EntitySet="Parameters" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Region" Association="KonfDBModel.FK_Mapping_Region">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Server" Association="KonfDBModel.FK_Mapping_Server">
+            <End Role="Server" EntitySet="Servers" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mapping_Suite" Association="KonfDBModel.FK_Mapping_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Mapping" EntitySet="Mappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parameter_Suite" Association="KonfDBModel.FK_Parameter_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Parameter" EntitySet="Parameters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Suite" Association="KonfDBModel.FK_Region_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Region" EntitySet="Regions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Server_Suite" Association="KonfDBModel.FK_Server_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="Server" EntitySet="Servers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Config_SuiteUsers_Suite" Association="KonfDBModel.FK_Config_SuiteUsers_Suite">
+            <End Role="Suite" EntitySet="Suites" />
+            <End Role="SuiteUser" EntitySet="SuiteUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reference_City_Reference_Country"
+                          Association="KonfDBModel.FK_Reference_City_Reference_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="KonfDBModel.fk_UserIdMembership" FromRole="Membership"
+                              ToRole="User" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SuiteUsers" Relationship="KonfDBModel.FK_Config_SuiteUsers_Roles" FromRole="Role"
+                              ToRole="SuiteUser" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Membership" Relationship="KonfDBModel.fk_UserIdMembership" FromRole="User"
+                              ToRole="Membership" />
+          <NavigationProperty Name="SuiteUsers" Relationship="KonfDBModel.FK_Config_SuiteUsers_Users" FromRole="User"
+                              ToRole="SuiteUser" />
+        </EntityType>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="ApplicationName" Type="String" Nullable="false" MaxLength="60" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Application_Suite" FromRole="Application"
+                              ToRole="Suite" />
+          <NavigationProperty Name="Categories" Relationship="KonfDBModel.FK_Category_Application"
+                              FromRole="Application" ToRole="Category" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Application" FromRole="Application"
+                              ToRole="Mapping" />
+        </EntityType>
+        <EntityType Name="Audit">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuditAreaId" Type="Int32" Nullable="false" />
+          <Property Name="AuditIdentity" Type="String" Nullable="false" MaxLength="100" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ActionAtUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Metadata1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Metadata2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AuditArea" Relationship="KonfDBModel.FK_Audit_AuditArea" FromRole="Audit"
+                              ToRole="AuditArea" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AuditArea">
+          <Key>
+            <PropertyRef Name="AuditAreaId" />
+          </Key>
+          <Property Name="AuditAreaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuditAreaName" Type="String" Nullable="false" MaxLength="50" FixedLength="false"
+                    Unicode="true" />
+          <NavigationProperty Name="Audits" Relationship="KonfDBModel.FK_Audit_AuditArea" FromRole="AuditArea"
+                              ToRole="Audit" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationId" Type="Int64" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="60" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Application" Relationship="KonfDBModel.FK_Category_Application" FromRole="Category"
+                              ToRole="Application" />
+        </EntityType>
+        <EntityType Name="Environment">
+          <Key>
+            <PropertyRef Name="EnvironmentId" />
+          </Key>
+          <Property Name="EnvironmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EnvironmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="EnvironmentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EnvironmentType" Relationship="KonfDBModel.FK_Environment_EnvironmentType"
+                              FromRole="Environment" ToRole="EnvironmentType" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Environment_Suite" FromRole="Environment"
+                              ToRole="Suite" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Environment" FromRole="Environment"
+                              ToRole="Mapping" />
+        </EntityType>
+        <EntityType Name="EnvironmentType">
+          <Key>
+            <PropertyRef Name="EnvironmentTypeId" />
+          </Key>
+          <Property Name="EnvironmentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Environments" Relationship="KonfDBModel.FK_Environment_EnvironmentType"
+                              FromRole="EnvironmentType" ToRole="Environment" />
+        </EntityType>
+        <EntityType Name="Mapping">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="EnvironmentId" Type="Int64" Nullable="false" />
+          <Property Name="ApplicationId" Type="Int64" Nullable="false" />
+          <Property Name="RegionId" Type="Int64" Nullable="false" />
+          <Property Name="ServerId" Type="Int64" Nullable="false" />
+          <Property Name="CategoryId" Type="Int64" />
+          <Property Name="ParameterId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="KonfDBModel.FK_Mapping_Application" FromRole="Mapping"
+                              ToRole="Application" />
+          <NavigationProperty Name="Environment" Relationship="KonfDBModel.FK_Mapping_Environment" FromRole="Mapping"
+                              ToRole="Environment" />
+          <NavigationProperty Name="Parameter" Relationship="KonfDBModel.FK_Mapping_Mapping" FromRole="Mapping"
+                              ToRole="Parameter" />
+          <NavigationProperty Name="Region" Relationship="KonfDBModel.FK_Mapping_Region" FromRole="Mapping"
+                              ToRole="Region" />
+          <NavigationProperty Name="Server" Relationship="KonfDBModel.FK_Mapping_Server" FromRole="Mapping"
+                              ToRole="Server" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Mapping_Suite" FromRole="Mapping"
+                              ToRole="Suite" />
+        </EntityType>
+        <EntityType Name="Parameter">
+          <Key>
+            <PropertyRef Name="ParameterId" />
+          </Key>
+          <Property Name="ParameterId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int64" Nullable="false" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="ParameterName" Type="String" Nullable="false" MaxLength="100" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="ParameterValue" Type="String" Nullable="false" MaxLength="Max" FixedLength="false"
+                    Unicode="true" />
+          <Property Name="IsEncrypted" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Mapping" FromRole="Parameter"
+                              ToRole="Mapping" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Parameter_Suite" FromRole="Parameter"
+                              ToRole="Suite" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="RegionName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Region" FromRole="Region"
+                              ToRole="Mapping" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Region_Suite" FromRole="Region" ToRole="Suite" />
+        </EntityType>
+        <EntityType Name="Server">
+          <Key>
+            <PropertyRef Name="ServerId" />
+          </Key>
+          <Property Name="ServerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="ServerName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Server" FromRole="Server"
+                              ToRole="Mapping" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Server_Suite" FromRole="Server" ToRole="Suite" />
+        </EntityType>
+        <EntityType Name="Suite">
+          <Key>
+            <PropertyRef Name="SuiteId" />
+          </Key>
+          <Property Name="SuiteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="UsesSysEncryption" Type="Boolean" Nullable="false" />
+          <Property Name="PublicKey" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PrivateKey" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp" Type="Binary" MaxLength="8" FixedLength="true"
+                    annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="SuiteType" Type="Int32" />
+          <NavigationProperty Name="Applications" Relationship="KonfDBModel.FK_Application_Suite" FromRole="Suite"
+                              ToRole="Application" />
+          <NavigationProperty Name="Environments" Relationship="KonfDBModel.FK_Environment_Suite" FromRole="Suite"
+                              ToRole="Environment" />
+          <NavigationProperty Name="Mappings" Relationship="KonfDBModel.FK_Mapping_Suite" FromRole="Suite"
+                              ToRole="Mapping" />
+          <NavigationProperty Name="Parameters" Relationship="KonfDBModel.FK_Parameter_Suite" FromRole="Suite"
+                              ToRole="Parameter" />
+          <NavigationProperty Name="Regions" Relationship="KonfDBModel.FK_Region_Suite" FromRole="Suite"
+                              ToRole="Region" />
+          <NavigationProperty Name="Servers" Relationship="KonfDBModel.FK_Server_Suite" FromRole="Suite"
+                              ToRole="Server" />
+          <NavigationProperty Name="SuiteUsers" Relationship="KonfDBModel.FK_Config_SuiteUsers_Suite" FromRole="Suite"
+                              ToRole="SuiteUser" />
+        </EntityType>
+        <EntityType Name="SuiteUser">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SuiteId" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="Role" Relationship="KonfDBModel.FK_Config_SuiteUsers_Roles" FromRole="SuiteUser"
+                              ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="KonfDBModel.FK_Config_SuiteUsers_Users" FromRole="SuiteUser"
+                              ToRole="User" />
+          <NavigationProperty Name="Suite" Relationship="KonfDBModel.FK_Config_SuiteUsers_Suite" FromRole="SuiteUser"
+                              ToRole="Suite" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="City1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="KonfDBModel.FK_Reference_City_Reference_Country"
+                              FromRole="City" ToRole="Country" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="70" FixedLength="false"
+                    Unicode="false" />
+          <Property Name="ISO2" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ISO3" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cities" Relationship="KonfDBModel.FK_Reference_City_Reference_Country"
+                              FromRole="Country" ToRole="City" />
+        </EntityType>
+        <Association Name="fk_UserIdMembership">
+          <End Type="KonfDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="KonfDBModel.Membership" Role="Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Roles">
+          <End Type="KonfDBModel.Role" Role="Role" Multiplicity="0..1" />
+          <End Type="KonfDBModel.SuiteUser" Role="SuiteUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="SuiteUser">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Users">
+          <End Type="KonfDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="KonfDBModel.SuiteUser" Role="SuiteUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="SuiteUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Application_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Application" Role="Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Category_Application">
+          <End Type="KonfDBModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="KonfDBModel.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Application">
+          <End Type="KonfDBModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Audit_AuditArea">
+          <End Type="KonfDBModel.AuditArea" Role="AuditArea" Multiplicity="1" />
+          <End Type="KonfDBModel.Audit" Role="Audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AuditArea">
+              <PropertyRef Name="AuditAreaId" />
+            </Principal>
+            <Dependent Role="Audit">
+              <PropertyRef Name="AuditAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Environment_EnvironmentType">
+          <End Type="KonfDBModel.EnvironmentType" Role="EnvironmentType" Multiplicity="1" />
+          <End Type="KonfDBModel.Environment" Role="Environment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EnvironmentType">
+              <PropertyRef Name="EnvironmentTypeId" />
+            </Principal>
+            <Dependent Role="Environment">
+              <PropertyRef Name="EnvironmentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Environment_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Environment" Role="Environment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Environment">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Environment">
+          <End Type="KonfDBModel.Environment" Role="Environment" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environment">
+              <PropertyRef Name="EnvironmentId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Mapping">
+          <End Type="KonfDBModel.Parameter" Role="Parameter" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parameter">
+              <PropertyRef Name="ParameterId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ParameterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Region">
+          <End Type="KonfDBModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Server">
+          <End Type="KonfDBModel.Server" Role="Server" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Server">
+              <PropertyRef Name="ServerId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mapping_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parameter_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Parameter" Role="Parameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Parameter">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Region" Role="Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Server_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.Server" Role="Server" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="Server">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Config_SuiteUsers_Suite">
+          <End Type="KonfDBModel.Suite" Role="Suite" Multiplicity="1" />
+          <End Type="KonfDBModel.SuiteUser" Role="SuiteUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suite">
+              <PropertyRef Name="SuiteId" />
+            </Principal>
+            <Dependent Role="SuiteUser">
+              <PropertyRef Name="SuiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reference_City_Reference_Country">
+          <End Type="KonfDBModel.Country" Role="Country" Multiplicity="1" />
+          <End Type="KonfDBModel.City" Role="City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KonfDBModelStoreContainer" CdmEntityContainer="KonfDBEntities">
+          <EntitySetMapping Name="Memberships">
+            <EntityTypeMapping TypeName="KonfDBModel.Membership">
+              <MappingFragment StoreEntitySet="Membership">
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate"
+                                ColumnName="PasswordVerificationTokenExpirationDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="KonfDBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="KonfDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="KonfDBModel.Application">
+              <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Audits">
+            <EntityTypeMapping TypeName="KonfDBModel.Audit">
+              <MappingFragment StoreEntitySet="Audit">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Metadata2" ColumnName="Metadata2" />
+                <ScalarProperty Name="Metadata1" ColumnName="Metadata1" />
+                <ScalarProperty Name="ActionAtUtc" ColumnName="ActionAtUtc" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="AuditIdentity" ColumnName="AuditIdentity" />
+                <ScalarProperty Name="AuditAreaId" ColumnName="AuditAreaId" />
+                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditAreas">
+            <EntityTypeMapping TypeName="KonfDBModel.AuditArea">
+              <MappingFragment StoreEntitySet="AuditArea">
+                <ScalarProperty Name="AuditAreaName" ColumnName="AuditAreaName" />
+                <ScalarProperty Name="AuditAreaId" ColumnName="AuditAreaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="KonfDBModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Environments">
+            <EntityTypeMapping TypeName="KonfDBModel.Environment">
+              <MappingFragment StoreEntitySet="Environment">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="EnvironmentTypeId" ColumnName="EnvironmentTypeId" />
+                <ScalarProperty Name="EnvironmentName" ColumnName="EnvironmentName" />
+                <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnvironmentTypes">
+            <EntityTypeMapping TypeName="KonfDBModel.EnvironmentType">
+              <MappingFragment StoreEntitySet="EnvironmentType">
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="EnvironmentTypeId" ColumnName="EnvironmentTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mappings">
+            <EntityTypeMapping TypeName="KonfDBModel.Mapping">
+              <MappingFragment StoreEntitySet="Mapping">
+                <ScalarProperty Name="ParameterId" ColumnName="ParameterId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parameters">
+            <EntityTypeMapping TypeName="KonfDBModel.Parameter">
+              <MappingFragment StoreEntitySet="Parameter">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsEncrypted" ColumnName="IsEncrypted" />
+                <ScalarProperty Name="ParameterValue" ColumnName="ParameterValue" />
+                <ScalarProperty Name="ParameterName" ColumnName="ParameterName" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ParameterId" ColumnName="ParameterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="KonfDBModel.Region">
+              <MappingFragment StoreEntitySet="Region">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servers">
+            <EntityTypeMapping TypeName="KonfDBModel.Server">
+              <MappingFragment StoreEntitySet="Server">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suites">
+            <EntityTypeMapping TypeName="KonfDBModel.Suite">
+              <MappingFragment StoreEntitySet="Suite">
+                <ScalarProperty Name="SuiteType" ColumnName="SuiteType" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PrivateKey" ColumnName="PrivateKey" />
+                <ScalarProperty Name="PublicKey" ColumnName="PublicKey" />
+                <ScalarProperty Name="UsesSysEncryption" ColumnName="UsesSysEncryption" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SuiteName" ColumnName="SuiteName" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuiteUsers">
+            <EntityTypeMapping TypeName="KonfDBModel.SuiteUser">
+              <MappingFragment StoreEntitySet="SuiteUsers">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SuiteId" ColumnName="SuiteId" />
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="KonfDBModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="City1" ColumnName="City" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="KonfDBModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="ISO3" ColumnName="ISO3" />
+                <ScalarProperty Name="ISO2" ColumnName="ISO2" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

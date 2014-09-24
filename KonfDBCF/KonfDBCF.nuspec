@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>KonfDBCF</id>
+    <version>0.1.0.0</version>
+    <title>KonfDB Client Framework for .NET</title>
+    <authors>Punit Ganshani</authors>
+    <owners>Punit Ganshani</owners>  
+    <projectUrl>http://www.konfdb.com</projectUrl> 
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET client for KonfDB</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright Punit Ganshani, 2014</copyright>
+    <tags>konfdb configuration .net</tags>
+  </metadata>
+</package>

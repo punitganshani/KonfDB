@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5ee41185fd90448fbc00abbd00291843" Name="Diagram1">
+        <AssociationConnector Association="KonfDBModel.UsersInRoles" />
+        <EntityTypeShape EntityType="KonfDBModel.Membership" Width="1.5" PointX="3" PointY="27.5" />
+        <EntityTypeShape EntityType="KonfDBModel.Role" Width="1.5" PointX="0.75" PointY="16.875" />
+        <EntityTypeShape EntityType="KonfDBModel.User" Width="1.5" PointX="0.75" PointY="8.25" />
+        <EntityTypeShape EntityType="KonfDBModel.Application" Width="1.5" PointX="3" PointY="23.375" />
+        <EntityTypeShape EntityType="KonfDBModel.Audit" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="KonfDBModel.AuditArea" Width="1.5" PointX="5.75" PointY="1.5" />
+        <EntityTypeShape EntityType="KonfDBModel.Category" Width="1.5" PointX="5.25" PointY="28" />
+        <EntityTypeShape EntityType="KonfDBModel.Environment" Width="1.5" PointX="6" PointY="12.125" />
+        <EntityTypeShape EntityType="KonfDBModel.EnvironmentType" Width="1.5" PointX="3.75" PointY="4.5" />
+        <EntityTypeShape EntityType="KonfDBModel.Mapping" Width="1.5" PointX="8.25" PointY="14.75" />
+        <EntityTypeShape EntityType="KonfDBModel.Parameter" Width="1.5" PointX="3" PointY="16.75" />
+        <EntityTypeShape EntityType="KonfDBModel.Region" Width="1.5" PointX="3" PointY="7.25" />
+        <EntityTypeShape EntityType="KonfDBModel.Server" Width="1.5" PointX="3" PointY="20.25" />
+        <EntityTypeShape EntityType="KonfDBModel.Suite" Width="1.5" PointX="0.75" PointY="11.25" />
+        <EntityTypeShape EntityType="KonfDBModel.SuiteUser" Width="1.5" PointX="3" PointY="12.125" />
+        <EntityTypeShape EntityType="KonfDBModel.City" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="KonfDBModel.Country" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="KonfDBModel.fk_UserIdMembership" />
+        <AssociationConnector Association="KonfDBModel.FK_Config_SuiteUsers_Roles" />
+        <AssociationConnector Association="KonfDBModel.FK_Config_SuiteUsers_Users" />
+        <AssociationConnector Association="KonfDBModel.FK_Application_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Category_Application" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Application" />
+        <AssociationConnector Association="KonfDBModel.FK_Audit_AuditArea" />
+        <AssociationConnector Association="KonfDBModel.FK_Environment_EnvironmentType" />
+        <AssociationConnector Association="KonfDBModel.FK_Environment_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Environment" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Mapping" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Region" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Server" />
+        <AssociationConnector Association="KonfDBModel.FK_Mapping_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Parameter_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Region_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Server_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Config_SuiteUsers_Suite" />
+        <AssociationConnector Association="KonfDBModel.FK_Reference_City_Reference_Country" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

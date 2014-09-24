@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{82E5ECA3-9B1C-430B-96EF-89A083C45B7A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KonfDB.Infrastructure</RootNamespace>
+    <AssemblyName>KonfDBI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\AuthenticateTokenAttribute.cs" />
+    <Compile Include="Attributes\IgnoreCacheAttribute.cs" />
+    <Compile Include="Caching\InMemoryCacheStore.cs" />
+    <Compile Include="Configuration\Runtime\SuperUserElement.cs" />
+    <Compile Include="Database\Entities\Account\AuthenticationModel.cs" />
+    <Compile Include="Database\Entities\Account\RegisterModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\Entities\Configuration\AuditRecordModel.cs" />
+    <Compile Include="Database\Entities\Configuration\SuiteUserModel.cs" />
+    <Compile Include="Database\Entities\IServiceObject.cs" />
+    <Compile Include="Database\Enums\AuditArea.cs" />
+    <Compile Include="Database\Enums\AuditReason.cs" />
+    <Compile Include="Database\Enums\ContactType.cs" />
+    <Compile Include="Database\Enums\RoleType.cs" />
+    <Compile Include="Database\Metadata.cs" />
+    <Compile Include="Database\StateActions\BaseStateAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseInitializedAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseReferenceDataAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseTableCreateAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseSchemaCreateAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseObjectsCheckAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseCheckAction.cs" />
+    <Compile Include="Database\StateActions\DatabaseCreateAction.cs" />
+    <Compile Include="DataResolvers\CachingResolver.cs" />
+    <Compile Include="DataResolvers\SharedTypeResolver.cs" />
+    <Compile Include="Encryption\MD5EncryptionEngine.cs" />
+    <Compile Include="Encryption\SHA256Encryption.cs" />
+    <Compile Include="Exceptions\StateWorkflowException.cs" />
+    <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\AuthenticationOutput.cs" />
+    <Compile Include="Services\CommandInput.cs" />
+    <Compile Include="Services\CommandOutput.cs" />
+    <Compile Include="Common\AppType.cs" />
+    <Compile Include="Common\ConfigReader.cs" />
+    <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\DataEventArgs.cs" />
+    <Compile Include="Common\DataModelCreator.cs" />
+    <Compile Include="Common\EncodingUtility.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Common\Ports.cs" />
+    <Compile Include="Common\Serializer.cs" />
+    <Compile Include="Configuration\Caching\CacheConfigurationSection.cs" />
+    <Compile Include="Configuration\Providers\Database\DatabaseProviderCollection.cs" />
+    <Compile Include="Configuration\Providers\Database\DatabaseProviderElement.cs" />
+    <Compile Include="Configuration\Providers\Types\ProviderTypeValidator.cs" />
+    <Compile Include="Configuration\Providers\ProvidersConfigurationSection.cs" />
+    <Compile Include="Configuration\AppConfig.cs" />
+    <Compile Include="Configuration\Providers\Types\ProviderTypeElement.cs" />
+    <Compile Include="Configuration\Providers\Types\ProviderTypesCollection.cs" />
+    <Compile Include="Configuration\Runtime\RuntimeConfigurationSection.cs" />
+    <Compile Include="Configuration\Runtime\RuntimeConfigurationValidator.cs" />
+    <Compile Include="Configuration\Runtime\ServiceTypeCollection.cs" />
+    <Compile Include="Configuration\Runtime\ServiceTypeElement.cs" />
+    <Compile Include="Database\Abstracts\IConfigurationDataStore.cs" />
+    <Compile Include="Database\Abstracts\IDataStore.cs" />
+    <Compile Include="Database\Entities\Configuration\ApplicationCreateModel.cs" />
+    <Compile Include="Database\Entities\Configuration\ApplicationModel.cs" />
+    <Compile Include="Database\Entities\BaseViewModel.cs" />
+    <Compile Include="Database\Entities\Configuration\EnvironmentModel.cs" />
+    <Compile Include="Database\Entities\Configuration\MappingModel.cs" />
+    <Compile Include="Database\Entities\Configuration\ConfigurationModel.cs" />
+    <Compile Include="Database\Entities\Configuration\ParameterModel.cs" />
+    <Compile Include="Database\Entities\Configuration\RegionModel.cs" />
+    <Compile Include="Database\Entities\Configuration\ServerModel.cs" />
+    <Compile Include="Database\Entities\Configuration\SuiteCreateModel.cs" />
+    <Compile Include="Database\Entities\Configuration\SuiteModel.cs" />
+    <Compile Include="Database\Enums\EnvironmentType.cs" />
+    <Compile Include="Database\Enums\SuiteTypes.cs" />
+    <Compile Include="Database\Providers\BaseProvider.cs" />
+    <Compile Include="Database\Stores\IUnitOfWork.cs" />
+    <Compile Include="Encryption\ParamEncryptionEngine.cs" />
+    <Compile Include="Encryption\EncryptionEngine.cs" />
+    <Compile Include="Encryption\IEncryptionEngine.cs" />
+    <Compile Include="Exceptions\BaseException.cs" />
+    <Compile Include="Exceptions\EncryptionException.cs" />
+    <Compile Include="Exceptions\InvalidConfigurationException.cs" />
+    <Compile Include="Exceptions\UnauthorizedUserException.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Services\ICommand.cs" />
+    <Compile Include="Services\ServiceConstants.cs" />
+    <Compile Include="Shell\AppContext.cs" />
+    <Compile Include="Shell\CurrentContext.cs" />
+    <Compile Include="Shell\IContext.cs" />
+    <Compile Include="Shell\ServiceHost.cs" />
+    <Compile Include="Utilities\CommandArgs.cs" />
+    <Compile Include="Utilities\Converter.cs" />
+    <Compile Include="Utilities\IArguments.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Utilities\SmartConsole.cs" />
+    <Compile Include="WCF\AddressInfo.cs" />
+    <Compile Include="WCF\Binding.cs" />
+    <Compile Include="Services\IAuthCommand.cs" />
+    <Compile Include="WCF\FaultReason.cs" />
+    <Compile Include="Services\ICommandService.cs" />
+    <Compile Include="Services\IService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WCF\ServiceError.cs" />
+    <Compile Include="WCF\ServiceType.cs" />
+    <Compile Include="WCF\ServiceTypes\WebHttp.cs" />
+    <Compile Include="WCF\ServiceTypes\BasicHttp.cs" />
+    <Compile Include="WCF\ServiceTypes\NetTcp.cs" />
+    <Compile Include="WCF\Status.cs" />
+    <Compile Include="WCF\WcfClient.cs" />
+    <Compile Include="WCF\WCFExtensions.cs" />
+    <Compile Include="WCF\WcfService.cs" />
+    <Compile Include="Workflow\IStateAction.cs" />
+    <Compile Include="Workflow\State.cs" />
+    <Compile Include="Workflow\StateWorkflow.cs" />
+    <Compile Include="Workflow\StateWorkflowConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="konfdb.pfx" />
+    <None Include="konfdb.snk" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

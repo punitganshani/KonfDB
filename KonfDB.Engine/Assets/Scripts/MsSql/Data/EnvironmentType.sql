@@ -1,0 +1,5 @@
+﻿IF NOT EXISTS(SELECT * FROM [Config].[EnvironmentType] WHERE EnvironmentTypeId=400) INSERT INTO [Config].[EnvironmentType] VALUES (400, 'DEV') ELSE UPDATE [Config].[EnvironmentType] SET TypeName='DEV' WHERE EnvironmentTypeId=400
+IF NOT EXISTS(SELECT * FROM [Config].[EnvironmentType] WHERE EnvironmentTypeId=401) INSERT INTO [Config].[EnvironmentType] VALUES (401, 'QA') ELSE UPDATE [Config].[EnvironmentType] SET TypeName='DEV' WHERE EnvironmentTypeId=401
+IF NOT EXISTS(SELECT * FROM [Config].[EnvironmentType] WHERE EnvironmentTypeId=402) INSERT INTO [Config].[EnvironmentType] VALUES (402, 'UAT') ELSE UPDATE [Config].[EnvironmentType] SET TypeName='DEV' WHERE EnvironmentTypeId=402
+IF NOT EXISTS(SELECT * FROM [Config].[EnvironmentType] WHERE EnvironmentTypeId=403) INSERT INTO [Config].[EnvironmentType] VALUES (403, 'SIT') ELSE UPDATE [Config].[EnvironmentType] SET TypeName='DEV' WHERE EnvironmentTypeId=403
+IF NOT EXISTS(SELECT * FROM [Config].[EnvironmentType] WHERE EnvironmentTypeId=404) INSERT INTO [Config].[EnvironmentType] VALUES (404, 'PROD') ELSE UPDATE [Config].[EnvironmentType] SET TypeName='DEV' WHERE EnvironmentTypeId=404

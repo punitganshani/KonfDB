@@ -1,0 +1,7 @@
+﻿CREATE TABLE [Account].[Users] (
+    [UserId]   INT           IDENTITY (0, 1) NOT NULL,
+    [UserName] NVARCHAR (56) NOT NULL,
+    PRIMARY KEY CLUSTERED ([UserId] ASC),
+    UNIQUE NONCLUSTERED ([UserName] ASC)
+);
+

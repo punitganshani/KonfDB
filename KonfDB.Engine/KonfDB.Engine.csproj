@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF994794-04ED-43CA-86B0-482A996756F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KonfDB.Engine</RootNamespace>
+    <AssemblyName>KonfDBE</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\Server\AddAudit.cs" />
+    <Compile Include="Commands\Server\Who.cs" />
+    <Compile Include="Commands\Shared\Clr.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
+    <Compile Include="Commands\Shared\DeleteEnv.cs" />
+    <Compile Include="Commands\Shared\DeleteMap.cs" />
+    <Compile Include="Commands\Shared\DeleteParam.cs" />
+    <Compile Include="Commands\Shared\DeleteRegion.cs" />
+    <Compile Include="Commands\Shared\DeleteServer.cs" />
+    <Compile Include="Commands\Shared\DeleteSuite.cs" />
+    <Compile Include="Commands\Shared\DeleteApp.cs" />
+    <Compile Include="Commands\Shared\RevokeAccess.cs" />
+    <Compile Include="Commands\Shared\NewUser.cs" />
+    <Compile Include="Commands\Shared\GrantAccess.cs" />
+    <Compile Include="Commands\Shared\UserAuth.cs" />
+    <Compile Include="Commands\Shared\Get.cs" />
+    <Compile Include="Commands\Shared\GetEnvs.cs" />
+    <Compile Include="Commands\Shared\GetServers.cs" />
+    <Compile Include="Commands\Shared\GetRegions.cs" />
+    <Compile Include="Commands\Shared\GetApps.cs" />
+    <Compile Include="Commands\Shared\GetParamLike.cs" />
+    <Compile Include="Commands\Shared\GetParams.cs" />
+    <Compile Include="Commands\Shared\GetRegion.cs" />
+    <Compile Include="Commands\Shared\GetParam.cs" />
+    <Compile Include="Commands\Shared\GetEnv.cs" />
+    <Compile Include="Commands\Shared\GetApp.cs" />
+    <Compile Include="Commands\Shared\GetMap.cs" />
+    <Compile Include="Commands\Shared\NewMap.cs" />
+    <Compile Include="Commands\Shared\NewApp.cs" />
+    <Compile Include="Commands\Shared\NewParam.cs" />
+    <Compile Include="Commands\Shared\GetServer.cs" />
+    <Compile Include="Commands\Shared\NewServer.cs" />
+    <Compile Include="Commands\Shared\NewRegion.cs" />
+    <Compile Include="Commands\Shared\NewEnv.cs" />
+    <Compile Include="Commands\Shared\NewSuite.cs" />
+    <Compile Include="Commands\Shared\Exit.cs" />
+    <Compile Include="Commands\Shared\Help.cs" />
+    <Compile Include="Commands\Shared\GetSuite.cs" />
+    <Compile Include="Commands\Shared\GetSuites.cs" />
+    <Compile Include="Database\EntityFramework\Application.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Audit.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\AuditArea.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Category.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\City.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Country.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Environment.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\EnvironmentType.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\KonfDBEntities.cs" />
+    <Compile Include="Database\EntityFramework\KonfDBModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KonfDBModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\KonfDBModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\KonfDBModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KonfDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Mapping.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Membership.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Parameter.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Region.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Role.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Server.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\Suite.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\SuiteUser.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EntityFramework\User.cs">
+      <DependentUpon>KonfDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\ObjectMappers\Converter.cs" />
+    <Compile Include="Database\ObjectMappers\DbToModelConverter.cs" />
+    <Compile Include="Database\ObjectMappers\EnumConverter.cs" />
+    <Compile Include="Database\ObjectMappers\ModelToDBConverter.cs" />
+    <Compile Include="Database\ObjectMappers\ObjectCompareExtensions.cs" />
+    <Compile Include="Database\Providers\AzureSql\AzureSqlProvider.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlProvider.cs" />
+    <Compile Include="Database\Providers\MsSqlCeProvider.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlCreateAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlInitializedAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlObjectsCheckAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlReferenceDataAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlSchemaCreateAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlTableCreateAction.cs" />
+    <Compile Include="Database\Providers\MsSql\MsSqlCheckAction.cs" />
+    <Compile Include="Database\Stores\ConfigurationDataStore.cs" />
+    <Compile Include="Database\Stores\UnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CommandService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Database\EntityFramework\KonfDBModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KonfDBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Database\EntityFramework\KonfDBModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KonfDBModel.edmx</DependentUpon>
+      <LastGenOutput>KonfDBModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Database\EntityFramework\KonfDBModel.edmx.diagram">
+      <DependentUpon>KonfDBModel.edmx</DependentUpon>
+    </None>
+    <None Include="Database\EntityFramework\KonfDBModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KonfDBModel.edmx</DependentUpon>
+      <LastGenOutput>KonfDBModel.cs</LastGenOutput>
+    </None>
+    <None Include="konfdb.pfx" />
+    <None Include="konfdb.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KonfDB.Infrastructure\KonfDB.Infrastructure.csproj">
+      <Project>{82e5eca3-9b1c-430b-96ef-89a083c45b7a}</Project>
+      <Name>KonfDB.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Schema\Config.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Database\CreateDB.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Scripts\MsSqlCe\" />
+    <Folder Include="Commands\Client\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Data\EnvironmentType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Application.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Audit.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\AuditArea.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Category.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Environment.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\EnvironmentType.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Mapping.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Parameter.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Region.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Server.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\Suite.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Config\SuiteUsers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Account\Membership.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Account\OAuthMembership.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Account\Roles.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Account\Users.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Schema\Account.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Reference\City.sql" />
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Reference\Country.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Schema\Reference.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Data\Users.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Schema\Audit.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Scripts\MsSql\Data\AuditAreas.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
