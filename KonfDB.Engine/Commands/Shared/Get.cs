@@ -23,10 +23,12 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
 using KonfDB.Infrastructure.Database.Enums;
+using KonfDB.Infrastructure.Encryption;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 
@@ -88,8 +90,26 @@ namespace KonfDB.Engine.Commands.Shared
                     AppContext.Current.Provider.ConfigurationStore.GetRegion(userId, region)
                         .RegionId.GetValueOrDefault(-1);
 
-            List<ConfigurationModel> model = AppContext.Current.Provider.ConfigurationStore.GetConfigurations(-1, appId,
+            List<ConfigurationModel> model = AppContext.Current.Provider.ConfigurationStore.GetConfigurations(userId, appId,
                 serverId, envId, regionId, string.Empty);
+            
+            model.ForEach(config =>
+            {
+                if (config.IsEncrypted)
+                {
+                    var pk = arguments["unprotect"];
+                    if (pk != null)
+                    {
+                        var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(), config.SuiteId);
+
+                        if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
+                        {
+                            config.ParameterValue = EncryptionEngine.Default.Decrypt(config.ParameterValue, suite.PrivateKey);
+                        }
+                    }
+                }
+            });
+
             output.Data = model;
             output.DisplayMessage = "Success";
 

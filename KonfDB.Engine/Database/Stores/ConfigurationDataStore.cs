@@ -405,7 +405,7 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessEnvironment(unitOfWork, -1, suiteId);
+                bool userAuthorised = UserAuthorizedToAccessEnvironment(unitOfWork, userId, suiteId);
                 if (!userAuthorised)
                     throw new UnauthorizedUserException("User does not have access to suite: " + suiteId);
 
@@ -1196,6 +1196,7 @@ namespace KonfDB.Engine.Database.Stores
                 {
                     ParameterName = x.Parameter.ParameterName,
                     ParameterValue = x.Parameter.ParameterValue,
+                    SuiteId = x.SuiteId,
                     MatchProfile =
                         String.Format("ParamId:{0}|App:{1}|Server:{2}|Env:{3}|Region:{4}|Suite:{5}",
                             x.Parameter.ParameterId, x.ApplicationId,

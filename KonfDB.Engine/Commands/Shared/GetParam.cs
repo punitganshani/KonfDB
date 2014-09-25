@@ -90,9 +90,9 @@ namespace KonfDB.Engine.Commands.Shared
             else if (model != null)
             {
                 var pk = arguments["pk"];
-                if (pk != null)
+                if (pk != null && model.IsEncrypted)
                 {
-                    var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(-1, model.SuiteId);
+                    var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(), model.SuiteId);
 
                     if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                     {

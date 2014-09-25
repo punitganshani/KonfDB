@@ -87,7 +87,7 @@ namespace KonfDB.Engine.Commands.Shared
             }
             else if (model != null)
             {
-                output.Data = model.ToJson();
+                output.Data = model;
                 output.DisplayMessage = "Success";
             }
             else

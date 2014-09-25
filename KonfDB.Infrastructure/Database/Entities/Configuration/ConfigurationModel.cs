@@ -42,5 +42,8 @@ namespace KonfDB.Infrastructure.Database.Entities.Configuration
 
         [JsonProperty]
         public bool IsEncrypted { get; set; }
+
+        [JsonIgnore]
+        public long SuiteId { get; set; }
     }
 }

@@ -46,6 +46,7 @@ namespace KonfDB.Infrastructure.Database.Entities.Configuration
         [JsonIgnore]
         public bool IsActive { get; set; }
 
+        [JsonProperty]
         public long? ApplicationId { get; set; }
         public long SuiteId { get; set; }
 
