@@ -54,13 +54,16 @@ namespace KonfDB.Infrastructure.Logging
                 XmlConfigurator.Configure(new FileInfo(configurationFilePath));
                 _log = CreateLog();
             }
-            _log = CreateLog();
-            var appenders = new List<IAppender> {CreateFileAppender("FileAppender", @"Logs\KonfDB.log")};
+            else
+            {
+                _log = CreateLog();
+                var appenders = new List<IAppender> {CreateFileAppender("FileAppender", @"Logs\KonfDB.log")};
 
-            if (isConsole)
-                appenders.Add(CreateConsoleAppender());
+                if (isConsole)
+                    appenders.Add(CreateConsoleAppender());
 
-            BasicConfigurator.Configure(appenders.ToArray());
+                BasicConfigurator.Configure(appenders.ToArray());
+            }
         }
 
         private ILog CreateLog()
