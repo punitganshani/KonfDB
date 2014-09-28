@@ -7,4 +7,5 @@ IF NOT EXISTS(SELECT * FROM [Config].[AuditArea] WHERE AuditAreaId=600) INSERT I
 IF NOT EXISTS(SELECT * FROM [Config].[AuditArea] WHERE AuditAreaId=700) INSERT INTO [Config].[AuditArea] VALUES (700, 'Server') ELSE UPDATE [Config].[AuditArea] SET AuditAreaName='Server' WHERE AuditAreaId=700
 IF NOT EXISTS(SELECT * FROM [Config].[AuditArea] WHERE AuditAreaId=800) INSERT INTO [Config].[AuditArea] VALUES (800, 'Suite') ELSE UPDATE [Config].[AuditArea] SET AuditAreaName='Suite' WHERE AuditAreaId=800
 IF NOT EXISTS(SELECT * FROM [Config].[AuditArea] WHERE AuditAreaId=1000) INSERT INTO [Config].[AuditArea] VALUES (1000, 'Login') ELSE UPDATE [Config].[AuditArea] SET AuditAreaName='Login' WHERE AuditAreaId=1000
+IF NOT EXISTS(SELECT * FROM [Config].[AuditArea] WHERE AuditAreaId=1100) INSERT INTO [Config].[AuditArea] VALUES (1100, 'User') ELSE UPDATE [Config].[AuditArea] SET AuditAreaName='User' WHERE AuditAreaId=1100
 

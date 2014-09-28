@@ -38,7 +38,8 @@ namespace KonfDB.Infrastructure.Database.Enums
         [EnumMember] Parameter = 500,
         [EnumMember] Region = 600,
         [EnumMember] Server = 700,
-        [EnumMember] Suite = 800,
-        [EnumMember] Login = 1000
+        [EnumMember] Suite = 800,   
+        [EnumMember] Login = 1000,
+        [EnumMember] User = 1100
     }
 }

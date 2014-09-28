@@ -85,7 +85,8 @@ namespace KonfDB.Engine.Commands.Shared
                 ParameterValue = string.IsNullOrEmpty(value) ? string.Empty : value,
                 IsActive = true,
                 IsEncrypted = isEncrypted,
-                SuiteId = suiteId
+                SuiteId = suiteId,
+                UserId = userId
             });
 
             output.Data = parameter;

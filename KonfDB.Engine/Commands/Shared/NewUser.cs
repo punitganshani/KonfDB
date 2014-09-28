@@ -23,9 +23,12 @@
 
 #endregion
 
+using System;
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Account;
+using KonfDB.Infrastructure.Database.Entities.Configuration;
+using KonfDB.Infrastructure.Database.Enums;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
@@ -34,7 +37,7 @@ using KonfDB.Infrastructure.Shell;
 namespace KonfDB.Engine.Commands.Shared
 {
     [IgnoreCache]
-    internal class NewUser : ICommand
+    internal class NewUser : IAuthCommand
     {
         public string Keyword
         {
@@ -101,6 +104,18 @@ namespace KonfDB.Engine.Commands.Shared
         public bool IsValid(CommandInput input)
         {
             return input.HasArgument("name") && input.HasArgument("pwd") && input.HasArgument("cpwd");
+        }
+
+        public AuditRecordModel GetAuditCommand(CommandInput input)
+        {
+            return new AuditRecordModel
+            {
+                Area = AuditArea.User,
+                Reason = AuditReason.Added,
+                Message = input.Command,
+                Key = input["name"],
+                UserId = input.GetUserId()
+            };
         }
     }
 }

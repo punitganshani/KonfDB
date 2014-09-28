@@ -25,13 +25,15 @@
 
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Common;
+using KonfDB.Infrastructure.Database.Entities.Configuration;
+using KonfDB.Infrastructure.Database.Enums;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 
 namespace KonfDB.Engine.Commands.Shared
 {
     [IgnoreCache]
-    internal class RevokeAccess : ICommand
+    internal class RevokeAccess : IAuthCommand
     {
         public string Keyword
         {
@@ -73,6 +75,18 @@ namespace KonfDB.Engine.Commands.Shared
         public bool IsValid(CommandInput input)
         {
             return input.HasArgument("sid") && input.HasArgument("user");
+        }
+
+        public Infrastructure.Database.Entities.Configuration.AuditRecordModel GetAuditCommand(CommandInput input)
+        {
+            return new AuditRecordModel
+            {
+                Area = AuditArea.User,
+                Reason = AuditReason.Changed,
+                Message = input.Command,
+                Key = input["user"],
+                UserId = input.GetUserId()
+            };
         }
     }
 }

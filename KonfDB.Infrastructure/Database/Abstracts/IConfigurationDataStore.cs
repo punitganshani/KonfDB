@@ -38,7 +38,7 @@ namespace KonfDB.Infrastructure.Database.Abstracts
         SuiteModel GetSuite(long loggedInUserId, long suiteId);
         SuiteModel GetSuite(long loggedInUserId, string suiteName);
         void UpdateSuite(SuiteModel model);
-        bool DeleteSuite(SuiteModel model);
+        bool DeleteSuite(SuiteModel model); 
 
         /* Environment */
         bool DeleteEnvironment(long userId, long environmentId);
