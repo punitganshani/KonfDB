@@ -280,6 +280,21 @@ namespace KonfDB.Engine.Database.Stores
             }
         }
 
+        public RoleType[] GetUserSuiteRole(long userId, long suiteId)
+        {
+            using (var unitOfWork = new UnitOfWork(_connectionString))
+            {
+                if (!unitOfWork.Context.SuiteUsers.Any(x => x.UserId == userId && x.SuiteId == suiteId))
+                    throw new UnauthorizedUserException(
+                      "Invalid SuiteId or User does not have enough privileges to perform this action");
+
+
+                var roles = unitOfWork.Context.SuiteUsers.Where(x => x.UserId == userId && x.SuiteId == suiteId).ToList().Select(x => x.RoleId != null ?
+                    (RoleType)x.RoleId : (RoleType)200);
+
+                return roles.ToArray();
+            }
+        }
         #endregion
 
         #region Environment
@@ -674,9 +689,9 @@ namespace KonfDB.Engine.Database.Stores
                 if (!userAuthorised)
                     throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
-                var paramsInDb = unitOfWork.Context.Parameters.Where(x => x.SuiteId == suiteId).ToList();
+                var paramsInDb = unitOfWork.Context.Mappings.Where(x => x.SuiteId == suiteId).ToList();
 
-                return paramsInDb.Select(x => x.ToModel()).ToList();
+                return paramsInDb.Select(map => map.Parameter.ToModel()).ToList();
             }
         }
 
