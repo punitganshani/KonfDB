@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'IAuthCommand.cs' is part of KonfDB application - 
+//     This file 'IAuditCommand.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,14 +23,12 @@
 
 #endregion
 
-using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
 
 namespace KonfDB.Infrastructure.Services
 {
-    [AuthenticateToken]
-    internal interface IAuthCommand : IAuditCommand
+    internal interface IAuditCommand : ICommand
     {
-        
+        AuditRecordModel GetAuditCommand(CommandInput input);
     }
 }

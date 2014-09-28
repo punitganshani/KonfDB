@@ -134,7 +134,7 @@ namespace KonfDB.Engine.Services
             // Audit an AUTH Command
             if (AppContext.Current.AuditEnabled)
             {
-                var authCommand = commandObject as IAuthCommand;
+                var authCommand = commandObject as IAuditCommand;
                 if (authCommand != null)
                 {
                     var auditRecord = authCommand.GetAuditCommand(input);

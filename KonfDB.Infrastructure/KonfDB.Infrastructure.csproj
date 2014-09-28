@@ -142,6 +142,7 @@
     <Compile Include="Exceptions\UnauthorizedUserException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Services\IAuditCommand.cs" />
     <Compile Include="Services\ICommand.cs" />
     <Compile Include="Services\ServiceConstants.cs" />
     <Compile Include="Shell\AppContext.cs" />

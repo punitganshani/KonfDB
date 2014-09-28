@@ -37,7 +37,7 @@ using KonfDB.Infrastructure.Shell;
 namespace KonfDB.Engine.Commands.Shared
 {
     [IgnoreCache]
-    internal class NewUser : IAuthCommand
+    internal class NewUser : IAuditCommand
     {
         public string Keyword
         {
@@ -61,7 +61,7 @@ namespace KonfDB.Engine.Commands.Shared
             var password = arguments["pwd"];
             var confirmPassword = arguments["cpwd"];
             bool runSilent = arguments.HasArgument("silent");
-
+            
             if (!password.Equals(confirmPassword))
             {
                 output.DisplayMessage = "Password and Confirm Password do not match";
