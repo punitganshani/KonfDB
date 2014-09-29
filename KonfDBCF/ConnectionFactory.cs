@@ -38,11 +38,11 @@ namespace KonfDBCF
 {
     public static class ConnectionFactory
     {
-        private static ICommandService _commandService;
+        private static ConnectionProxy _commandServiceProxy;
 
-        public static ICommandService GetInstance()
+        public static ConnectionProxy GetInstance()
         {
-            if (_commandService == null)
+            if (_commandServiceProxy == null)
             {
                 WcfClient<ICommandService> client =
                     WcfClient<ICommandService>.Create(ClientContext.Current.Config.Runtime.Client.GetWcfServiceType(),
@@ -51,10 +51,15 @@ namespace KonfDBCF
                         "CommandService");
                 client.OnFaulted += client_OnFaulted;
 
-                _commandService = client.Contract;
+                var commandService = client.Contract;
+
+                _commandServiceProxy = new ConnectionProxy(commandService);
+
+                CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
+
             }
 
-            return _commandService;
+            return _commandServiceProxy;
         }
 
         private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService>> e)

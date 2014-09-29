@@ -42,7 +42,7 @@ namespace KonfDBRC
             Console.WriteLine(@"KonfDBRC : Initializing..");
             
             var token = ConnectionFactory.GetUserToken();
-            ICommandService commandService = ConnectionFactory.GetInstance();
+            var commandService = ConnectionFactory.GetInstance();
 
             if (token == null)
             {

@@ -51,6 +51,7 @@
     <Compile Include="Configuration\ClientConfig.cs" />
     <Compile Include="Configuration\Runtime\RuntimeConfigurationSection.cs" />
     <Compile Include="ConnectionFactory.cs" />
+    <Compile Include="ConnectionProxy.cs" />
     <Compile Include="Core\ClientContext.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

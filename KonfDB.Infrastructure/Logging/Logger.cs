@@ -68,7 +68,7 @@ namespace KonfDB.Infrastructure.Logging
 
         private ILog CreateLog()
         {
-            return LogManager.GetLogger("KonfDBHost");
+            return LogManager.GetLogger("KonfDB");
         }
 
         private static AppenderSkeleton CreateConsoleAppender()
