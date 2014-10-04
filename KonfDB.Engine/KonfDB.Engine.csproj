@@ -61,6 +61,7 @@
     <Compile Include="Commands\Shared\DeleteServer.cs" />
     <Compile Include="Commands\Shared\DeleteSuite.cs" />
     <Compile Include="Commands\Shared\DeleteApp.cs" />
+    <Compile Include="Commands\Shared\Promote.cs" />
     <Compile Include="Commands\Shared\RevokeAccess.cs" />
     <Compile Include="Commands\Shared\NewUser.cs" />
     <Compile Include="Commands\Shared\GrantAccess.cs" />
