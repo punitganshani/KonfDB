@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>KonfDBCF</id>
+        <version>0.2.0.0</version>
+        <title>KonfDB Client Framework for .NET</title>
+        <authors>Punit Ganshani</authors>
+        <owners>Punit Ganshani</owners>
+        <projectUrl>http://www.konfdb.com</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.NET client for KonfDB</description>
+        <releaseNotes>Bug fixes -
+•Encryption related bugs for commands using public key 
+•Differentiated roles Admin and ReadOnly users
+•Logger changes</releaseNotes>
+        <copyright>Copyright Punit Ganshani, 2014</copyright>
+        <tags>konfdb configuration .net</tags>
+    </metadata>    
+</package>

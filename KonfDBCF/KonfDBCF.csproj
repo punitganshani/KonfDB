@@ -16,6 +16,8 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,19 +37,135 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.ServiceModel.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.XML.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\KonfDB.Infrastructure\Caching\InMemoryCacheStore.cs">
+      <Link>Caching\InMemoryCacheStore.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Common\DataEventArgs.cs">
+      <Link>Common\DataEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Configuration\Caching\CacheConfigurationSection.cs">
+      <Link>Configuration\Caching\CacheConfigurationSection.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Configuration\Runtime\ServiceTypeElement.cs">
+      <Link>Configuration\Runtime\ServiceTypeElement.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Configuration\Runtime\SuperUserElement.cs">
+      <Link>Configuration\Runtime\SuperUserElement.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\DataResolvers\SharedTypeResolver.cs">
+      <Link>DataResolvers\SharedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\BaseException.cs">
+      <Link>Exceptions\BaseException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\EncryptionException.cs">
+      <Link>Exceptions\EncryptionException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\InvalidConfigurationException.cs">
+      <Link>Exceptions\InvalidConfigurationException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\StateWorkflowException.cs">
+      <Link>Exceptions\StateWorkflowException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\UnauthorizedUserException.cs">
+      <Link>Exceptions\UnauthorizedUserException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Exceptions\UserAlreadyExistsException.cs">
+      <Link>Exceptions\UserAlreadyExistsException.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Logging\Logger.cs">
+      <Link>Logging\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Services\AuthenticationOutput.cs">
+      <Link>Services\AuthenticationOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Services\CommandOutput.cs">
+      <Link>Service\CommandOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Services\ICommandService.cs">
+      <Link>Interfaces\ICommandService.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Services\IService.cs">
+      <Link>Service\IService.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Services\ServiceConstants.cs">
+      <Link>Service\ServiceConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Shell\CurrentContext.cs">
+      <Link>Shell\CurrentContext.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Shell\IContext.cs">
+      <Link>Shell\IContext.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Utilities\CommandArgs.cs">
+      <Link>Utilities\CommandArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Utilities\IArguments.cs">
+      <Link>Utilities\IArguments.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\AddressInfo.cs">
+      <Link>WCF\AddressInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\Binding.cs">
+      <Link>WCF\Binding.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\FaultReason.cs">
+      <Link>WCF\FaultReason.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\ServiceError.cs">
+      <Link>WCF\ServiceError.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\ServiceType.cs">
+      <Link>WCF\ServiceType.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\ServiceTypes\BasicHttp.cs">
+      <Link>WCF\ServiceTypes\BasicHttp.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\ServiceTypes\NetTcp.cs">
+      <Link>WCF\ServiceTypes\NetTcp.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\ServiceTypes\WebHttp.cs">
+      <Link>WCF\ServiceTypes\WebHttp.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\Status.cs">
+      <Link>WCF\Status.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\WcfClient.cs">
+      <Link>WCF\WcfClient.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\WCF\WCFExtensions.cs">
+      <Link>WCF\WCFExtensions.cs</Link>
+    </Compile>
     <Compile Include="Configuration\ClientConfig.cs" />
     <Compile Include="Configuration\Runtime\RuntimeConfigurationSection.cs" />
     <Compile Include="ConnectionFactory.cs" />
@@ -57,14 +175,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KonfDB.Infrastructure\KonfDB.Infrastructure.csproj">
-      <Project>{82e5eca3-9b1c-430b-96ef-89a083c45b7a}</Project>
-      <Name>KonfDB.Infrastructure</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="konfdb.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
@@ -75,6 +188,13 @@
 xcopy "$(TargetDir)*.exe*" "$(SolutionDir)Package\$(ConfigurationName)\KonfDBCF"  /E /I /Y
 del "$(SolutionDir)Package\$(ConfigurationName)\KonfDBCF\*.vshost*" /Q</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
