@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ServerModel.cs' is part of KonfDB application - 
+//     This file 'AuthenticationModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,38 +24,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace KonfDB.Infrastructure.Database.Entities.Configuration
+namespace KonfDB.Infrastructure.Database.Entities.Account
 {
     [Serializable]
-    public class ServerModel : BaseViewModel
+    public class AuthenticationModel : BaseModel
     {
         [JsonProperty]
-        public long? ServerId { get; set; }
-
-        [JsonIgnore]
-        public long SuiteId { get; set; }
-
-        [JsonProperty]
-        public string ServerName { get; set; }
-
-        [JsonIgnore]
-        public bool IsActive { get; set; }
-
-        [JsonProperty]
-        public string Description { get; set; }
-
-        [JsonIgnore]
-        public int AutoIncrementId { get; set; }
-
-        [JsonIgnore]
-        public List<MappingModel> Mappings { get; set; }
-
-        public ServerModel()
-        {
-            Mappings = new List<MappingModel>();
-        }
+        public bool IsAuthenticated { get; set; }
     }
 }

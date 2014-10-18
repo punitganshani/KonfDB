@@ -42,5 +42,6 @@ namespace KonfDB.Engine.Database.EntityFramework
         public virtual DbSet<SuiteUser> SuiteUsers { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Option> Options { get; set; }
     }
 }

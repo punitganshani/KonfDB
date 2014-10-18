@@ -30,13 +30,6 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
 {
     internal class RuntimeConfigurationSection : ConfigurationSection
     {
-        [ConfigurationProperty("mode", DefaultValue = AppType.Server, IsRequired = true)]
-        public AppType Mode
-        {
-            get { return (AppType) this["mode"]; }
-            set { this["mode"] = value; }
-        }
-
         [ConfigurationProperty("audit", IsRequired = false)]
         public bool Audit
         {
@@ -62,13 +55,6 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         public ServiceTypeCollection Server
         {
             get { return (ServiceTypeCollection) base["server"]; }
-        }
-
-        [ConfigurationProperty("client", IsRequired = false)]
-        public ServiceTypeElement Client
-        {
-            get { return (ServiceTypeElement) this["client"]; }
-            set { this["client"] = value; }
         }
 
         [ConfigurationProperty("superuser", IsRequired = true)]

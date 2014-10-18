@@ -25,8 +25,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using KonfDB.Infrastructure.Configuration.Runtime;
 
 namespace KonfDB.Infrastructure.Extensions
 {
@@ -34,7 +36,7 @@ namespace KonfDB.Infrastructure.Extensions
     {
         public static int ToInt<T>(T value) where T : struct, IConvertible
         {
-            if (Enum.GetUnderlyingType(typeof (T)) == typeof (int))
+            if (Enum.GetUnderlyingType(typeof(T)) == typeof(int))
                 return Convert.ToInt32(value);
 
             throw new InvalidCastException("Enum value can not be converted to Int32: " + value);
@@ -46,13 +48,27 @@ namespace KonfDB.Infrastructure.Extensions
             return
                 value.GetType()
                     .GetFields(BindingFlags.Static | BindingFlags.Public)
-                    .Select(fi => (T) Enum.Parse(value.GetType(), fi.Name, false))
+                    .Select(fi => (T)Enum.Parse(value.GetType(), fi.Name, false))
                     .ToList();
         }
 
         public static IList<string> GetNames<T>(this T value) where T : struct, IConvertible
         {
-            return typeof (T).GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+            return typeof(T).GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+        }
+
+        public static WCF.ServiceType GetWcfServiceType(this EndPointType endPointType)
+        {
+            if (endPointType == EndPointType.http)
+                return WCF.ServiceType.BasicHttp;
+            if (endPointType == EndPointType.tcp)
+                return WCF.ServiceType.NetTcp;
+            if (endPointType == EndPointType.rest)
+                return WCF.ServiceType.REST;
+            if (endPointType == EndPointType.azurerelay)
+                return WCF.ServiceType.AzureRelay;
+
+            throw new InvalidDataException("No ServiceType exists for EndPointType: " + endPointType);
         }
     }
 }

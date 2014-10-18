@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'BaseViewModel.cs' is part of KonfDB application - 
+//     This file 'AuthenticationOutput.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -25,17 +25,28 @@
 
 using System;
 using System.Runtime.Serialization;
+using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
-using Newtonsoft.Json;
 
-namespace KonfDB.Infrastructure.Database.Entities
+namespace KonfDB.Infrastructure.Services
 {
     [DataContract(Namespace = ServiceConstants.Schema)]
     [Serializable]
-    public class BaseViewModel : IServiceObject
+    public class AuthenticationOutput : IAuthenticationOutput
     {
-        [JsonIgnore]
+        [DataMember]
+        public string Token { get; set; }
+
+        [DataMember]
+        public string Username { get; set; }
+
+        [DataMember]
+        public bool IsAuthenticated { get; set; }
+
         [IgnoreDataMember]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
+
+        [DataMember]
+        public DateTime ExpireUtc { get; set; }
     }
 }

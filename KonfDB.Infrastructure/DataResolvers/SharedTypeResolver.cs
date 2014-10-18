@@ -47,6 +47,18 @@ namespace KonfDB.Infrastructure.DataResolvers
         public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
             DataContractResolver knownTypeResolver)
         {
+            if (declaredType == typeof(System.Object)) //&& typeName != "int" && typeName != "bool" && typeName != "string")
+            {
+                //if (typeNamespace == ServiceConstants.Schema && typeName == "ArrayOfSplit")
+                //{
+                //    return typeof(List<Split>);
+                //}
+                //if (typeNamespace == ServiceConstants.Schema && typeName == "ArrayOfint")
+                //{
+                //    return typeof(List<int>);
+                //}
+            }
+
             return knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null) ??
                    Type.GetType(typeName + ", " + typeNamespace);
         }

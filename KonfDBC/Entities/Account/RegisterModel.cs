@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ICommandService.cs' is part of KonfDB application - 
+//     This file 'RegisterModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,26 +23,31 @@
 
 #endregion
 
-using System.ServiceModel;
-using System.ServiceModel.Web;
+#region Namespaces
 
-namespace KonfDB.Infrastructure.Services
+using System;
+using System.Runtime.Serialization;
+using KonfDB.Infrastructure.Services;
+using Newtonsoft.Json;
+
+#endregion
+
+namespace KonfDB.Infrastructure.Database.Entities.Account
 {
-    [ServiceContract(Namespace = ServiceConstants.Schema)]
-    public interface ICommandService : IService
+    [DataContract(Namespace = ServiceConstants.Schema)]
+    [Serializable]
+    public class RegisterModel : BaseModel
     {
-        [OperationContract(Name = "Execute")]
-        [WebInvoke(Method = "GET",
-            ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "/Execute?cmd={command}&token={token}")]
-        CommandOutput ExecuteCommand(string command, string token);
+        [DataMember]
+        [JsonProperty]
+        public string UserName { get; set; }
 
-        [OperationContract(Name = "List")]
-        [WebInvoke(Method = "GET",
-            ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Bare,
-            UriTemplate = "/List/{command}")]
-        string[] GetCommandsStartingWith(string command);
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public string Password { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public string ConfirmPassword { get; set; }
     }
 }

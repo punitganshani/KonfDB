@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'AuditRecordModel.cs' is part of KonfDB application - 
+//     This file 'MappingModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,45 +24,35 @@
 #endregion
 
 using System;
-using System.Runtime.Serialization;
-using KonfDB.Infrastructure.Database.Enums;
-using KonfDB.Infrastructure.Services;
 using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
-    [DataContract(Namespace = ServiceConstants.Schema)]
     [Serializable]
-    public class AuditRecordModel : BaseViewModel
+    public class MappingModel : BaseModel
     {
-        [DataMember]
-        [JsonProperty]
-        public AuditReason Reason { get; set; }
+        [JsonIgnore]
+        public long MappingId { get; set; }
 
-        [DataMember]
         [JsonProperty]
-        public AuditArea Area { get; set; }
+        public long SuiteId { get; set; }
 
-        [DataMember]
         [JsonProperty]
-        public string Message { get; set; }
+        public long EnvironmentId { get; set; }
 
-        [DataMember]
         [JsonProperty]
-        public string Key { get; set; }
+        public long ApplicationId { get; set; }
 
-        [DataMember]
         [JsonProperty]
-        public string Metadata1 { get; set; }
+        public long RegionId { get; set; }
 
-        [DataMember]
         [JsonProperty]
-        public string Metadata2 { get; set; }
+        public long ServerId { get; set; }
 
-        public override string ToString()
-        {
-            return String.Format("AddAudit /a:{0} /akey:{1} /m:{2} /r:{3} /m1:{4} /m2:{5}",
-                Area, Key, Message, Reason, Metadata1, Metadata2);
-        }
+        [JsonIgnore]
+        public long CategoryId { get; set; }
+
+        [JsonProperty]
+        public long ParameterId { get; set; }
     }
 }

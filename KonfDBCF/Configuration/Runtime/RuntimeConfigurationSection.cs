@@ -37,14 +37,6 @@ namespace KonfDBCF.Configuration.Runtime
             set { this["logConfigPath"] = value; }
         }
 
-
-        [ConfigurationProperty("params", IsRequired = false)]
-        public string Parameters
-        {
-            get { return (string) this["params"]; }
-            set { this["params"] = value; }
-        }
-
         [ConfigurationProperty("client", IsRequired = true)]
         public ServiceTypeElement Client
         {

@@ -34,5 +34,6 @@ namespace KonfDB.Infrastructure.Utilities
         bool ContainsKey(string parameterName);
         void Add(string parameter, string value);
         string Command { get; }
+        string GetValue(string parameterName, string defaultValue);
     }
 }

@@ -46,6 +46,11 @@ namespace KonfDB.Infrastructure.Database
             get { return SchemaMap["Reference"]; }
         }
 
+        public static string[] SettingsTables
+        {
+            get { return SchemaMap["Settings"]; }
+        }
+
         public static string[] Schemas
         {
             get { return SchemaMap.Keys.Select(x => x).ToArray(); }
@@ -55,7 +60,8 @@ namespace KonfDB.Infrastructure.Database
         {
             "Data.EnvironmentType",
             "Data.Users",
-            "Data.AuditAreas"
+            "Data.AuditAreas",
+            "Data.Options"
         };
 
         public static readonly Dictionary<String, string[]> SchemaMap;
@@ -94,6 +100,12 @@ namespace KonfDB.Infrastructure.Database
                         "Server",
                         "Mapping",
                         "SuiteUsers"
+                    }
+                },
+                {
+                    "Settings", new []
+                    {
+                        "Options"
                     }
                 }
             };

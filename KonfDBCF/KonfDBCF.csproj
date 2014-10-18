@@ -76,6 +76,9 @@
     <Compile Include="..\KonfDB.Infrastructure\Configuration\Caching\CacheConfigurationSection.cs">
       <Link>Configuration\Caching\CacheConfigurationSection.cs</Link>
     </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Configuration\Interfaces\ICacheConfiguration.cs">
+      <Link>Configuration\Interfaces\ICacheConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\KonfDB.Infrastructure\Configuration\Runtime\ServiceTypeElement.cs">
       <Link>Configuration\Runtime\ServiceTypeElement.cs</Link>
     </Compile>
@@ -103,23 +106,14 @@
     <Compile Include="..\KonfDB.Infrastructure\Exceptions\UserAlreadyExistsException.cs">
       <Link>Exceptions\UserAlreadyExistsException.cs</Link>
     </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\KonfDB.Infrastructure\Logging\Logger.cs">
       <Link>Logging\Logger.cs</Link>
-    </Compile>
-    <Compile Include="..\KonfDB.Infrastructure\Services\AuthenticationOutput.cs">
-      <Link>Services\AuthenticationOutput.cs</Link>
-    </Compile>
-    <Compile Include="..\KonfDB.Infrastructure\Services\CommandOutput.cs">
-      <Link>Service\CommandOutput.cs</Link>
-    </Compile>
-    <Compile Include="..\KonfDB.Infrastructure\Services\ICommandService.cs">
-      <Link>Interfaces\ICommandService.cs</Link>
-    </Compile>
-    <Compile Include="..\KonfDB.Infrastructure\Services\IService.cs">
-      <Link>Service\IService.cs</Link>
-    </Compile>
-    <Compile Include="..\KonfDB.Infrastructure\Services\ServiceConstants.cs">
-      <Link>Service\ServiceConstants.cs</Link>
     </Compile>
     <Compile Include="..\KonfDB.Infrastructure\Shell\CurrentContext.cs">
       <Link>Shell\CurrentContext.cs</Link>
@@ -166,21 +160,34 @@
     <Compile Include="..\KonfDB.Infrastructure\WCF\WCFExtensions.cs">
       <Link>WCF\WCFExtensions.cs</Link>
     </Compile>
+    <Compile Include="Configuration\Caching\CacheConfiguration.cs" />
+    <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Configuration\ClientConfig.cs" />
     <Compile Include="Configuration\Runtime\RuntimeConfigurationSection.cs" />
-    <Compile Include="ConnectionFactory.cs" />
+    <Compile Include="CConnectionFactory.cs" />
     <Compile Include="ConnectionProxy.cs" />
     <Compile Include="Core\ClientContext.cs" />
+    <Compile Include="Core\ClientContextFromConfig.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="konfdb.snk" />
+    <None Include="KonfDBCF.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KonfDBC\KonfDBC.csproj">
+      <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
+      <Name>KonfDBC</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

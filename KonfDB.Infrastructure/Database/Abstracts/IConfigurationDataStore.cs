@@ -110,6 +110,9 @@ namespace KonfDB.Infrastructure.Database.Abstracts
 
         /* Audit */
         void AddAuditRecord(AuditRecordModel model);
+
+        /* Internal */
+        Dictionary<string, string> GetSettings(bool active, bool autoLoad);
     }
 }
 

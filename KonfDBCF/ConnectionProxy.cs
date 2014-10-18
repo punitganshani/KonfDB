@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KonfDB.Infrastructure.Services;
+using KonfDB.Infrastructure.Shell;
 using KonfDBCF.Core;
 
 namespace KonfDBCF
@@ -23,9 +24,9 @@ namespace KonfDBCF
         {
             CommandOutput commandOutput;
 
-            if (ClientContext.Current.Config.Caching.Enabled)
+            if (CurrentContext.Default.Cache.Enabled)
             {
-                commandOutput = ClientContext.Current.Cache.Get(command, () =>
+                commandOutput = CurrentContext.Default.Cache.Get(command, () =>
                     ExecuteCommandInternal(command, token));
             }
             else
@@ -41,11 +42,6 @@ namespace KonfDBCF
             return _commandService.ExecuteCommand(command, token);
         }
 
-
-        private static bool RequiresCaching(string command)
-        {
-            return true;
-        }
 
         public string[] GetCommandsStartingWith(string command)
         {

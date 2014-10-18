@@ -24,7 +24,7 @@
 #endregion
 
 using KonfDB.Infrastructure.Attributes;
-using KonfDB.Infrastructure.Database.Entities.Configuration;
+
 
 namespace KonfDB.Infrastructure.Services
 {

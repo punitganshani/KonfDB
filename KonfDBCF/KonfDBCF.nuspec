@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners> 
+    <projectUrl>http://www.konfdb.com</projectUrl>
+    <iconUrl>http://www.ganshani.com/konfdb/wp-content/uploads/sites/6/2014/09/cropped-logo1.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Bug fixes, configuration and service changes. Recommended to use with KonfDB 0.4</releaseNotes>
+    <copyright>Copyright Punit Ganshani 2014</copyright>
+    <tags>konfdb konfdbcf configuration</tags>
+  </metadata>
+</package>

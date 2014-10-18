@@ -33,9 +33,11 @@ using KonfDB.Engine.Commands;
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
+
 
 namespace KonfDB.Engine.Services
 {
@@ -128,7 +130,7 @@ namespace KonfDB.Engine.Services
             return commandOutput;
         }
 
-        private void AuditExecution(AuthenticationOutput userTokenFromCache,
+        private void AuditExecution(IAuthenticationOutput userTokenFromCache,
             CommandInput input, ICommand commandObject)
         {
             // Audit an AUTH Command

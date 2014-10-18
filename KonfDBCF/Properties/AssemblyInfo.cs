@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("KonfDBCF")]
 [assembly: AssemblyDescription(".NET API for KonfDB - A configuration service for multi-tenant cross-platform applications")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Punit Ganshani")]
 [assembly: AssemblyProduct("KonfDBCF")]
 [assembly: AssemblyCopyright("Copyright © Punit Ganshani 2014")]
 [assembly: AssemblyTrademark("")]
@@ -60,5 +60,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyVersion("0.4.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

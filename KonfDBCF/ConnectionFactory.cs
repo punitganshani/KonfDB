@@ -28,9 +28,12 @@ using System.Globalization;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
-using KonfDB.Infrastructure.Exceptions;
+using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.Utilities;
 using KonfDB.Infrastructure.WCF;
 using KonfDBCF.Core;
 
@@ -39,59 +42,61 @@ namespace KonfDBCF
     public static class ConnectionFactory
     {
         private static ConnectionProxy _commandServiceProxy;
+        private static string _username;
+        private static EndPointType _endPointType;
+        private static string _host;
+        private static int _port;
 
         public static ConnectionProxy GetInstance()
         {
-            if (_commandServiceProxy == null)
-            {
-                WcfClient<ICommandService> client =
-                    WcfClient<ICommandService>.Create(ClientContext.Current.Config.Runtime.Client.GetWcfServiceType(),
-                        ClientContext.Current.Config.Runtime.Client.Host,
-                        ClientContext.Current.Config.Runtime.Client.Port.ToString(CultureInfo.InvariantCulture),
-                        "CommandService");
-                client.OnFaulted += client_OnFaulted;
+            if (String.IsNullOrEmpty(_username) || _commandServiceProxy == null)
+                throw new UnauthorizedAccessException(@"User has not been authenticated. Please try GetUserToken first.");
 
-                var commandService = client.Contract;
+            if (CurrentContext.Default == null)
+                throw new InvalidOperationException(@"Context has not been set");
 
-                _commandServiceProxy = new ConnectionProxy(commandService);
+            if (_commandServiceProxy != null)
+                return _commandServiceProxy;
 
-                CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
-
-            }
-
-            return _commandServiceProxy;
+            throw new UnauthorizedAccessException(@"User has not been authenticated. Please try GetUserToken first.");
         }
 
-        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService>> e)
+        public static string GetUserToken(IArguments arguments)
         {
-            CurrentContext.Default.Log.Error("Error occured in communication channel, will re-attempt to create it");
-        }
+            CreateInstance(arguments);
 
-        public static string GetUserToken()
-        {
-            var user = ClientContext.Current.Config.Runtime.User;
-            var tokenKey = GetServiceKey(user.Username);
-
+            var tokenKey = GetServiceKey(_username);
             return CurrentContext.Default.Cache.Get(tokenKey, () =>
             {
-                var authOutput = AuthenticateUser(user.Username, user.Password);
+                var authOutput = AuthenticateUser(_username, arguments["password"]);
                 return authOutput.IsAuthenticated ? authOutput.Token : null;
             }, InMemoryCacheStore.Mode.AlwaysLive);
         }
+
+        public static string GetUserToken(string serviceType, string host, int port, string username, string password)
+        {
+            var args = new CommandArgs(String.Format("-type:{0} -host:{1} -port:{2} -username:{3} -password:{4}",
+                serviceType, host, port, username, password));
+
+            return GetUserToken(args);
+        }
+
+        #region Private Methods
 
         private static string GetServiceKey(string user)
         {
             return String.Format("$UT${0}$", !string.IsNullOrEmpty(user) ? user : "Anonymous");
         }
 
-        private static AuthenticationOutput AuthenticateUser(string username, string password)
+        private static IAuthenticationOutput AuthenticateUser(string username, string password)
         {
             try
             {
                 // Create User Token
-                var authOutput = GetInstance().ExecuteCommand(Utilities.GetUserAuthCommand(username, password), null);
+                var authOutput = _commandServiceProxy.ExecuteCommand(Utilities.GetUserAuthCommand(username, password),
+                    null);
 
-                var authenticationOutput = authOutput.Data as AuthenticationOutput;
+                var authenticationOutput = authOutput.Data as IAuthenticationOutput;
                 if (authenticationOutput == null)
                 {
                     throw new InvalidOperationException("Could not authenticate client user :" + username);
@@ -101,10 +106,38 @@ namespace KonfDBCF
             }
             catch (EndpointNotFoundException exception)
             {
-                throw new InvalidOperationException(String.Format(@"KonfDBH not reachable at {0}:{1}", 
-                        ClientContext.Current.Config.Runtime.Client.Host,
-                        ClientContext.Current.Config.Runtime.Client.Port), exception);
+                throw new InvalidOperationException(String.Format(@"KonfDBH not reachable at {0}:{1}",
+                    _host, _port), exception);
             }
         }
+
+        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService>> e)
+        {
+            CurrentContext.Default.Log.Error("Error occured in communication channel, will re-attempt to create it");
+        }
+
+        private static void CreateInstance(IArguments arguments)
+        {
+            ClientContext.CreateNew(arguments);
+
+            _endPointType = arguments["type"].ToEnum<EndPointType>();
+            _port = Int32.Parse(arguments["port"]);
+            _username = arguments["username"];
+            _host = arguments["host"];
+
+            if (_commandServiceProxy == null)
+            {
+                WcfClient<ICommandService> client =
+                    WcfClient<ICommandService>.Create(_endPointType.GetWcfServiceType(), _host,
+                        _port.ToString(CultureInfo.InvariantCulture),
+                        "CommandService");
+                client.OnFaulted += client_OnFaulted;
+                _commandServiceProxy = new ConnectionProxy(client.Contract);
+
+                CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
+            }
+        }
+
+        #endregion
     }
 }

@@ -31,7 +31,7 @@ using Newtonsoft.Json;
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
     [Serializable]
-    public class SuiteModel : BaseViewModel
+    public class SuiteModel : BaseModel
     {
         [JsonProperty]
         public long SuiteId { get; set; }

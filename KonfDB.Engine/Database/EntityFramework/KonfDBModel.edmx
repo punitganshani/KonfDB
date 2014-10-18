@@ -5,9 +5,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="KonfDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self"
-              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
-              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="KonfDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Membership">
           <Key>
             <PropertyRef Name="UserId" />
@@ -18,7 +16,7 @@
           <Property Name="IsConfirmed" Type="bit" />
           <Property Name="LastPasswordFailureDate" Type="datetime" />
           <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="PasswordChangedDate" Type="datetime" />
           <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
@@ -180,6 +178,16 @@
           <Property Name="CountryName" Type="varchar" MaxLength="70" Nullable="false" />
           <Property Name="ISO2" Type="varchar" MaxLength="2" />
           <Property Name="ISO3" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="Options">
+          <Key>
+            <PropertyRef Name="OptionName" />
+          </Key>
+          <Property Name="OptionName" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="OptionValue" Type="nvarchar(max)" />
+          <Property Name="AutoLoad" Type="bit" Nullable="false" />
+          <Property Name="IsEncrypted" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Application_Suite">
           <End Role="Suite" Type="Self.Suite" Multiplicity="1" />
@@ -427,6 +435,7 @@
           <EntitySet Name="SuiteUsers" EntityType="Self.SuiteUsers" Schema="Config" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="Reference" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="Reference" store:Type="Tables" />
+          <EntitySet Name="Options" EntityType="Self.Options" Schema="Settings" store:Type="Tables" />
           <AssociationSet Name="FK_Application_Suite" Association="Self.FK_Application_Suite">
             <End Role="Suite" EntitySet="Suite" />
             <End Role="Application" EntitySet="Application" />
@@ -487,8 +496,7 @@
             <End Role="Suite" EntitySet="Suite" />
             <End Role="Parameter" EntitySet="Parameter" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reference_City_Reference_Country"
-                          Association="Self.FK_Reference_City_Reference_Country">
+          <AssociationSet Name="FK_Reference_City_Reference_Country" Association="Self.FK_Reference_City_Reference_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="City" EntitySet="City" />
           </AssociationSet>
@@ -505,8 +513,7 @@
             <End Role="Membership" EntitySet="Membership" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KonfDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false"
@@ -609,6 +616,7 @@
             <End Role="Country" EntitySet="Countries" />
             <End Role="City" EntitySet="Cities" />
           </AssociationSet>
+          <EntitySet Name="Options" EntityType="KonfDBModel.Option" />
         </EntityContainer>
         <EntityType Name="Membership">
           <Key>
@@ -620,7 +628,7 @@
           <Property Name="IsConfirmed" Type="Boolean" />
           <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
           <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
           <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false"
                     Unicode="true" />
@@ -1095,6 +1103,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="OptionName" />
+          </Key>
+          <Property Name="OptionName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="OptionValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AutoLoad" Type="Boolean" Nullable="false" />
+          <Property Name="IsEncrypted" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1289,6 +1307,17 @@
                 <ScalarProperty Name="ISO2" ColumnName="ISO2" />
                 <ScalarProperty Name="CountryName" ColumnName="CountryName" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Options">
+            <EntityTypeMapping TypeName="KonfDBModel.Option">
+              <MappingFragment StoreEntitySet="Options">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsEncrypted" ColumnName="IsEncrypted" />
+                <ScalarProperty Name="AutoLoad" ColumnName="AutoLoad" />
+                <ScalarProperty Name="OptionValue" ColumnName="OptionValue" />
+                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,6 +43,14 @@ namespace KonfDB.Infrastructure.Utilities
             get { return _command; }
         }
 
+        public string GetValue(string parameterName, string defaultValue)
+        {
+            if (_parameters.ContainsKey(parameterName))
+                return (_parameters[parameterName]);
+
+            return defaultValue;
+        }
+
         public int Count
         {
             get { return _parameters.Count; }

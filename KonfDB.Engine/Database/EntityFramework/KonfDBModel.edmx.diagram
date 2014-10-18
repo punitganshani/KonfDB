@@ -42,6 +42,7 @@
         <AssociationConnector Association="KonfDBModel.FK_Server_Suite" />
         <AssociationConnector Association="KonfDBModel.FK_Config_SuiteUsers_Suite" />
         <AssociationConnector Association="KonfDBModel.FK_Reference_City_Reference_Country" />
+        <EntityTypeShape EntityType="KonfDBModel.Option" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

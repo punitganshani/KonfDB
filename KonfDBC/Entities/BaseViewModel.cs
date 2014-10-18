@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ContactType.cs' is part of KonfDB application - 
+//     This file 'BaseViewModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,15 +23,19 @@
 
 #endregion
 
-namespace KonfDB.Infrastructure.Database.Enums
+using System;
+using System.Runtime.Serialization;
+using KonfDB.Infrastructure.Services;
+using Newtonsoft.Json;
+
+namespace KonfDB.Infrastructure.Database.Entities
 {
-    public enum ContactType
+    [DataContract(Namespace = ServiceConstants.Schema)]
+    [Serializable]
+    public class BaseModel : IServiceObject
     {
-        None = 0,
-        Office = 1,
-        Work = 2,
-        Email = 3,
-        Website = 4,
-        Home = 5,
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public long UserId { get; set; }
     }
 }

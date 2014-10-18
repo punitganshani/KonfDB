@@ -33,8 +33,12 @@ using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
 
+
 namespace KonfDB.Infrastructure.Shell
 {
+    /// <summary>
+    /// Application Context for KonfDBHost
+    /// </summary>
     internal class AppContext
     {
         private static AppContext _current;
@@ -67,7 +71,7 @@ namespace KonfDB.Infrastructure.Shell
             Config = configuration;
             UserTokens = new List<string>();
 
-            ApplicationType = configuration.Runtime.Mode;
+            ApplicationType = AppType.Server;
 
             var logger = Logger.CreateInstance(true, configuration.Runtime.LogConfigPath);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);

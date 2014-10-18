@@ -1,0 +1,1 @@
+﻿IF NOT EXISTS(SELECT * FROM [Settings].[Options] WHERE OptionName='KonfDBVersion') INSERT INTO [Settings].[Options] (OptionName, OptionValue, AutoLoad, IsEncrypted, IsActive) VALUES ('KonfDBVersion', '0.4', 1, 0, 1) ELSE UPDATE  [Settings].[Options] SET OptionValue='0.4', AutoLoad=1, IsActive=1, IsEncrypted=0 WHERE OptionName='KonfDBVersion'

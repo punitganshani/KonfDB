@@ -25,10 +25,11 @@
 
 using System;
 using System.Configuration;
+using KonfDB.Infrastructure.Extensions;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
-    public enum ServiceType
+    public enum EndPointType
     {
         tcp = 100,
         http = 200,
@@ -41,36 +42,27 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         [ConfigurationProperty("port", IsRequired = true, IsKey = true)]
         public int Port
         {
-            get { return (int) this["port"]; }
+            get { return (int)this["port"]; }
             set { this["port"] = value; }
         }
 
         [ConfigurationProperty("type", IsRequired = true)]
-        public ServiceType Type
+        public EndPointType Type
         {
-            get { return (ServiceType) this["type"]; }
+            get { return (EndPointType)this["type"]; }
             set { this["type"] = value; }
         }
 
         [ConfigurationProperty("host", IsRequired = false)]
         public string Host
         {
-            get { return (string) this["host"]; }
+            get { return (string)this["host"]; }
             set { this["host"] = value; }
         }
 
         public WCF.ServiceType GetWcfServiceType()
         {
-            if (Type == ServiceType.http)
-                return WCF.ServiceType.BasicHttp;
-            if (Type == ServiceType.tcp)
-                return WCF.ServiceType.NetTcp;
-            if (Type == ServiceType.rest)
-                return WCF.ServiceType.REST;
-            if (Type == ServiceType.azurerelay)
-                return WCF.ServiceType.AzureRelay;
-
-            throw new InvalidOperationException("Invalid ServiceType detected in config:" + Type);
+            return this.Type.GetWcfServiceType();
         }
     }
 }

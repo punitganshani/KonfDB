@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'AuthenticationOutput.cs' is part of KonfDB application - 
+//     This file 'ICommandService.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,27 +23,27 @@
 
 #endregion
 
-using System;
-using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+
 
 namespace KonfDB.Infrastructure.Services
 {
-    [DataContract(Namespace = ServiceConstants.Schema)]
-    public class AuthenticationOutput
+    [ServiceContract(Namespace = ServiceConstants.Schema, Name="ICommandService")]
+    public interface ICommandService : IService
     {
-        [DataMember]
-        public string Token { get; set; }
+        [OperationContract(Name = "Execute")]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "/Execute?cmd={command}&token={token}")]
+        CommandOutput ExecuteCommand(string command, string token);
 
-        [DataMember]
-        public string Username { get; set; }
-
-        [DataMember]
-        public bool IsAuthenticated { get; set; }
-
-        [IgnoreDataMember]
-        public long? UserId { get; set; }
-
-        [DataMember]
-        public DateTime ExpireUtc { get; set; }
+        [OperationContract(Name = "List")]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "/List/{command}")]
+        string[] GetCommandsStartingWith(string command);
     }
 }

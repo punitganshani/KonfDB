@@ -1347,6 +1347,30 @@ namespace KonfDB.Engine.Database.Stores
             }
         }
 
+        public Dictionary<string, string> GetSettings(bool active, bool autoLoad)
+        {
+            var settings = new Dictionary<string, string>();
+
+            using (var unitOfWork = new UnitOfWork(_connectionString))
+            {
+                var options =
+                    unitOfWork.Context.Options.Where(x => x.IsActive == active && x.AutoLoad == autoLoad).ToList();
+
+                options.ForEach(x =>
+                {
+                    if (!settings.ContainsKey(x.OptionName))
+                    {
+                        var unencryptedValue = x.OptionValue;
+                        //TODO: Add encryption logic here
+                        settings.Add(x.OptionName, unencryptedValue);
+                    }
+                } );
+
+            }
+
+            return settings;
+        }
+
         #endregion
 
 

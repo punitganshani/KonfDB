@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ConfigurationModel.cs' is part of KonfDB application - 
+//     This file 'SuiteUserModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -29,19 +29,13 @@ using Newtonsoft.Json;
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
     [Serializable]
-    public class ConfigurationModel : BaseViewModel
+    public class SuiteUserModel : BaseModel
     {
         [JsonProperty]
-        public string ParameterName { get; set; }
+        public string Role { get; set; }
 
         [JsonProperty]
-        public string ParameterValue { get; set; }
-
-        [JsonProperty]
-        public string MatchProfile { get; set; }
-
-        [JsonProperty]
-        public bool IsEncrypted { get; set; }
+        public string Username { get; set; }
 
         [JsonIgnore]
         public long SuiteId { get; set; }

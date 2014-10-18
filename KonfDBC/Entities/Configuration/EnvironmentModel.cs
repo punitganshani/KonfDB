@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ApplicationModel.cs' is part of KonfDB application - 
+//     This file 'EnvironmentModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -25,33 +25,40 @@
 
 using System;
 using System.Collections.Generic;
+using KonfDB.Infrastructure.Database.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
     [Serializable]
-    public class ApplicationModel : BaseViewModel
+    public class EnvironmentModel : BaseModel
     {
         [JsonProperty]
-        public string ApplicationName { get; set; }
+        public string EnvironmentName { get; set; }
 
         [JsonProperty]
-        public string Description { get; set; }
+        [JsonConverter(typeof (StringEnumConverter))]
+        public EnvironmentType EnvironmentType { get; set; }
 
-        #region Metadata
+        [JsonProperty]
+        public long? EnvironmentId { get; set; }
+
+        [JsonIgnore]
+        public long SuiteId { get; set; }
+
+        [JsonIgnore]
+        public bool IsActive { get; set; }
 
         [JsonIgnore]
         public int AutoIncrementId { get; set; }
 
         [JsonIgnore]
-        public bool IsActive { get; set; }
+        public List<ServerModel> Servers { get; set; }
 
-        [JsonProperty]
-        public long? ApplicationId { get; set; }
-        public long SuiteId { get; set; }
-
-        public List<MappingModel> Mappings { get; set; }
-
-        #endregion
+        public EnvironmentModel()
+        {
+            Servers = new List<ServerModel>();
+        }
     }
 }

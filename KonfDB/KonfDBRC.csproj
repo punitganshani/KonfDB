@@ -71,6 +71,9 @@
     <Compile Include="..\KonfDB.Infrastructure\Extensions\JsonExtensions.cs">
       <Link>Extensions\JsonExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\KonfDB.Infrastructure\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="ConsoleProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +81,10 @@
     <ProjectReference Include="..\KonfDBCF\KonfDBCF.csproj">
       <Project>{da1f89df-85a0-4b81-a362-6b74b54aba95}</Project>
       <Name>KonfDBCF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KonfDBC\KonfDBC.csproj">
+      <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
+      <Name>KonfDBC</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +115,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="konfdb.pfx" />
     <None Include="konfdb.snk" />
     <None Include="packages.config">

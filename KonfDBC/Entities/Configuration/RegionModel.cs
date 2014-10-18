@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'EnvironmentModel.cs' is part of KonfDB application - 
+//     This file 'RegionModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -25,27 +25,21 @@
 
 using System;
 using System.Collections.Generic;
-using KonfDB.Infrastructure.Database.Enums;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
     [Serializable]
-    public class EnvironmentModel : BaseViewModel
+    public class RegionModel : BaseModel
     {
         [JsonProperty]
-        public string EnvironmentName { get; set; }
-
-        [JsonProperty]
-        [JsonConverter(typeof (StringEnumConverter))]
-        public EnvironmentType EnvironmentType { get; set; }
-
-        [JsonProperty]
-        public long? EnvironmentId { get; set; }
+        public long? RegionId { get; set; }
 
         [JsonIgnore]
         public long SuiteId { get; set; }
+
+        [JsonProperty]
+        public string RegionName { get; set; }
 
         [JsonIgnore]
         public bool IsActive { get; set; }
@@ -53,12 +47,10 @@ namespace KonfDB.Infrastructure.Database.Entities.Configuration
         [JsonIgnore]
         public int AutoIncrementId { get; set; }
 
-        [JsonIgnore]
-        public List<ServerModel> Servers { get; set; }
+        [JsonProperty]
+        public string Description { get; set; }
 
-        public EnvironmentModel()
-        {
-            Servers = new List<ServerModel>();
-        }
+        [JsonIgnore]
+        public List<MappingModel> Mappings { get; set; }
     }
 }

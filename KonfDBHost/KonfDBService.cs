@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.ServiceProcess;
 using System.Threading;
@@ -34,6 +35,7 @@ using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF;
 using System.Configuration;
+
 
 namespace KonfDBHost
 {
@@ -53,79 +55,56 @@ namespace KonfDBHost
             #region Run Command Service
 
             CommandService = new CommandService();
-            if (AppContext.Current.Config.Runtime.Mode == AppType.Server)
+
+            // Ensure that the super user admin exists
+            CommandService.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
+                AppContext.Current.Config.Runtime.SuperUser.Username,
+                AppContext.Current.Config.Runtime.SuperUser.Password), null);
+
+            // Ensure that the super user readonly exists
+            CommandService.ExecuteCommand(
+                String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
+                    AppContext.Current.Config.Runtime.SuperUser.Username,
+                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
+
+            var serviceConfig = AppContext.Current.Config.Runtime.Server;
+            _serviceHost = new WcfService<ICommandService, CommandService>("localhost", "CommandService");
+
+            for (int i = 0; i < serviceConfig.Count; i++)
             {
-                // Ensure that the super user admin exists
-                CommandService.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                    AppContext.Current.Config.Runtime.SuperUser.Username,
-                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
-
-                // Ensure that the super user readonly exists
-                CommandService.ExecuteCommand(
-                    String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
-                        AppContext.Current.Config.Runtime.SuperUser.Username,
-                        AppContext.Current.Config.Runtime.SuperUser.Password), null);
-
-                var serviceConfig = AppContext.Current.Config.Runtime.Server;
-                _serviceHost = new WcfService<ICommandService, CommandService>("localhost", "CommandService");
-
-                for (int i = 0; i < serviceConfig.Count; i++)
-                {
-                    _serviceHost.AddBinding(Binding.Create(serviceConfig[i].GetWcfServiceType(),
-                        serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture)));
-                }
-
-                _serviceHost.Host();
-
-                var authOutput = CommandService.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
-                    AppContext.Current.Config.Runtime.SuperUser.Username,
-                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
-
-                var authenticationOutput = authOutput.Data as AuthenticationOutput;
-                if (authenticationOutput == null)
-                {
-                    throw new InvalidOperationException(
-                        "Could not authenticate server user.  Check the sanity of database.");
-                }
-
-                AuthenticationToken = authenticationOutput.Token;
+                _serviceHost.AddBinding(Binding.Create(serviceConfig[i].GetWcfServiceType(),
+                    serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture)));
             }
-            else
+
+            _serviceHost.Host();
+
+            var authOutput = CommandService.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
+                AppContext.Current.Config.Runtime.SuperUser.Username,
+                AppContext.Current.Config.Runtime.SuperUser.Password), null);
+
+            var authenticationOutput = authOutput.Data as AuthenticationOutput;
+            if (authenticationOutput == null)
             {
-                // Ensure that the super user admin exists
-                CommandService.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                    AppContext.Current.Config.Runtime.SuperUser.Username,
-                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
+                throw new InvalidOperationException(
+                    "Could not authenticate server user.  Check the sanity of database.");
+            }
 
-                // Ensure that the super user readonly exists
-                CommandService.ExecuteCommand(
-                    String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
-                        AppContext.Current.Config.Runtime.SuperUser.Username,
-                        AppContext.Current.Config.Runtime.SuperUser.Password), null);
+            AuthenticationToken = authenticationOutput.Token;
 
-                var serviceConfig = AppContext.Current.Config.Runtime.Client;
-                _serviceHost = new WcfService<ICommandService, CommandService>("localhost", "CommandService");
-
-                _serviceHost.AddBinding(Binding.Create(serviceConfig.GetWcfServiceType(),
-                    serviceConfig.Port.ToString(CultureInfo.InvariantCulture)));
-
-                _serviceHost.Host();
-
-                var authOutput = CommandService.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
-                    AppContext.Current.Config.Runtime.SuperUser.Username,
-                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
-
-                var authenticationOutput = authOutput.Data as AuthenticationOutput;
-                if (authenticationOutput == null)
+            // get settings from database
+            var settingsOutput = CommandService.ExecuteCommand("GetSettings", null);
+            if (settingsOutput != null && settingsOutput.Data != null)
+            {
+                var settings = (Dictionary<string, string>) settingsOutput.Data;
+                foreach (var setting in settings)
                 {
-                    throw new InvalidOperationException(
-                        "Could not authenticate server user.  Check the sanity of database.");
+                    AppContext.Current.ApplicationParams.Add(setting.Key, setting.Value);
                 }
-
-                AuthenticationToken = authenticationOutput.Token;
             }
 
             AppContext.Current.Log.Info("Agent Started: " + _serviceHost);
+
+             
 
             #endregion
 

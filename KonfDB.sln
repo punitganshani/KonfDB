@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8D850D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5FA58E60-289C-4013-BFAB-DF3DAD69CA21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBC", "KonfDBC\KonfDBC.csproj", "{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,10 @@ Global
 		{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,5 +77,6 @@ Global
 		{790AA57D-FD4B-451D-8641-304FDC2659F2} = {A11FF895-CBAA-4F5D-AB30-BE3F359BD79C}
 		{DA1F89DF-85A0-4B81-A362-6B74B54ABA95} = {AA5D60F3-BDE8-4D46-89C9-658879AFD4CD}
 		{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC} = {AA5D60F3-BDE8-4D46-89C9-658879AFD4CD}
+		{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F} = {5FA58E60-289C-4013-BFAB-DF3DAD69CA21}
 	EndGlobalSection
 EndGlobal

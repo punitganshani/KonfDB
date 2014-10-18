@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'MappingModel.cs' is part of KonfDB application - 
+//     This file 'ConfigurationModel.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -29,30 +29,21 @@ using Newtonsoft.Json;
 namespace KonfDB.Infrastructure.Database.Entities.Configuration
 {
     [Serializable]
-    public class MappingModel : BaseViewModel
+    public class ConfigurationModel : BaseModel
     {
-        [JsonIgnore]
-        public long MappingId { get; set; }
+        [JsonProperty]
+        public string ParameterName { get; set; }
 
         [JsonProperty]
+        public string ParameterValue { get; set; }
+
+        [JsonProperty]
+        public string MatchProfile { get; set; }
+
+        [JsonProperty]
+        public bool IsEncrypted { get; set; }
+
+        [JsonIgnore]
         public long SuiteId { get; set; }
-
-        [JsonProperty]
-        public long EnvironmentId { get; set; }
-
-        [JsonProperty]
-        public long ApplicationId { get; set; }
-
-        [JsonProperty]
-        public long RegionId { get; set; }
-
-        [JsonProperty]
-        public long ServerId { get; set; }
-
-        [JsonIgnore]
-        public long CategoryId { get; set; }
-
-        [JsonProperty]
-        public long ParameterId { get; set; }
     }
 }

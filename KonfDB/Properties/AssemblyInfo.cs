@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("KonfDBRC")]
 [assembly: AssemblyDescription("KonfDB Remote Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Punit Ganshani")]
 [assembly: AssemblyProduct("KonfDBRC")]
 [assembly: AssemblyCopyright("Copyright © Punit Ganshani 2014")]
 [assembly: AssemblyTrademark("")]
@@ -60,5 +60,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyVersion("0.4.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

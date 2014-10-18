@@ -47,18 +47,6 @@ namespace KonfDB.Engine.Commands
             return _commandFactory ?? (_commandFactory = new CommandFactory(AppContext.Current.ApplicationType));
         }
 
-        //internal ICommand GetServerCommand<T>()
-        //{
-        //    var targetType = typeof(T);
-        //    return _commands.FirstOrDefault(x => x.GetType() == targetType && (x.Type & AppType.Server) == AppType.Server);
-        //}
-
-        //internal ICommand GetClientCommand<T>()
-        //{
-        //    var targetType = typeof(T);
-        //    return _commands.FirstOrDefault(x => x.GetType() == targetType && (x.Type & AppType.Client) == AppType.Client);
-        //}
-
         private CommandFactory(AppType appType)
         {
             _appType = appType;

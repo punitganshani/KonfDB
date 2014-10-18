@@ -24,6 +24,7 @@
 #endregion
 
 using System.Configuration;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 
 namespace KonfDB.Infrastructure.Configuration.Caching
 {
@@ -33,7 +34,7 @@ namespace KonfDB.Infrastructure.Configuration.Caching
         Absolute
     }
 
-    public class CacheConfigurationSection : ConfigurationSection
+    public class CacheConfigurationSection : ConfigurationSection, ICacheConfiguration
     {
         [ConfigurationProperty("enabled", IsRequired = true)]
         public bool Enabled

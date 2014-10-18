@@ -26,9 +26,12 @@
 using System;
 using System.ServiceModel;
 using System.Threading;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
+using KonfDB.Infrastructure.Utilities;
 using KonfDBCF;
+using KonfDB.Infrastructure.Extensions;
 
 namespace KonfDBRC
 {
@@ -37,11 +40,82 @@ namespace KonfDBRC
         [MTAThread]
         internal static void Main(string[] args)
         {
-            //Console.Clear();
             Console.WriteLine(@"KonfDBRC : KonfDB Remote Console");
             Console.WriteLine(@"KonfDBRC : Initializing..");
-            
-            var token = ConnectionFactory.GetUserToken();
+
+            if (args.Length > 0)
+                RunWithoutConfig(args);
+            else
+                RunFromConfig();
+
+            Console.WriteLine(@"Thanks for using KonfDBRC. Press any key to exit.");
+            Console.ReadKey();
+            Console.WriteLine();
+        }
+
+        static void RunFromConfig()
+        {
+            var token = CConnectionFactory.GetUserToken();
+            var commandService = CConnectionFactory.GetInstance();
+
+            if (token == null)
+            {
+                Console.WriteLine(@"User Authorization failed");
+                return;
+            }
+            Console.WriteLine(@"KonfDBRC : Service connectivity established..");
+            Console.WriteLine();
+
+            bool exitLoop = false;
+
+            while (!exitLoop)
+            {
+                Console.Write(">");
+                string line = Console.ReadLine();
+
+                if (!string.IsNullOrEmpty(line))
+                {
+                    try
+                    {
+
+                        var commandOutput = commandService.ExecuteCommand(line, token);
+
+                        if (commandOutput != null)
+                        {
+                            if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Message)
+                            {
+                                Console.WriteLine(commandOutput.Data != null
+                                    ? commandOutput.Data.ToJson()
+                                    : commandOutput.DisplayMessage);
+                            }
+                            else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
+                            {
+                                Console.WriteLine(commandOutput.DisplayMessage);
+                            }
+
+                            if (commandOutput.PostAction == CommandOutput.PostCommandAction.ExitApplication)
+                            {
+                                exitLoop = true;
+                            }
+                        }
+                    }
+                    catch (FaultException fexception)
+                    {
+                        Console.WriteLine(fexception.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+            }
+        }
+
+        static void RunWithoutConfig(string [] args)
+        {
+            var arguments = new CommandArgs(args);
+            var token = ConnectionFactory.GetUserToken(arguments);
             var commandService = ConnectionFactory.GetInstance();
 
             if (token == null)
@@ -69,12 +143,15 @@ namespace KonfDBRC
                         if (commandOutput != null)
                         {
                             if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Message)
-                                if (commandOutput.Data != null)
-                                    Console.WriteLine(commandOutput.Data.ToJson());
-                                else
-                                    Console.WriteLine(commandOutput.DisplayMessage);
+                            {
+                                Console.WriteLine(commandOutput.Data != null
+                                    ? commandOutput.Data.ToJson()
+                                    : commandOutput.DisplayMessage);
+                            }
                             else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
+                            {
                                 Console.WriteLine(commandOutput.DisplayMessage);
+                            }
 
                             if (commandOutput.PostAction == CommandOutput.PostCommandAction.ExitApplication)
                             {
@@ -93,11 +170,6 @@ namespace KonfDBRC
 
                 }
             }
-
-
-            Console.WriteLine(@"Thanks for using KonfDBRC. Press any key to exit.");
-            Console.ReadKey();
-            Console.WriteLine();
         }
     }
 }
