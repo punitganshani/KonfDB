@@ -5,21 +5,21 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{24DBD7FC-846D-483E-B8F6-D2C46542EB8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.Infrastructure", "KonfDB.Infrastructure\KonfDB.Infrastructure.csproj", "{82E5ECA3-9B1C-430B-96EF-89A083C45B7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.Infrastructure", "Server\KonfDB.Infrastructure\KonfDB.Infrastructure.csproj", "{82E5ECA3-9B1C-430B-96EF-89A083C45B7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBHost", "KonfDBHost\KonfDBHost.csproj", "{318F3A5E-F9D0-4A80-8D42-D3D814543044}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBHost", "Server\KonfDBHost\KonfDBHost.csproj", "{318F3A5E-F9D0-4A80-8D42-D3D814543044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.Engine", "KonfDB.Engine\KonfDB.Engine.csproj", "{BF994794-04ED-43CA-86B0-482A996756F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.Engine", "Server\KonfDB.Engine\KonfDB.Engine.csproj", "{BF994794-04ED-43CA-86B0-482A996756F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{A11FF895-CBAA-4F5D-AB30-BE3F359BD79C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.InfrastructureTests", "UnitTests\KonfDB.InfrastructureTests\KonfDB.InfrastructureTests.csproj", "{790AA57D-FD4B-451D-8641-304FDC2659F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.InfrastructureTests", "Server\UnitTests\KonfDB.InfrastructureTests\KonfDB.InfrastructureTests.csproj", "{790AA57D-FD4B-451D-8641-304FDC2659F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{AA5D60F3-BDE8-4D46-89C9-658879AFD4CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBCF", "KonfDBCF\KonfDBCF.csproj", "{DA1F89DF-85A0-4B81-A362-6B74B54ABA95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBCF", "Client\KonfDBCF\KonfDBCF.csproj", "{DA1F89DF-85A0-4B81-A362-6B74B54ABA95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBRC", "KonfDB\KonfDBRC.csproj", "{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBRC", "Client\KonfDBRC\KonfDBRC.csproj", "{3C3897D7-6D9A-41F7-843D-D14DDEE70ECC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8D850D80-9F2E-4E14-B8B2-62277DF48774}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8D850D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5FA58E60-289C-4013-BFAB-DF3DAD69CA21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBC", "KonfDBC\KonfDBC.csproj", "{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDBC", "Shared\KonfDBC\KonfDBC.csproj", "{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

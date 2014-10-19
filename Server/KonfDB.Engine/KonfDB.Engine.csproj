@@ -211,7 +211,7 @@
       <Project>{82e5eca3-9b1c-430b-96ef-89a083c45b7a}</Project>
       <Name>KonfDB.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KonfDBC\KonfDBC.csproj">
+    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDBC.csproj">
       <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
       <Name>KonfDBC</Name>
     </ProjectReference>
