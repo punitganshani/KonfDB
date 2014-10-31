@@ -13,15 +13,8 @@ namespace KonfDBCF.Sample
         {
             try
             {
-                // Create connection to Command Service of KonfDB based on settings
-                // in app.config file
-                ICommandService commandService = ConnectionFactory.GetInstance();
-
-                // Get the user token if authenticated
-                var userToken = ConnectionFactory.GetUserToken();
-
-                // var commands = commandService.GetCommandsStartingWith("");
-
+                var userToken = CConnectionFactory.GetUserToken();
+                var commandService = CConnectionFactory.GetInstance();
                 // If we got back a token, means user was authenticated
                 if (userToken != null)
                 {
@@ -29,10 +22,7 @@ namespace KonfDBCF.Sample
                     if (output != null)
                     {
                         var parameters = (List<ConfigurationModel>)output.Data;
-                        parameters.ForEach(param =>
-                        {
-                            Console.WriteLine(param.ParameterName + "=" + param.ParameterValue);
-                        });
+                        parameters.ForEach(param => Console.WriteLine(param.ParameterName + "=" + param.ParameterValue));
                     }
                 }
             }
