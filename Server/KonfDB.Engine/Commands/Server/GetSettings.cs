@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'AddAudit.cs' is part of KonfDB application - 
+//     This file 'GetSettings.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,13 +23,9 @@
 
 #endregion
 
-using System;
-using System.Data.Entity.Infrastructure;
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
-using KonfDB.Infrastructure.Database.Enums;
-using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 
@@ -37,7 +33,7 @@ namespace KonfDB.Engine.Commands.Server
 {
     [IgnoreCache]
     internal class GetSettings : ICommand
-    { 
+    {
         public string Keyword
         {
             get { return "GetSettings"; }
@@ -64,15 +60,15 @@ namespace KonfDB.Engine.Commands.Server
             {
                 PostAction = CommandOutput.PostCommandAction.None,
                 DisplayMessage = "Success"
-            }; 
+            };
 
-            bool active = true, autoLoad=true;
+            bool active = true, autoLoad = true;
             if (arguments.HasArgument("active"))
                 bool.TryParse(arguments["active"], out active);
 
             if (arguments.HasArgument("autoLoad"))
                 bool.TryParse(arguments["autoLoad"], out autoLoad);
-            
+
             output.Data = AppContext.Current.Provider.ConfigurationStore.GetSettings(active, autoLoad);
 
             return output;

@@ -90,9 +90,10 @@ namespace KonfDB.Engine.Commands.Shared
                     AppContext.Current.Provider.ConfigurationStore.GetRegion(userId, region)
                         .RegionId.GetValueOrDefault(-1);
 
-            List<ConfigurationModel> model = AppContext.Current.Provider.ConfigurationStore.GetConfigurations(userId, appId,
+            List<ConfigurationModel> model = AppContext.Current.Provider.ConfigurationStore.GetConfigurations(userId,
+                appId,
                 serverId, envId, regionId, string.Empty);
-            
+
             model.ForEach(config =>
             {
                 if (config.IsEncrypted)
@@ -100,11 +101,13 @@ namespace KonfDB.Engine.Commands.Shared
                     var pk = arguments["unprotect"];
                     if (pk != null)
                     {
-                        var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(), config.SuiteId);
+                        var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
+                            config.SuiteId);
 
                         if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                         {
-                            config.ParameterValue = EncryptionEngine.Default.Decrypt(config.ParameterValue, suite.PrivateKey);
+                            config.ParameterValue = EncryptionEngine.Default.Decrypt(config.ParameterValue,
+                                suite.PrivateKey);
                         }
                     }
                 }

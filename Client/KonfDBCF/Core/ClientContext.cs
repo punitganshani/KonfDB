@@ -26,7 +26,6 @@
 using System;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration.Caching;
-using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
@@ -36,17 +35,20 @@ using KonfDBCF.Configuration.Caching;
 namespace KonfDBCF.Core
 {
     /// <summary>
-    /// Application Context for Client using Config
+    ///     Application Context for Client using Config
     /// </summary>
     internal class ClientContext
     {
         private static ClientContext _current;
+
         private ClientContext(IArguments arguments)
         {
             if (arguments == null)
-                throw new InvalidOperationException("Current Context could not be initialized. No arguments passed to the context");
+                throw new InvalidOperationException(
+                    "Current Context could not be initialized. No arguments passed to the context");
 
-            var logger = Logger.CreateInstance(Environment.UserInteractive, arguments.ContainsKey(@"runtime-logConfigPath") ? arguments["runtime-logConfigPath"] : string.Empty);
+            var logger = Logger.CreateInstance(Environment.UserInteractive,
+                arguments.ContainsKey(@"runtime-logConfigPath") ? arguments["runtime-logConfigPath"] : string.Empty);
 
             var cacheConfig = new CacheConfiguration
             {

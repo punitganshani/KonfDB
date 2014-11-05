@@ -25,17 +25,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.ServiceProcess;
 using System.Threading;
 using KonfDB.Engine.Services;
-using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF;
-using System.Configuration;
-
+using KonfDB.Infrastructure.WCF.Bindings;
 
 namespace KonfDBHost
 {
@@ -72,7 +71,7 @@ namespace KonfDBHost
 
             for (int i = 0; i < serviceConfig.Count; i++)
             {
-                _serviceHost.AddBinding(Binding.Create(serviceConfig[i].GetWcfServiceType(),
+                _serviceHost.AddBinding(BindingFactory.Create(serviceConfig[i].GetWcfServiceType(),
                     serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture)));
             }
 
@@ -103,8 +102,6 @@ namespace KonfDBHost
             }
 
             AppContext.Current.Log.Info("Agent Started: " + _serviceHost);
-
-             
 
             #endregion
 
@@ -190,7 +187,6 @@ namespace KonfDBHost
             // KonfDBService
             // 
             this.ServiceName = "KonfDBH";
-
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'WebHttp.cs' is part of KonfDB application - 
+//     This file 'RestBinding.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,10 +24,16 @@
 #endregion
 
 using System.ServiceModel;
+using KonfDB.Infrastructure.Services;
 
-namespace KonfDB.Infrastructure.WCF.ServiceTypes
+namespace KonfDB.Infrastructure.WCF.Bindings
 {
-    public class WebHttp : WebHttpBinding
+    public class RestBinding : WebHttpBinding
     {
+        public RestBinding()
+        {
+            this.Namespace = ServiceConstants.Schema;
+            this.Name = ServiceConstants.ServiceName;
+        }
     }
 }

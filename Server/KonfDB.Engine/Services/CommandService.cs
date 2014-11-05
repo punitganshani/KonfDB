@@ -38,7 +38,6 @@ using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
 
-
 namespace KonfDB.Engine.Services
 {
     internal class CommandService : ICommandService

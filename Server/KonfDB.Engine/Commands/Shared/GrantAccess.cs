@@ -78,7 +78,7 @@ namespace KonfDB.Engine.Commands.Shared
             return input.HasArgument("sid") && input.HasArgument("user");
         }
 
-        public Infrastructure.Database.Entities.Configuration.AuditRecordModel GetAuditCommand(CommandInput input)
+        public AuditRecordModel GetAuditCommand(CommandInput input)
         {
             return new AuditRecordModel
             {

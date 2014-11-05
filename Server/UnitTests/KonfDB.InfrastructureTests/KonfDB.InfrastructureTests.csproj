@@ -71,7 +71,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="konfdb.pfx" />
     <None Include="konfdb.snk" />
   </ItemGroup>
   <Choose>

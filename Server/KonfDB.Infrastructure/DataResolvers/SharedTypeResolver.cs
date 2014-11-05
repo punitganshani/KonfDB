@@ -47,7 +47,7 @@ namespace KonfDB.Infrastructure.DataResolvers
         public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
             DataContractResolver knownTypeResolver)
         {
-            if (declaredType == typeof(System.Object)) //&& typeName != "int" && typeName != "bool" && typeName != "string")
+            if (declaredType == typeof (Object)) //&& typeName != "int" && typeName != "bool" && typeName != "string")
             {
                 //if (typeNamespace == ServiceConstants.Schema && typeName == "ArrayOfSplit")
                 //{

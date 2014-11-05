@@ -60,17 +60,22 @@ namespace KonfDB.Engine.Commands.Shared
 
         public string Help
         {
-            get { return "Promotes (default) or clones parameters and mapping from one environment to another with separate ids"; }
+            get
+            {
+                return
+                    "Promotes (default) or clones parameters and mapping from one environment to another with separate ids";
+            }
         }
 
         public CommandOutput OnExecute(CommandInput arguments)
         {
-            var output = new CommandOutput { PostAction = CommandOutput.PostCommandAction.None };
+            var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
 
             var sid = long.Parse(arguments["sid"]);
             var fromId = long.Parse(arguments["from"]);
             var toId = long.Parse(arguments["to"]);
-            var clone = arguments.HasArgument("clone-param") && arguments["clone-param"].Equals("y", StringComparison.InvariantCultureIgnoreCase);
+            var clone = arguments.HasArgument("clone-param") &&
+                        arguments["clone-param"].Equals("y", StringComparison.InvariantCultureIgnoreCase);
 
             var mappingsForSuite = AppContext.Current.Provider.ConfigurationStore.GetMapping(arguments.GetUserId(), sid);
             var sourceEnvironmentsMapping = mappingsForSuite.Where(x => x.EnvironmentId == fromId);
@@ -85,7 +90,8 @@ namespace KonfDB.Engine.Commands.Shared
             var targetMapping = new List<MappingModel>();
             if (clone)
             {
-                var suiteParameters = AppContext.Current.Provider.ConfigurationStore.GetParameters(arguments.GetUserId(), sid);
+                var suiteParameters = AppContext.Current.Provider.ConfigurationStore.GetParameters(
+                    arguments.GetUserId(), sid);
                 foreach (var mapping in environmentsMapping)
                 {
                     var param = suiteParameters.FirstOrDefault(x => x.ParameterId == mapping.ParameterId);
@@ -112,7 +118,8 @@ namespace KonfDB.Engine.Commands.Shared
 
             bool success = true;
 
-            targetMapping.ForEach(mapping => success &= AppContext.Current.Provider.ConfigurationStore.AddMapping(mapping) != null);
+            targetMapping.ForEach(
+                mapping => success &= AppContext.Current.Provider.ConfigurationStore.AddMapping(mapping) != null);
 
             output.DisplayMessage = success
                 ? String.Format("Mappings{0} from environment {1} to {2}",

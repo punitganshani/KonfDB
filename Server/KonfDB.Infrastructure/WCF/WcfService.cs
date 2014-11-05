@@ -28,35 +28,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 using System.Text;
 using System.Threading;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.WCF.Bindings;
+using KonfDB.Infrastructure.WCF.Endpoints;
+using Binding = KonfDB.Infrastructure.WCF.Bindings.BindingFactory;
 
 namespace KonfDB.Infrastructure.WCF
 {
-    public sealed class WcfService<T, TC>
+    public sealed class WcfService<TInterface, TService> where TService : TInterface
     {
         private readonly string _serverName;
         private readonly string _serviceName;
-        private const string AddressUriFormat = "{0}://{1}:{2}/{3}/";
         private ServiceHost _svcHost;
         private AutoResetEvent _pause = new AutoResetEvent(false);
         private Hashtable _ports = new Hashtable();
-        private List<Binding> Bindings { get; set; }
+        private List<IBinding> Bindings { get; set; }
 
         public WcfService(string serverName, string serviceName)
         {
             //creating binding list
-            Bindings = new List<Binding>();
+            Bindings = new List<IBinding>();
 
             _serverName = serverName;
             _serviceName = serviceName;
 
             //create Service host
-            //_svcHost = new WcfServiceHostFactory(
-            _svcHost = new ServiceHost(typeof (TC));
+            _svcHost = new ServiceHost(typeof (TService));
             _svcHost.Faulted += _svcHost_Faulted;
         }
 
@@ -68,7 +68,7 @@ namespace KonfDB.Infrastructure.WCF
                 Stop();
                 _svcHost.Abort();
                 CurrentContext.Default.Log.Debug("Service is stopped");
-                _svcHost = new ServiceHost(typeof (TC));
+                _svcHost = new ServiceHost(typeof (TService));
                 Host();
                 CurrentContext.Default.Log.Info("Service was in Faulted state. Re-hosting the service");
             }
@@ -78,7 +78,7 @@ namespace KonfDB.Infrastructure.WCF
             }
         }
 
-        public void AddBinding(Binding binding)
+        public void AddBinding(IBinding binding)
         {
             if (_ports.ContainsKey(binding.Port))
             {
@@ -140,41 +140,21 @@ namespace KonfDB.Infrastructure.WCF
 
         private void ConfigureEndPoints()
         {
-            var metaBehavior = new ServiceMetadataBehavior();
-
-            foreach (Binding binding in Bindings)
+            foreach (var binding in Bindings)
             {
-                string endpointAddress = string.Format(AddressUriFormat, binding.Prefix, _serverName, binding.Port,
-                    _serviceName);
+                var endPointTypeInstance = Activator.CreateInstance(binding.EndPointType);
 
-                // add endpoint of service
-                var serviceEndPoint = _svcHost.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
-                CurrentContext.Default.Log.Info("Exposing Endpoint: " + endpointAddress);
-
-                // Add MEX only for HTTP
-                if (binding.ServiceType == ServiceType.BasicHttp)
+                if (endPointTypeInstance.InheritsFrom<IEndPoint>())
                 {
-                    var mexAddress = new Uri(endpointAddress + "MEX");
-                    var mexBinding = new CustomBinding(Binding.CreateMex(binding.ServiceType));
-
-                    metaBehavior.HttpGetEnabled = true;
-                    metaBehavior.HttpGetUrl = mexAddress;
-
-                    _svcHost.Description.Behaviors.Add(metaBehavior);
-                    _svcHost.AddServiceEndpoint(typeof (IMetadataExchange), mexBinding, mexAddress);
-
-                    CurrentContext.Default.Log.Info("\tExposing MEX Endpoint:" + mexAddress);
-                }
-                else if (binding.ServiceType == ServiceType.REST)
-                {
-                    IEndpointBehavior webHttpbehavior = new WebHttpBehavior();
-                    serviceEndPoint.Behaviors.Add(webHttpbehavior);
+                    var endPoint = (IEndPoint) endPointTypeInstance;
+                    var wcfEndPoint = endPoint.Host<TInterface>(_svcHost, _serverName, _serviceName, binding);
+                    CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndPoint.Address);
                 }
             }
 
             var behavior = _svcHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
             behavior.IncludeExceptionDetailInFaults = true;
-            behavior.MaxItemsInObjectGraph = 5242880; //2147483646;//int.MaxValue;
+            behavior.MaxItemsInObjectGraph = 5242880;
 
             foreach (var endpoint in _svcHost.Description.Endpoints)
             {
@@ -185,7 +165,7 @@ namespace KonfDB.Infrastructure.WCF
         public override string ToString()
         {
             var builder = new StringBuilder();
-            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof (TC).Name, x.ToString())));
+            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof (TService).Name, x.ToString())));
             return builder.ToString().Trim();
         }
 

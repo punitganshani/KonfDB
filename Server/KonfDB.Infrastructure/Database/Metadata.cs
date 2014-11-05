@@ -103,7 +103,7 @@ namespace KonfDB.Infrastructure.Database
                     }
                 },
                 {
-                    "Settings", new []
+                    "Settings", new[]
                     {
                         "Options"
                     }

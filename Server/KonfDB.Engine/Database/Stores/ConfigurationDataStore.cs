@@ -34,7 +34,6 @@ using KonfDB.Infrastructure.Database.Entities.Configuration;
 using KonfDB.Infrastructure.Database.Enums;
 using KonfDB.Infrastructure.Encryption;
 using KonfDB.Infrastructure.Exceptions;
-using KonfDB.Infrastructure.Extensions;
 using Environment = KonfDB.Engine.Database.EntityFramework.Environment;
 
 namespace KonfDB.Engine.Database.Stores
@@ -139,8 +138,8 @@ namespace KonfDB.Engine.Database.Stores
                 unitOfWork.Add(new SuiteUser
                 {
                     SuiteId = suiteReturn.SuiteId,
-                    UserId = (int)suiteModel.UserId,
-                    RoleId = (int)RoleType.Admin
+                    UserId = (int) suiteModel.UserId,
+                    RoleId = (int) RoleType.Admin
                 });
             }
 
@@ -152,7 +151,8 @@ namespace KonfDB.Engine.Database.Stores
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
                 // get suites-id of a user
-                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have enough privileges to perform this action");
 
@@ -190,7 +190,8 @@ namespace KonfDB.Engine.Database.Stores
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
                 // get suites-id of a user
-                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have enough privileges to perform this action");
 
@@ -229,7 +230,8 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, suiteModel.UserId, suiteModel.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, suiteModel.UserId, suiteModel.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have enough privileges to perform this action");
 
@@ -286,15 +288,20 @@ namespace KonfDB.Engine.Database.Stores
             {
                 if (!unitOfWork.Context.SuiteUsers.Any(x => x.UserId == userId && x.SuiteId == suiteId))
                     throw new UnauthorizedUserException(
-                      "Invalid SuiteId or User does not have enough privileges to perform this action");
+                        "Invalid SuiteId or User does not have enough privileges to perform this action");
 
 
-                var roles = unitOfWork.Context.SuiteUsers.Where(x => x.UserId == userId && x.SuiteId == suiteId).ToList().Select(x => x.RoleId != null ?
-                    (RoleType)x.RoleId : (RoleType)200);
+                var roles =
+                    unitOfWork.Context.SuiteUsers.Where(x => x.UserId == userId && x.SuiteId == suiteId)
+                        .ToList()
+                        .Select(x => x.RoleId != null
+                            ? (RoleType) x.RoleId
+                            : (RoleType) 200);
 
                 return roles.ToArray();
             }
         }
+
         #endregion
 
         #region Environment
@@ -303,7 +310,9 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                if (!UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId, new[] { RoleType.Admin, RoleType.ReadOnly }))
+                if (
+                    !UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId,
+                        new[] {RoleType.Admin, RoleType.ReadOnly}))
                     throw new UnauthorizedUserException("User does not have enough privileges to perform this action");
 
                 return unitOfWork.Context.Environments.FirstOrDefault(x => x.EnvironmentId == environmentId).ToModel();
@@ -314,7 +323,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve Environment information: " + environmentName);
@@ -333,9 +343,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 environmentToReturn = model.ToNewDbObject();
                 unitOfWork.Add(environmentToReturn);
@@ -353,16 +365,18 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorized = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorized)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite:" + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite:" + model.SuiteId);
 
                 environmentInDb =
                     unitOfWork.Context.Environments.FirstOrDefault(
                         x => x.EnvironmentId == model.EnvironmentId && x.SuiteId == model.SuiteId);
                 if (environmentInDb != null)
                 {
-                    environmentInDb.EnvironmentTypeId = (int)model.EnvironmentType;
+                    environmentInDb.EnvironmentTypeId = (int) model.EnvironmentType;
                     environmentInDb.EnvironmentName = model.EnvironmentName;
 
                     unitOfWork.Update(environmentInDb);
@@ -381,7 +395,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to environment id:" + environmentId);
 
@@ -397,7 +412,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId, new[] { RoleType.Admin });
+                bool userAuthorized = UserAuthorizedToAccessEnvironment(unitOfWork, userId, environmentId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have enough privileges to perform this action");
 
@@ -405,7 +421,7 @@ namespace KonfDB.Engine.Database.Stores
                     unitOfWork.Context.Environments.FirstOrDefault(x => x.EnvironmentId == environmentId);
 
                 // check for user again
-                if (UserAuthorizedToAccessSuite(unitOfWork, userId, environmentFromDB.SuiteId, new[] { RoleType.Admin }))
+                if (UserAuthorizedToAccessSuite(unitOfWork, userId, environmentFromDB.SuiteId, new[] {RoleType.Admin}))
                 {
                     //TODO: Delete all mappings
                     unitOfWork.Delete(environmentFromDB);
@@ -420,9 +436,11 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessEnvironment(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessEnvironment(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 return unitOfWork.Context.Environments.Where(x => x.SuiteId == suiteId).ToList().ToModel();
             }
@@ -436,7 +454,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve application information: " + applicationId);
@@ -452,7 +471,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve application information: " + applicationName);
@@ -473,9 +493,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 appToReturn = model.ToNewDbObject();
                 unitOfWork.Add(appToReturn);
@@ -495,9 +517,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
 
                 applicationInDb =
@@ -524,7 +548,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve application information: " + applicationId);
@@ -541,9 +566,11 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 return unitOfWork.Context.Applications.Where(x => x.SuiteId == suiteId).ToList().ToModel();
             }
@@ -553,7 +580,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessApplication(unitOfWork, userId, applicationId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
                     throw new UnauthorizedUserException(
                         "Invalid ApplicationId or User does not have access to delete application: " + applicationId);
@@ -562,7 +590,7 @@ namespace KonfDB.Engine.Database.Stores
                     unitOfWork.Context.Applications.FirstOrDefault(x => x.ApplicationId == applicationId);
 
                 if (applicationFromDB != null &&
-                    UserAuthorizedToAccessSuite(unitOfWork, userId, applicationFromDB.SuiteId, new[] { RoleType.Admin }))
+                    UserAuthorizedToAccessSuite(unitOfWork, userId, applicationFromDB.SuiteId, new[] {RoleType.Admin}))
                 {
                     //TODO: Delete all mappings
                     unitOfWork.Delete(applicationFromDB);
@@ -580,7 +608,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve Parameter information: " + parameterId);
@@ -596,7 +625,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve Parameter information: " + parameterName);
@@ -617,9 +647,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 appToReturn = model.ToNewDbObject();
                 unitOfWork.Add(appToReturn);
@@ -639,9 +671,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
 
                 ParameterInDb =
@@ -668,7 +702,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException(
                         "User does not have access to retrieve Parameter information: " + parameterId);
@@ -685,9 +720,11 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 var paramsInDb = unitOfWork.Context.Mappings.Where(x => x.SuiteId == suiteId).ToList();
 
@@ -699,13 +736,15 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessParameter(unitOfWork, userId, parameterId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
                     throw new UnauthorizedUserException("User does not have access to delete Parameter: " + parameterId);
 
                 var ParameterFromDB = unitOfWork.Context.Parameters.FirstOrDefault(x => x.ParameterId == parameterId);
 
-                if (ParameterFromDB != null && UserAuthorizedToAccessSuite(unitOfWork, userId, ParameterFromDB.SuiteId, new[] { RoleType.Admin }))
+                if (ParameterFromDB != null &&
+                    UserAuthorizedToAccessSuite(unitOfWork, userId, ParameterFromDB.SuiteId, new[] {RoleType.Admin}))
                 {
                     //TODO: Delete all mappings
                     unitOfWork.Delete(ParameterFromDB);
@@ -723,7 +762,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Region information: " +
                                                         regionId);
@@ -739,7 +779,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Region information: " +
                                                         regionName);
@@ -760,9 +801,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 appToReturn = model.ToNewDbObject();
                 unitOfWork.Add(appToReturn);
@@ -782,9 +825,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
 
                 RegionInDb =
@@ -811,7 +856,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Region information: " +
                                                         regionId);
@@ -828,9 +874,11 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 return unitOfWork.Context.Regions.Where(x => x.SuiteId == suiteId).ToList().ToModel();
             }
@@ -840,13 +888,14 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessRegion(unitOfWork, userId, regionId, new[] {RoleType.Admin});
                 if (!userAuthorised)
                     throw new UnauthorizedUserException("User does not have access to delete Region: " + regionId);
 
                 var regionFromDB = unitOfWork.Context.Regions.FirstOrDefault(x => x.RegionId == regionId);
 
-                if (regionFromDB != null && UserAuthorizedToAccessSuite(unitOfWork, userId, regionFromDB.SuiteId, new[] { RoleType.Admin }))
+                if (regionFromDB != null &&
+                    UserAuthorizedToAccessSuite(unitOfWork, userId, regionFromDB.SuiteId, new[] {RoleType.Admin}))
                 {
                     //TODO: Delete all mappings
                     unitOfWork.Delete(regionFromDB);
@@ -864,7 +913,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Server information: " +
                                                         serverId);
@@ -880,7 +930,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverName, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverName,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Server information: " +
                                                         serverName);
@@ -901,9 +952,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 appToReturn = model.ToNewDbObject();
                 unitOfWork.Add(appToReturn);
@@ -923,9 +976,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
 
                 ServerInDb =
@@ -952,7 +1007,8 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorized = UserAuthorizedToAccessServer(unitOfWork, userId, serverId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorized)
                     throw new UnauthorizedUserException("User does not have access to retrieve Server information: " +
                                                         serverId);
@@ -969,9 +1025,11 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 return unitOfWork.Context.Servers.Where(x => x.SuiteId == suiteId).ToList().ToModel();
             }
@@ -981,13 +1039,15 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessServer(unitOfWork, userId, serverId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessServer(unitOfWork, userId, serverId, new[] {RoleType.Admin});
                 if (!userAuthorised)
                     throw new UnauthorizedUserException("User does not have access to delete Server: " + serverId);
 
                 var ServerFromDB = unitOfWork.Context.Servers.FirstOrDefault(x => x.ServerId == serverId);
 
-                if (ServerFromDB != null && UserAuthorizedToAccessSuite(unitOfWork, userId, ServerFromDB.SuiteId, new[] { RoleType.Admin, RoleType.ReadOnly }))
+                if (ServerFromDB != null &&
+                    UserAuthorizedToAccessSuite(unitOfWork, userId, ServerFromDB.SuiteId,
+                        new[] {RoleType.Admin, RoleType.ReadOnly}))
                 {
                     //TODO: Delete all mappings
                     unitOfWork.Delete(ServerFromDB);
@@ -1005,7 +1065,7 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                if (!UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly }))
+                if (!UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] {RoleType.Admin, RoleType.ReadOnly}))
                     return null;
 
                 var parmetersMatching =
@@ -1020,85 +1080,125 @@ namespace KonfDB.Engine.Database.Stores
 
         #region UserAccess
 
-        private bool UserAuthorizedToAccessSuite(UnitOfWork unitOfWork, long loggedInUserId, long suiteId, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessSuite(UnitOfWork unitOfWork, long loggedInUserId, long suiteId,
+            RoleType[] roleTypes)
         {
-            return unitOfWork.Context.SuiteUsers.Any(x => x.UserId == loggedInUserId && x.SuiteId == suiteId && roleTypes.Contains((RoleType)x.Role.RoleId));
+            return
+                unitOfWork.Context.SuiteUsers.Any(
+                    x =>
+                        x.UserId == loggedInUserId && x.SuiteId == suiteId &&
+                        roleTypes.Contains((RoleType) x.Role.RoleId));
         }
 
-        private bool UserAuthorizedToAccessSuite(UnitOfWork unitOfWork, long loggedInUserId, string suiteName, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessSuite(UnitOfWork unitOfWork, long loggedInUserId, string suiteName,
+            RoleType[] roleTypes)
         {
-            return unitOfWork.Context.SuiteUsers.Any(x => x.UserId == loggedInUserId && x.Suite.SuiteName == suiteName && roleTypes.Contains((RoleType)x.Role.RoleId));
+            return
+                unitOfWork.Context.SuiteUsers.Any(
+                    x =>
+                        x.UserId == loggedInUserId && x.Suite.SuiteName == suiteName &&
+                        roleTypes.Contains((RoleType) x.Role.RoleId));
         }
 
-        public bool UserAuthorizedToAccessApplication(UnitOfWork unitOfWork, long userId, long applicationId, RoleType[] roleTypes)
+        public bool UserAuthorizedToAccessApplication(UnitOfWork unitOfWork, long userId, long applicationId,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Applications.Any(
-                    x => x.ApplicationId == applicationId && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ApplicationId == applicationId &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        public bool UserAuthorizedToAccessApplication(UnitOfWork unitOfWork, long userId, string applicationName, RoleType[] roleTypes)
+        public bool UserAuthorizedToAccessApplication(UnitOfWork unitOfWork, long userId, string applicationName,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Applications.Any(
-                    x => x.ApplicationName == applicationName && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ApplicationName == applicationName &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessRegion(UnitOfWork unitOfWork, long userId, long regionId, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessRegion(UnitOfWork unitOfWork, long userId, long regionId,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Regions.Any(
-                    x => x.RegionId == regionId && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.RegionId == regionId &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessRegion(UnitOfWork unitOfWork, long userId, string region, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessRegion(UnitOfWork unitOfWork, long userId, string region,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Regions.Any(
-                    x => x.RegionName == region && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.RegionName == region &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessServer(UnitOfWork unitOfWork, long userId, long serverId, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessServer(UnitOfWork unitOfWork, long userId, long serverId,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Servers.Any(
-                    x => x.ServerId == serverId && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ServerId == serverId &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessServer(UnitOfWork unitOfWork, long userId, string server, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessServer(UnitOfWork unitOfWork, long userId, string server,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Servers.Any(
-                    x => x.ServerName == server && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ServerName == server &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessParameter(UnitOfWork unitOfWork, long userId, long parameterId, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessParameter(UnitOfWork unitOfWork, long userId, long parameterId,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Parameters.Any(
-                    x => x.ParameterId == parameterId && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ParameterId == parameterId &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessParameter(UnitOfWork unitOfWork, long userId, string parameter, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessParameter(UnitOfWork unitOfWork, long userId, string parameter,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Parameters.Any(
-                    x => x.ParameterName == parameter && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.ParameterName == parameter &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
-        private bool UserAuthorizedToAccessEnvironment(UnitOfWork unitOfWork, long userId, long environmentId, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessEnvironment(UnitOfWork unitOfWork, long userId, long environmentId,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Environments.Any(
-                    x => x.EnvironmentId == environmentId && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.EnvironmentId == environmentId &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
 
-        private bool UserAuthorizedToAccessEnvironment(UnitOfWork unitOfWork, long userId, string environment, RoleType[] roleTypes)
+        private bool UserAuthorizedToAccessEnvironment(UnitOfWork unitOfWork, long userId, string environment,
+            RoleType[] roleTypes)
         {
             return
                 unitOfWork.Context.Environments.Any(
-                    x => x.EnvironmentName == environment && x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType)y.Role.RoleId)));
+                    x =>
+                        x.EnvironmentName == environment &&
+                        x.Suite.SuiteUsers.Any(y => y.UserId == userId && roleTypes.Contains((RoleType) y.Role.RoleId)));
         }
 
         #endregion
@@ -1114,9 +1214,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, model.UserId, model.SuiteId,
+                    new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + model.SuiteId);
 
                 if (
                     !unitOfWork.Context.Parameters.Any(
@@ -1157,9 +1259,11 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin, RoleType.ReadOnly });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId,
+                    new[] {RoleType.Admin, RoleType.ReadOnly});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 mapToReturn.AddRange(
                     unitOfWork.Context.Mappings.Where(x => x.SuiteId == suiteId).ToList().Select(x => x.ToModel()));
@@ -1174,9 +1278,10 @@ namespace KonfDB.Engine.Database.Stores
 
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] { RoleType.Admin });
+                bool userAuthorised = UserAuthorizedToAccessSuite(unitOfWork, userId, suiteId, new[] {RoleType.Admin});
                 if (!userAuthorised)
-                    throw new UnauthorizedUserException("User does not have access or sufficient privileges for this action to suite: " + suiteId);
+                    throw new UnauthorizedUserException(
+                        "User does not have access or sufficient privileges for this action to suite: " + suiteId);
 
                 var mapping =
                     unitOfWork.Context.Mappings.FirstOrDefault(x => x.SuiteId == suiteId && x.MappingId == mappingId);
@@ -1230,7 +1335,9 @@ namespace KonfDB.Engine.Database.Stores
 
         private string GetEncryptedPasswordForUserCredentials(string username, string password, string salt)
         {
-            return EncryptionEngine.Get<SHA256Encryption>().Encrypt("@#" + username.ToUpperInvariant() + password + ".!@", salt);
+            return
+                EncryptionEngine.Get<SHA256Encryption>()
+                    .Encrypt("@#" + username.ToUpperInvariant() + password + ".!@", salt);
         }
 
         public AuthenticationModel GetAuthenticatedInfo(string username, string password, string getHash)
@@ -1249,7 +1356,7 @@ namespace KonfDB.Engine.Database.Stores
                         if (!unitOfWork.Context.Memberships.Any(x => x.UserId == userId && x.Password == hashedPassword))
                             throw new UnauthorizedUserException("0ADSGAI03: Invalid username or password:" + username);
 
-                        return new AuthenticationModel { UserId = userId, IsAuthenticated = true };
+                        return new AuthenticationModel {UserId = userId, IsAuthenticated = true};
                     }
                     throw new UnauthorizedUserException("0ADSGAI02: Invalid username or password:" + username);
                 }
@@ -1291,7 +1398,7 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                if (!UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId, new[] { RoleType.Admin }))
+                if (!UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId, new[] {RoleType.Admin}))
                     throw new UnauthorizedUserException("Insufficient privileges to add user to suite");
 
                 var user =
@@ -1304,7 +1411,7 @@ namespace KonfDB.Engine.Database.Stores
                 {
                     SuiteId = suiteId,
                     UserId = user.UserId,
-                    RoleId = (int)role
+                    RoleId = (int) role
                 });
 
                 return true;
@@ -1315,7 +1422,7 @@ namespace KonfDB.Engine.Database.Stores
         {
             using (var unitOfWork = new UnitOfWork(_connectionString))
             {
-                if (!UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId, new[] { RoleType.Admin }))
+                if (!UserAuthorizedToAccessSuite(unitOfWork, loggedInUserId, suiteId, new[] {RoleType.Admin}))
                     throw new UnauthorizedUserException("Insufficient privileges to revoke user access from suite");
 
                 var user =
@@ -1364,15 +1471,12 @@ namespace KonfDB.Engine.Database.Stores
                         //TODO: Add encryption logic here
                         settings.Add(x.OptionName, unencryptedValue);
                     }
-                } );
-
+                });
             }
 
             return settings;
         }
 
         #endregion
-
-
     }
 }

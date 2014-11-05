@@ -25,13 +25,10 @@
 
 using System;
 using System.ServiceModel;
-using System.Threading;
-using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
 using KonfDBCF;
-using KonfDB.Infrastructure.Extensions;
 
 namespace KonfDBRC
 {
@@ -53,7 +50,7 @@ namespace KonfDBRC
             Console.WriteLine();
         }
 
-        static void RunFromConfig()
+        private static void RunFromConfig()
         {
             var token = CConnectionFactory.GetUserToken();
             var commandService = CConnectionFactory.GetInstance();
@@ -77,7 +74,6 @@ namespace KonfDBRC
                 {
                     try
                     {
-
                         var commandOutput = commandService.ExecuteCommand(line, token);
 
                         if (commandOutput != null)
@@ -107,12 +103,11 @@ namespace KonfDBRC
                     {
                         Console.WriteLine(ex.Message);
                     }
-
                 }
             }
         }
 
-        static void RunWithoutConfig(string [] args)
+        private static void RunWithoutConfig(string[] args)
         {
             var arguments = new CommandArgs(args);
             var token = ConnectionFactory.GetUserToken(arguments);
@@ -137,7 +132,6 @@ namespace KonfDBRC
                 {
                     try
                     {
-
                         var commandOutput = commandService.ExecuteCommand(line, token);
 
                         if (commandOutput != null)
@@ -167,7 +161,6 @@ namespace KonfDBRC
                     {
                         Console.WriteLine(ex.Message);
                     }
-
                 }
             }
         }

@@ -48,6 +48,7 @@ namespace KonfDB.Infrastructure.Database.Entities.Configuration
 
         [JsonProperty]
         public long? ApplicationId { get; set; }
+
         public long SuiteId { get; set; }
 
         public List<MappingModel> Mappings { get; set; }

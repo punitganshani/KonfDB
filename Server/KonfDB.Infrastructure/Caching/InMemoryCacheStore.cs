@@ -44,7 +44,11 @@ namespace KonfDB.Infrastructure.Caching
         private readonly ICacheConfiguration _configuration;
         public CacheEntryRemovedCallback OnItemRemove;
         private readonly bool _enabled;
-        public bool Enabled { get { return _enabled; } }
+
+        public bool Enabled
+        {
+            get { return _enabled; }
+        }
 
         static InMemoryCacheStore()
         {
@@ -87,15 +91,15 @@ namespace KonfDB.Infrastructure.Caching
 
         private static string CreateUniqueKey<T>(string key, string region)
         {
-            return String.Format("[{0}|key={1}{2}]", region, key, typeof(T).FullName);
+            return String.Format("[{0}|key={1}{2}]", region, key, typeof (T).FullName);
         }
 
         internal T Get<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
             if (Cache.Contains(cacheKey))
             {
-                return (T)Cache[cacheKey];
+                return (T) Cache[cacheKey];
             }
 
             return default(T);
@@ -109,13 +113,13 @@ namespace KonfDB.Infrastructure.Caching
 
             // Cache is enabled, so check in cache
             T newObject;
-            string region = typeof(T).Name;
+            string region = typeof (T).Name;
             string cacheKey = CreateUniqueKey<T>(key, region);
 
             if (Cache.Contains(cacheKey))
             {
                 CurrentContext.Default.Log.Debug("Got from cache :" + cacheKey);
-                newObject = (T)Cache[cacheKey];
+                newObject = (T) Cache[cacheKey];
             }
             else
             {
@@ -142,7 +146,7 @@ namespace KonfDB.Infrastructure.Caching
 
         private void Remove<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
 
             if (Cache.Contains(cacheKey))
                 Cache.Remove(cacheKey);

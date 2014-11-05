@@ -28,5 +28,7 @@ namespace KonfDB.Infrastructure.Services
     public class ServiceConstants
     {
         public const string Schema = "http://www.konfdb.com/schemas";
+        public const string Error = "http://www.konfdb.com/schemas-error";
+        public const string ServiceName = "KonfDB";
     }
 }

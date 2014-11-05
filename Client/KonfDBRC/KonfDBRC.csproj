@@ -56,7 +56,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -81,9 +82,9 @@
       <Project>{da1f89df-85a0-4b81-a362-6b74b54aba95}</Project>
       <Name>KonfDBCF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDBC.csproj">
+    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
       <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
-      <Name>KonfDBC</Name>
+      <Name>KonfDB.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -117,8 +118,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="konfdb.pfx" />
-    <None Include="konfdb.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

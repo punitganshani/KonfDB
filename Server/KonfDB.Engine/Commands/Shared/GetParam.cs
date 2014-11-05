@@ -92,7 +92,8 @@ namespace KonfDB.Engine.Commands.Shared
                 var pk = arguments["pk"];
                 if (pk != null && model.IsEncrypted)
                 {
-                    var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(), model.SuiteId);
+                    var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
+                        model.SuiteId);
 
                     if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                     {

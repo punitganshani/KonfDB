@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ConnectionFactory.cs' is part of KonfDB application - 
+//     This file 'CConnectionFactory.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -28,12 +28,10 @@ using System.Globalization;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
-using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF;
-
 using KonfDBCF.Core;
 
 namespace KonfDBCF
@@ -47,7 +45,8 @@ namespace KonfDBCF
             if (_commandServiceProxy == null)
             {
                 WcfClient<ICommandService> client =
-                    WcfClient<ICommandService>.Create(ClientContextFromConfig.Current.Config.Runtime.Client.GetWcfServiceType(),
+                    WcfClient<ICommandService>.Create(
+                        ClientContextFromConfig.Current.Config.Runtime.Client.GetWcfServiceType(),
                         ClientContextFromConfig.Current.Config.Runtime.Client.Host,
                         ClientContextFromConfig.Current.Config.Runtime.Client.Port.ToString(CultureInfo.InvariantCulture),
                         "CommandService");
@@ -58,7 +57,6 @@ namespace KonfDBCF
                 _commandServiceProxy = new ConnectionProxy(commandService);
 
                 CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
-
             }
 
             return _commandServiceProxy;
@@ -103,9 +101,9 @@ namespace KonfDBCF
             }
             catch (EndpointNotFoundException exception)
             {
-                throw new InvalidOperationException(String.Format(@"KonfDBH not reachable at {0}:{1}", 
-                        ClientContextFromConfig.Current.Config.Runtime.Client.Host,
-                        ClientContextFromConfig.Current.Config.Runtime.Client.Port), exception);
+                throw new InvalidOperationException(String.Format(@"KonfDBH not reachable at {0}:{1}",
+                    ClientContextFromConfig.Current.Config.Runtime.Client.Host,
+                    ClientContextFromConfig.Current.Config.Runtime.Client.Port), exception);
             }
         }
     }

@@ -24,7 +24,6 @@
 #endregion
 
 using System.Configuration;
-using KonfDB.Infrastructure.Common;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {

@@ -23,7 +23,6 @@
 
 #endregion
 
-using System;
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Account;
@@ -61,7 +60,7 @@ namespace KonfDB.Engine.Commands.Shared
             var password = arguments["pwd"];
             var confirmPassword = arguments["cpwd"];
             bool runSilent = arguments.HasArgument("silent");
-            
+
             if (!password.Equals(confirmPassword))
             {
                 output.DisplayMessage = "Password and Confirm Password do not match";

@@ -25,12 +25,10 @@
 
 using KonfDB.Infrastructure.Attributes;
 
-
 namespace KonfDB.Infrastructure.Services
 {
     [AuthenticateToken]
     internal interface IAuthCommand : IAuditCommand
     {
-        
     }
 }

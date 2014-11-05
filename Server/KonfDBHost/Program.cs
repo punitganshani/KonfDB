@@ -28,7 +28,6 @@ using System.Configuration.Install;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading;
-using KonfDB.Engine.Shell;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
@@ -42,7 +41,7 @@ namespace KonfDBHost
         internal static void Main(string[] args)
         {
             var backgroundService = new KonfDBH();
-            var services = new ServiceBase[] { backgroundService };
+            var services = new ServiceBase[] {backgroundService};
             IArguments argsDictionary = new CommandArgs(args);
 
             if (argsDictionary.ContainsKey("install"))
@@ -54,8 +53,11 @@ namespace KonfDBHost
             }
             else if (argsDictionary.ContainsKey("uninstall"))
             {
-                ManagedInstallerClass.InstallHelper(new[] { "/u", 
-                    Assembly.GetExecutingAssembly().Location });
+                ManagedInstallerClass.InstallHelper(new[]
+                {
+                    "/u",
+                    Assembly.GetExecutingAssembly().Location
+                });
             }
             else if (argsDictionary.ContainsKey("console")) // console mode
             {

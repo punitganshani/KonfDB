@@ -202,7 +202,6 @@
       <DependentUpon>KonfDBModel.edmx</DependentUpon>
       <LastGenOutput>KonfDBModel.cs</LastGenOutput>
     </None>
-    <None Include="konfdb.pfx" />
     <None Include="konfdb.snk" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -211,9 +210,9 @@
       <Project>{82e5eca3-9b1c-430b-96ef-89a083c45b7a}</Project>
       <Name>KonfDB.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDBC.csproj">
+    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
       <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
-      <Name>KonfDBC</Name>
+      <Name>KonfDB.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

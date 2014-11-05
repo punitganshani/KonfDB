@@ -26,22 +26,19 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-
 namespace KonfDB.Infrastructure.Services
 {
-    [ServiceContract(Namespace = ServiceConstants.Schema, Name="ICommandService")]
+    [ServiceContract(Namespace = ServiceConstants.Schema, Name = "ICommandService")]
     public interface ICommandService : IService
     {
         [OperationContract(Name = "Execute")]
-        [WebInvoke(Method = "GET",
-            ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+        [WebGet(ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "/Execute?cmd={command}&token={token}")]
         CommandOutput ExecuteCommand(string command, string token);
 
         [OperationContract(Name = "List")]
-        [WebInvoke(Method = "GET",
-            ResponseFormat = WebMessageFormat.Json,
+        [WebGet(ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "/List/{command}")]
         string[] GetCommandsStartingWith(string command);

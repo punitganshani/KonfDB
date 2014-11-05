@@ -25,8 +25,6 @@
 
 #region Namespaces
 
-
-
 #endregion
 
 namespace KonfDB.Engine.Database.ObjectMappers

@@ -28,7 +28,7 @@ using KonfDB.Infrastructure.DataResolvers;
 
 namespace KonfDB.Infrastructure.WCF
 {
-    public static class WCFExtensions
+    public static class WcfExtensions
     {
         public static void AttachDataResolver(this ServiceEndpoint endpoint)
         {

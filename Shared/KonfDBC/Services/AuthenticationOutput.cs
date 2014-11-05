@@ -26,7 +26,6 @@
 using System;
 using System.Runtime.Serialization;
 using KonfDB.Infrastructure.Interfaces;
-using KonfDB.Infrastructure.Services;
 
 namespace KonfDB.Infrastructure.Services
 {

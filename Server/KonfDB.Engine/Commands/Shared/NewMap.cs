@@ -24,14 +24,11 @@
 #endregion
 
 using System.Linq;
-using KonfDB.Engine.Database.EntityFramework;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
 using KonfDB.Infrastructure.Database.Enums;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
-using AuditArea = KonfDB.Infrastructure.Database.Enums.AuditArea;
-using EnvironmentType = KonfDB.Infrastructure.Database.Enums.EnvironmentType;
 
 namespace KonfDB.Engine.Commands.Shared
 {

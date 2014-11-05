@@ -27,17 +27,15 @@ using System.Collections.Generic;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration;
-using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
 
-
 namespace KonfDB.Infrastructure.Shell
 {
     /// <summary>
-    /// Application Context for KonfDBHost
+    ///     Application Context for KonfDBHost
     /// </summary>
     internal class AppContext
     {

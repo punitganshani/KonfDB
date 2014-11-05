@@ -5,7 +5,10 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="KonfDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="KonfDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Membership">
           <Key>
             <PropertyRef Name="UserId" />
@@ -496,7 +499,8 @@
             <End Role="Suite" EntitySet="Suite" />
             <End Role="Parameter" EntitySet="Parameter" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reference_City_Reference_Country" Association="Self.FK_Reference_City_Reference_Country">
+          <AssociationSet Name="FK_Reference_City_Reference_Country"
+                          Association="Self.FK_Reference_City_Reference_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="City" EntitySet="City" />
           </AssociationSet>
@@ -513,7 +517,8 @@
             <End Role="Membership" EntitySet="Membership" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KonfDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false"

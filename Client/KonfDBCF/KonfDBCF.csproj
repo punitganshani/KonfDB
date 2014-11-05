@@ -40,7 +40,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -130,26 +131,44 @@
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\AddressInfo.cs">
       <Link>WCF\AddressInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Binding.cs">
-      <Link>WCF\Binding.cs</Link>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Behavior\FaultingWebHttpBehavior.cs">
+      <Link>WCF\Behavior\FaultingWebHttpBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\BindingFactory.cs">
+      <Link>WCF\Bindings\BindingFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\HttpBinding.cs">
+      <Link>WCF\Bindings\HttpBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\RestBinding.cs">
+      <Link>WCF\Bindings\RestBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\TcpBinding.cs">
+      <Link>WCF\Bindings\TcpBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\HttpEndpoint.cs">
+      <Link>WCF\Endpoints\HttpEndpoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\NetTcpEndpoint.cs">
+      <Link>WCF\Endpoints\NetTcpEndpoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\RestEndpoint.cs">
+      <Link>WCF\Endpoints\RestEndpoint.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\FaultReason.cs">
       <Link>WCF\FaultReason.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\IBinding.cs">
+      <Link>WCF\Interfaces\IBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\IEndPoint.cs">
+      <Link>WCF\Interfaces\IEndPoint.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceError.cs">
       <Link>WCF\ServiceError.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceType.cs">
       <Link>WCF\ServiceType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceTypes\BasicHttp.cs">
-      <Link>WCF\ServiceTypes\BasicHttp.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceTypes\NetTcp.cs">
-      <Link>WCF\ServiceTypes\NetTcp.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceTypes\WebHttp.cs">
-      <Link>WCF\ServiceTypes\WebHttp.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Status.cs">
       <Link>WCF\Status.cs</Link>
@@ -173,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="konfdb.snk" />
     <None Include="KonfDBCF.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -184,9 +202,9 @@
     <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDBC.csproj">
+    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
       <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
-      <Name>KonfDBC</Name>
+      <Name>KonfDB.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

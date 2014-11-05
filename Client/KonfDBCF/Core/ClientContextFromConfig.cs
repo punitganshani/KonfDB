@@ -34,7 +34,7 @@ using KonfDBCF.Configuration;
 namespace KonfDBCF.Core
 {
     /// <summary>
-    /// Application Context for Client using Config
+    ///     Application Context for Client using Config
     /// </summary>
     internal class ClientContextFromConfig
     {
@@ -48,7 +48,8 @@ namespace KonfDBCF.Core
         private ClientContextFromConfig(ClientConfig configuration)
         {
             if (configuration == null)
-                throw new InvalidOperationException("Current Context could not be initialized. Configuration may be missing in App.Config file.");
+                throw new InvalidOperationException(
+                    "Current Context could not be initialized. Configuration may be missing in App.Config file.");
 
             Config = configuration;
 

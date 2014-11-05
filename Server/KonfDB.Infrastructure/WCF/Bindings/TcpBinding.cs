@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'NetTcp.cs' is part of KonfDB application - 
+//     This file 'TcpBinding.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -26,55 +26,36 @@
 using System;
 using System.ServiceModel;
 using System.Xml;
+using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 
-namespace KonfDB.Infrastructure.WCF.ServiceTypes
+namespace KonfDB.Infrastructure.WCF.Bindings
 {
-    public class NetTcp : NetTcpBinding
+    public class TcpBinding : NetTcpBinding
     {
-        private readonly TimeSpan INFINITE_TIME = TimeSpan.MaxValue;
+        private readonly TimeSpan _infiniteTime = TimeSpan.MaxValue;
 
-        public NetTcp()
+        public TcpBinding()
         {
             CurrentContext.Default.Log.SvcInfo(
                 "NetTcp is used on Port-Sharing basis. Ensure port sharing is enabled. Execute: sc.exe config NetTcpPortSharing start= demand");
             this.PortSharingEnabled = true;
-            CurrentContext.Default.Log.SvcInfo("Setting security mode.");
+
+            //TODO: CurrentContext.Default.Log.SvcInfo("Setting security mode.");
             //this.Security.Mode = SecurityMode.None;
 
             // Buffer size
-            this.MaxReceivedMessageSize = GetfromConfig("MaxReceivedMessageSize", 6553600);
-            this.MaxBufferPoolSize = GetfromConfig("MaxBufferPoolSize", 5242880);
+            this.MaxReceivedMessageSize = 6553600;
+            this.MaxBufferPoolSize = 5242880;
 
-            //// default time outs
-            this.CloseTimeout = INFINITE_TIME;
-            this.SendTimeout = INFINITE_TIME;
-            //this.SendTimeout = GetfromConfig("SendTimeout", new TimeSpan(0, 10, 0)); 
+            // default time outs
+            this.CloseTimeout = _infiniteTime;
+            this.SendTimeout = _infiniteTime;
 
-            this.ReceiveTimeout = INFINITE_TIME;
+            this.ReceiveTimeout = _infiniteTime;
             this.ReaderQuotas = XmlDictionaryReaderQuotas.Max;
-        }
 
-        /// <summary>
-        ///     TODO: For future extension
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        private TimeSpan GetfromConfig(string key, TimeSpan defaultValue)
-        {
-            return defaultValue;
-        }
-
-        /// <summary>
-        ///     TODO: For future extension
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        private long GetfromConfig(string key, long defaultValue)
-        {
-            return defaultValue;
+            this.Namespace = ServiceConstants.Schema;
         }
     }
 }

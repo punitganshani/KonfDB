@@ -99,7 +99,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="konfdb.pfx" />
     <None Include="konfdb.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -149,9 +148,9 @@
       <Project>{82e5eca3-9b1c-430b-96ef-89a083c45b7a}</Project>
       <Name>KonfDB.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDBC.csproj">
+    <ProjectReference Include="..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
       <Project>{75DBDA1D-7776-45FD-82DE-8C8EECA3AC1F}</Project>
-      <Name>KonfDBC</Name>
+      <Name>KonfDB.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -31,7 +31,8 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("KonfDBCF")]
-[assembly: AssemblyDescription(".NET API for KonfDB - A configuration service for multi-tenant cross-platform applications")]
+[assembly:
+    AssemblyDescription(".NET API for KonfDB - A configuration service for multi-tenant cross-platform applications")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Punit Ganshani")]
 [assembly: AssemblyProduct("KonfDBCF")]

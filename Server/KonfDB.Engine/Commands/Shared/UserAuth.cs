@@ -32,7 +32,6 @@ using KonfDB.Infrastructure.Encryption;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 
-
 namespace KonfDB.Engine.Commands.Shared
 {
     [IgnoreCache]

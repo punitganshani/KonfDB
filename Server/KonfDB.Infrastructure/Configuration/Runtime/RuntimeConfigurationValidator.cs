@@ -25,7 +25,6 @@
 
 using System;
 using System.Configuration;
-using KonfDB.Infrastructure.Common;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
@@ -33,12 +32,12 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
     {
         public override bool CanValidate(Type type)
         {
-            return type == typeof(RuntimeConfigurationSection);
+            return type == typeof (RuntimeConfigurationSection);
         }
 
         public override void Validate(object value)
         {
-            var runtime = (RuntimeConfigurationSection)value;
+            var runtime = (RuntimeConfigurationSection) value;
             if (runtime.Server == null)
                 throw new ConfigurationErrorsException(
                     @"Selected mode is Server but runtime\server configuration not found.");
@@ -47,13 +46,13 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
                 throw new ConfigurationErrorsException(
                     @"Selected mode is Server but runtime\server configuration does not have any hosting types.");
 
-             if (runtime.SuperUser == null)
-                 throw new ConfigurationErrorsException(
-                   @"Selected mode is Server but runtime\superuser configuration not found.");
+            if (runtime.SuperUser == null)
+                throw new ConfigurationErrorsException(
+                    @"Selected mode is Server but runtime\superuser configuration not found.");
 
-             if (string.IsNullOrEmpty(runtime.SuperUser.Username))
-                 throw new ConfigurationErrorsException(
-                   @"Selected mode is Server but runtime\superuser[username] is not specified.");
+            if (string.IsNullOrEmpty(runtime.SuperUser.Username))
+                throw new ConfigurationErrorsException(
+                    @"Selected mode is Server but runtime\superuser[username] is not specified.");
         }
     }
 }

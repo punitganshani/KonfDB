@@ -23,9 +23,9 @@
 
 #endregion
 
-using System;
 using System.Configuration;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.WCF;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
@@ -42,25 +42,25 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         [ConfigurationProperty("port", IsRequired = true, IsKey = true)]
         public int Port
         {
-            get { return (int)this["port"]; }
+            get { return (int) this["port"]; }
             set { this["port"] = value; }
         }
 
         [ConfigurationProperty("type", IsRequired = true)]
         public EndPointType Type
         {
-            get { return (EndPointType)this["type"]; }
+            get { return (EndPointType) this["type"]; }
             set { this["type"] = value; }
         }
 
         [ConfigurationProperty("host", IsRequired = false)]
         public string Host
         {
-            get { return (string)this["host"]; }
+            get { return (string) this["host"]; }
             set { this["host"] = value; }
         }
 
-        public WCF.ServiceType GetWcfServiceType()
+        public ServiceType GetWcfServiceType()
         {
             return this.Type.GetWcfServiceType();
         }

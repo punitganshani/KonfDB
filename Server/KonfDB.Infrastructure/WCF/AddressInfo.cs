@@ -26,7 +26,7 @@
 using System;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Shell;
-using KonfDB.Infrastructure.WCF.ServiceTypes;
+using KonfDB.Infrastructure.WCF.Bindings;
 
 namespace KonfDB.Infrastructure.WCF
 {
@@ -79,10 +79,10 @@ namespace KonfDB.Infrastructure.WCF
             {
                 case ServiceType.BasicHttp:
                     prefix = "http";
-                    channelfactory = new ChannelFactory<I>(new BasicHttp());
+                    channelfactory = new ChannelFactory<I>(new HttpBinding());
                     break;
                 case ServiceType.NetTcp:
-                    channelfactory = new ChannelFactory<I>(new NetTcp());
+                    channelfactory = new ChannelFactory<I>(new TcpBinding());
                     prefix = "net.tcp";
                     break;
                     //case ServiceType.AzureRelay:
