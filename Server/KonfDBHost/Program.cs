@@ -82,7 +82,7 @@ namespace KonfDBHost
                 thread.Start();
 
                 bool exitLoop = false;
-                ICommandService commandService = backgroundService.CommandService;
+                var commandService = backgroundService.ServiceFacade;
 
                 while (!exitLoop)
                 {

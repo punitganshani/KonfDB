@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4DCD32
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonfDB.RESTSample", "KonfDB.RESTSample\KonfDB.RESTSample.csproj", "{5174BDA8-367C-41E2-A5AB-71D179F9F8B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{A0FB3D9B-98A9-403F-8C70-380EC2CF24CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FB3D9B-98A9-403F-8C70-380EC2CF24CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FB3D9B-98A9-403F-8C70-380EC2CF24CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5174BDA8-367C-41E2-A5AB-71D179F9F8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5174BDA8-367C-41E2-A5AB-71D179F9F8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5174BDA8-367C-41E2-A5AB-71D179F9F8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5174BDA8-367C-41E2-A5AB-71D179F9F8B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

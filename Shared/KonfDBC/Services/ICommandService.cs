@@ -29,13 +29,13 @@ using System.ServiceModel.Web;
 namespace KonfDB.Infrastructure.Services
 {
     [ServiceContract(Namespace = ServiceConstants.Schema, Name = "ICommandService")]
-    public interface ICommandService : IService
+    public interface ICommandService<T> : IService
     {
         [OperationContract(Name = "Execute")]
         [WebGet(ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "/Execute?cmd={command}&token={token}")]
-        CommandOutput ExecuteCommand(string command, string token);
+        ServiceCommandOutput<T> ExecuteCommand(string command, string token);
 
         [OperationContract(Name = "List")]
         [WebGet(ResponseFormat = WebMessageFormat.Json,
@@ -43,4 +43,6 @@ namespace KonfDB.Infrastructure.Services
             UriTemplate = "/List/{command}")]
         string[] GetCommandsStartingWith(string command);
     }
+
+
 }

@@ -33,5 +33,13 @@ namespace KonfDB.Infrastructure.WCF.Bindings
         System.ServiceModel.Channels.Binding WcfBinding { get; set; }
         ServiceType ServiceType { get; set; }
         Type EndPointType { get; set; }
+        DataTypeSupport DataTypes { get; set; }
+    }
+
+    [Flags]
+    public enum DataTypeSupport
+    {
+        Native=2,
+        Json=4
     }
 }

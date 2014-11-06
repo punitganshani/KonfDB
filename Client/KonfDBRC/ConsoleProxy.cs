@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Net.Mail;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
@@ -74,6 +75,11 @@ namespace KonfDBRC
                 {
                     try
                     {
+                        if (line.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            break;
+                        }
+
                         var commandOutput = commandService.ExecuteCommand(line, token);
 
                         if (commandOutput != null)
@@ -87,11 +93,6 @@ namespace KonfDBRC
                             else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
                             {
                                 Console.WriteLine(commandOutput.DisplayMessage);
-                            }
-
-                            if (commandOutput.PostAction == CommandOutput.PostCommandAction.ExitApplication)
-                            {
-                                exitLoop = true;
                             }
                         }
                     }
@@ -132,6 +133,11 @@ namespace KonfDBRC
                 {
                     try
                     {
+                        if (line.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            break;
+                        }
+
                         var commandOutput = commandService.ExecuteCommand(line, token);
 
                         if (commandOutput != null)
@@ -145,11 +151,6 @@ namespace KonfDBRC
                             else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
                             {
                                 Console.WriteLine(commandOutput.DisplayMessage);
-                            }
-
-                            if (commandOutput.PostAction == CommandOutput.PostCommandAction.ExitApplication)
-                            {
-                                exitLoop = true;
                             }
                         }
                     }

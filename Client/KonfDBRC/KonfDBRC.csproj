@@ -60,16 +60,17 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\JsonExtensions.cs">
-      <Link>Extensions\JsonExtensions.cs</Link>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\StringExtensions.cs">
       <Link>Extensions\StringExtensions.cs</Link>
@@ -118,9 +119,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

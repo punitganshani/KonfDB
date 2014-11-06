@@ -41,13 +41,13 @@ namespace KonfDBCF
 {
     public static class ConnectionFactory
     {
-        private static ConnectionProxy _commandServiceProxy;
+        private static ConnectionProxy<object> _commandServiceProxy;
         private static string _username;
         private static EndPointType _endPointType;
         private static string _host;
         private static int _port;
 
-        public static ConnectionProxy GetInstance()
+        public static ConnectionProxy<object> GetInstance()
         {
             if (String.IsNullOrEmpty(_username) || _commandServiceProxy == null)
                 throw new UnauthorizedAccessException(@"User has not been authenticated. Please try GetUserToken first.");
@@ -111,7 +111,7 @@ namespace KonfDBCF
             }
         }
 
-        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService>> e)
+        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService<object>>> e)
         {
             CurrentContext.Default.Log.Error("Error occured in communication channel, will re-attempt to create it");
         }
@@ -127,12 +127,12 @@ namespace KonfDBCF
 
             if (_commandServiceProxy == null)
             {
-                WcfClient<ICommandService> client =
-                    WcfClient<ICommandService>.Create(_endPointType.GetWcfServiceType(), _host,
+                WcfClient<ICommandService<object>> client =
+                    WcfClient<ICommandService<object>>.Create(_endPointType.GetWcfServiceType(), _host,
                         _port.ToString(CultureInfo.InvariantCulture),
                         "CommandService");
                 client.OnFaulted += client_OnFaulted;
-                _commandServiceProxy = new ConnectionProxy(client.Contract);
+                _commandServiceProxy = new ConnectionProxy<object>(client.Contract);
 
                 CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
             }

@@ -68,7 +68,8 @@ namespace KonfDB.Engine.Commands.Shared
                 UserId = userId
             });
 
-            output.DisplayMessage = application.ToJson();
+            output.Data = application;
+            output.DisplayMessage = "Application Created";
 
             return output;
         }

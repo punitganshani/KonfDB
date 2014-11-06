@@ -31,6 +31,7 @@ using System.ServiceProcess;
 using System.Threading;
 using KonfDB.Engine.Services;
 using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF;
@@ -42,8 +43,9 @@ namespace KonfDBHost
     {
         private Thread _thread;
         private ManualResetEvent _shutdownEvent;
-        private WcfService<ICommandService, CommandService> _serviceHost;
-        public ICommandService CommandService;
+        private WcfService<ICommandService<object>, NativeCommandService> _serviceHostNative;
+        private WcfService<ICommandService<string>, JsonCommandService> _serviceHostJson;
+        public ServiceCore ServiceFacade;
         public string AuthenticationToken;
 
         protected override void OnStart(string[] args)
@@ -53,31 +55,40 @@ namespace KonfDBHost
 
             #region Run Command Service
 
-            CommandService = new CommandService();
+            ServiceFacade = new ServiceCore();
 
             // Ensure that the super user admin exists
-            CommandService.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
+            ServiceFacade.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
                 AppContext.Current.Config.Runtime.SuperUser.Username,
                 AppContext.Current.Config.Runtime.SuperUser.Password), null);
 
             // Ensure that the super user readonly exists
-            CommandService.ExecuteCommand(
+            ServiceFacade.ExecuteCommand(
                 String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
                     AppContext.Current.Config.Runtime.SuperUser.Username,
                     AppContext.Current.Config.Runtime.SuperUser.Password), null);
 
             var serviceConfig = AppContext.Current.Config.Runtime.Server;
-            _serviceHost = new WcfService<ICommandService, CommandService>("localhost", "CommandService");
+            _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost", "CommandService");
+            _serviceHostJson = new WcfService<ICommandService<string>, JsonCommandService>("localhost", "CommandService");
 
             for (int i = 0; i < serviceConfig.Count; i++)
             {
-                _serviceHost.AddBinding(BindingFactory.Create(serviceConfig[i].GetWcfServiceType(),
-                    serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture)));
+                var binding = BindingFactory.Create(serviceConfig[i].GetWcfServiceType(), serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture));
+                if (binding.DataTypes.IsSet(DataTypeSupport.Native))
+                {
+                    _serviceHostNative.AddBinding(binding);
+                }
+                else if (binding.DataTypes.IsSet(DataTypeSupport.Json))
+                {
+                    _serviceHostJson.AddBinding(binding);
+                }
             }
+ 
+            _serviceHostNative.Host();
+            _serviceHostJson.Host();
 
-            _serviceHost.Host();
-
-            var authOutput = CommandService.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
+            var authOutput = ServiceFacade.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
                 AppContext.Current.Config.Runtime.SuperUser.Username,
                 AppContext.Current.Config.Runtime.SuperUser.Password), null);
 
@@ -91,17 +102,18 @@ namespace KonfDBHost
             AuthenticationToken = authenticationOutput.Token;
 
             // get settings from database
-            var settingsOutput = CommandService.ExecuteCommand("GetSettings", null);
+            var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>) settingsOutput.Data;
+                var settings = (Dictionary<string, string>)settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     AppContext.Current.ApplicationParams.Add(setting.Key, setting.Value);
                 }
             }
 
-            AppContext.Current.Log.Info("Agent Started: " + _serviceHost);
+            //AppContext.Current.Log.Info("Agent Started: " + _serviceHostNative);
+            //AppContext.Current.Log.Info("Agent Started: " + _serviceHostJson);
 
             #endregion
 
@@ -118,8 +130,8 @@ namespace KonfDBHost
         protected override void OnStop()
         {
             _shutdownEvent.Set();
-            _serviceHost.Stop();
-
+            _serviceHostNative.Stop();
+            _serviceHostNative.Stop();
             if (!_thread.Join(3000))
             {
                 // give the thread 3 seconds to stop

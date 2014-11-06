@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ConnectionProxy.cs' is part of KonfDB application - 
+//     This file 'CommandService.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,49 +24,35 @@
 #endregion
 
 using System;
+using System.Data.Entity.Validation;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using KonfDB.Engine.Commands;
+using KonfDB.Infrastructure.Adapter;
+using KonfDB.Infrastructure.Attributes;
+using KonfDB.Infrastructure.Exceptions;
+using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.Utilities;
 
-namespace KonfDBCF
+namespace KonfDB.Engine.Services
 {
-    public class ConnectionProxy<T>
+    internal class NativeCommandService : ICommandService<object>
     {
-        private readonly ICommandService<T> _commandService;
-
-        internal ConnectionProxy(ICommandService<T> commandService)
+        private readonly ServiceCore _core = new ServiceCore();
+        public ServiceCommandOutput<object> ExecuteCommand(string command, string token)
         {
-            if (commandService == null)
-                throw new ArgumentNullException("commandService");
-
-            _commandService = commandService;
+            var commandOutput = _core.ExecuteCommand(command, token);
+            return commandOutput.ConvertForNative();
         }
-
-        public ServiceCommandOutput<T> ExecuteCommand(string command, string token)
-        {
-            ServiceCommandOutput<T> commandOutput;
-
-            if (CurrentContext.Default.Cache.Enabled)
-            {
-                commandOutput = CurrentContext.Default.Cache.Get(command, () =>
-                    ExecuteCommandInternal(command, token));
-            }
-            else
-            {
-                commandOutput = ExecuteCommandInternal(command, token);
-            }
-
-            return commandOutput;
-        }
-
-        private ServiceCommandOutput<T> ExecuteCommandInternal(string command, string token)
-        {
-            return _commandService.ExecuteCommand(command, token);
-        }
-
 
         public string[] GetCommandsStartingWith(string command)
         {
-            return _commandService.GetCommandsStartingWith(command);
+            return _core.GetCommandsStartingWith(command);
         }
     }
 }

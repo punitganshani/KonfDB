@@ -56,7 +56,7 @@ namespace KonfDB.Infrastructure.WCF
             _serviceName = serviceName;
 
             //create Service host
-            _svcHost = new ServiceHost(typeof (TService));
+            _svcHost = new ServiceHost(typeof(TService));
             _svcHost.Faulted += _svcHost_Faulted;
         }
 
@@ -68,7 +68,7 @@ namespace KonfDB.Infrastructure.WCF
                 Stop();
                 _svcHost.Abort();
                 CurrentContext.Default.Log.Debug("Service is stopped");
-                _svcHost = new ServiceHost(typeof (TService));
+                _svcHost = new ServiceHost(typeof(TService));
                 Host();
                 CurrentContext.Default.Log.Info("Service was in Faulted state. Re-hosting the service");
             }
@@ -100,7 +100,10 @@ namespace KonfDB.Infrastructure.WCF
         public void Host()
         {
             if (Bindings.Count == 0)
-                throw new Exception("No Bindings exposed for this service. Can not host the service");
+            {
+                CurrentContext.Default.Log.Debug("No bindings found, will not host the service : ");
+                return;
+            }
 
             ConfigureEndPoints();
             var threadService = new Thread(StartService);
@@ -119,6 +122,13 @@ namespace KonfDB.Infrastructure.WCF
 
         private void StartService()
         {
+            if (Bindings.Count == 0)
+            {
+                CurrentContext.Default.Log.Debug("No bindings found, will not host the service : ");
+                _pause.WaitOne();
+                return;
+            }
+
             CurrentContext.Default.Log.Debug("Service running on: " + Thread.CurrentThread.ManagedThreadId);
             try
             {
@@ -146,9 +156,9 @@ namespace KonfDB.Infrastructure.WCF
 
                 if (endPointTypeInstance.InheritsFrom<IEndPoint>())
                 {
-                    var endPoint = (IEndPoint) endPointTypeInstance;
+                    var endPoint = (IEndPoint)endPointTypeInstance;
                     var wcfEndPoint = endPoint.Host<TInterface>(_svcHost, _serverName, _serviceName, binding);
-                    CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndPoint.Address);
+                    CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndPoint.Address + " for type : " + binding.ServiceType);
                 }
             }
 
@@ -165,7 +175,7 @@ namespace KonfDB.Infrastructure.WCF
         public override string ToString()
         {
             var builder = new StringBuilder();
-            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof (TService).Name, x.ToString())));
+            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof(TService).Name, x.ToString())));
             return builder.ToString().Trim();
         }
 

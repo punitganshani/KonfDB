@@ -25,6 +25,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Extensions
@@ -40,9 +41,7 @@ namespace KonfDB.Infrastructure.Extensions
                 Formatting = Formatting.Indented,
                 ObjectCreationHandling = ObjectCreationHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
-            };
-
-            //Settings.Converters.Add(new JavaScriptDateTimeConverter());
+            }; 
         }
 
         public static T FromJsonToObject<T>(this string value)
@@ -55,19 +54,17 @@ namespace KonfDB.Infrastructure.Extensions
             return JsonConvert.DeserializeObject<List<T>>(value, Settings);
         }
 
-        public static string ToJson(this object value)
+        public static string ToJson(this object value, JsonSerializerSettings settings)
         {
             var valueAsList = value as IList;
             if (valueAsList != null)
             {
-                return ToJson((IList) value);
+                return ToJson((IList)value, settings);
             }
 
             try
             {
-                //var jObject = JObject.FromObject(value, JsonSerializer.Create(Settings));
-                //jObject.AddFirst(new JProperty("Type", value.GetType().Name));
-                return JsonConvert.SerializeObject(value, Settings);
+                return JsonConvert.SerializeObject(value, settings);
             }
             catch
             {
@@ -75,19 +72,40 @@ namespace KonfDB.Infrastructure.Extensions
             }
         }
 
+        public static string ToJson(this object value)
+        {
+            return ToJson(value, Settings);
+        }
+
         public static string ToJsonUnIndented(this object value)
         {
-            return value.ToJson();
+            var settings =   new JsonSerializerSettings
+            {
+                Formatting = Formatting.None,
+                ObjectCreationHandling = ObjectCreationHandling.Auto,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            return value.ToJson(settings);
         }
 
         public static string ToJson<T>(this List<T> value)
         {
-            return JsonConvert.SerializeObject(value, typeof (List<T>), Settings);
+            return JsonConvert.SerializeObject(value, typeof(List<T>), Settings);
         }
 
         public static string ToJson(this IList value)
         {
             return JsonConvert.SerializeObject(value, value.GetType(), Settings);
+        }
+
+        public static string ToJson<T>(this List<T> value, JsonSerializerSettings settings)
+        {
+            return JsonConvert.SerializeObject(value, typeof(List<T>), settings);
+        }
+
+        public static string ToJson(this IList value, JsonSerializerSettings settings)
+        {
+            return JsonConvert.SerializeObject(value, value.GetType(), settings);
         }
     }
 }

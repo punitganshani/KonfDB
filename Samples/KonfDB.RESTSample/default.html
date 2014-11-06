@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>KonfDB REST Sample</title>
+    <script src="Scripts/jquery-2.1.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btnGet').click(function () {
+                var requestUrl = 'http://localhost:8082/CommandService/Execute?cmd=' + encodeURI('UserAuth /name=konfdbuser_ro /pwd=konfdbuser_ro') + '&token=';
+                var token = null;
+                $.ajax({
+                    url: requestUrl,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var outputData = $.parseJSON(data.Data);
+                        token = outputData.Token;
+
+                        ExecuteOtherRequests(token);
+                    },
+                    error: function (e) {
+                        alert('error:' + JSON.stringify(e));
+                    }
+                });
+
+
+            });
+
+            function ExecuteOtherRequests(token) {
+                var requestUrl = 'http://localhost:8082/CommandService/Execute?cmd=' + encodeURI('get /app:6 /env:8 /region:8 /server:9') + '&token=' + token;
+
+                $.ajax({
+                    url: requestUrl,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var outputData = $.parseJSON(data.Data);
+                        var finalDisplay = "";
+                        outputData.forEach(function (data) {
+                            finalDisplay += data.ParameterName + "=" + data.ParameterValue + "\n";
+                        });
+
+                        $('#txtOutput').val(finalDisplay);
+
+                    },
+                    error: function (e) {
+                        alert('error:' + JSON.stringify(e));
+                    }
+                });
+            }
+        });
+    </script>
+
+</head>
+<body>
+    <input id="btnGet" type="button" value="Get" />
+    <br />
+    <br />
+    <textarea id="txtOutput" rows="20" cols="200"></textarea>
+</body>
+</html>

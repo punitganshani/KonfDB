@@ -34,20 +34,21 @@ namespace KonfDB.Infrastructure.WCF.Bindings
         public System.ServiceModel.Channels.Binding WcfBinding { get; set; }
         public ServiceType ServiceType { get; set; }
         public Type EndPointType { get; set; }
-
+        public DataTypeSupport DataTypes { get; set; }
         private Binding(ServiceType type, string port, System.ServiceModel.Channels.Binding wcfBinding,
-            Type endpointType)
+            Type endpointType, DataTypeSupport dataTypes)
         {
             ServiceType = type;
             Port = port;
             WcfBinding = wcfBinding;
             EndPointType = endpointType;
+            DataTypes = dataTypes;
         }
 
         internal static IBinding Create(ServiceType type, string port, System.ServiceModel.Channels.Binding wcfBinding,
-            Type endpointType)
+            Type endpointType, DataTypeSupport dataTypes)
         {
-            return new Binding(type, port, wcfBinding, endpointType);
+            return new Binding(type, port, wcfBinding, endpointType, dataTypes);
         }
 
         public override string ToString()
@@ -63,11 +64,11 @@ namespace KonfDB.Infrastructure.WCF.Bindings
             switch (type)
             {
                 case ServiceType.BasicHttp:
-                    return Binding.Create(type, port, new HttpBinding(), typeof (HttpEndpoint));
+                    return Binding.Create(type, port, new HttpBinding(), typeof (HttpEndpoint), DataTypeSupport.Native);
                 case ServiceType.NetTcp:
-                    return Binding.Create(type, port, new TcpBinding(), typeof (NetTcpEndpoint));
+                    return Binding.Create(type, port, new TcpBinding(), typeof (NetTcpEndpoint), DataTypeSupport.Native);
                 case ServiceType.REST:
-                    return Binding.Create(type, port, new RestBinding(), typeof (RestEndpoint));
+                    return Binding.Create(type, port, new RestBinding(), typeof(RestEndpoint), DataTypeSupport.Json);
                 case ServiceType.AzureRelay:
                     throw new NotImplementedException("Pending Implementation 'AzureRelay'");
             }

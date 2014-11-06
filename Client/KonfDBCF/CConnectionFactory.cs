@@ -38,23 +38,24 @@ namespace KonfDBCF
 {
     public static class CConnectionFactory
     {
-        private static ConnectionProxy _commandServiceProxy;
+        private static ConnectionProxy<object> _commandServiceProxy;
 
-        public static ConnectionProxy GetInstance()
+        public static ConnectionProxy<object> GetInstance()
         {
             if (_commandServiceProxy == null)
             {
-                WcfClient<ICommandService> client =
-                    WcfClient<ICommandService>.Create(
+                WcfClient<ICommandService<object>> client =
+                    WcfClient<ICommandService<object>>.Create(
                         ClientContextFromConfig.Current.Config.Runtime.Client.GetWcfServiceType(),
                         ClientContextFromConfig.Current.Config.Runtime.Client.Host,
                         ClientContextFromConfig.Current.Config.Runtime.Client.Port.ToString(CultureInfo.InvariantCulture),
                         "CommandService");
+
                 client.OnFaulted += client_OnFaulted;
 
                 var commandService = client.Contract;
 
-                _commandServiceProxy = new ConnectionProxy(commandService);
+                _commandServiceProxy = new ConnectionProxy<object>(commandService);
 
                 CurrentContext.Default.Log.Info("Connection Established:" + client.ServerName + " Port:" + client.Port);
             }
@@ -62,7 +63,7 @@ namespace KonfDBCF
             return _commandServiceProxy;
         }
 
-        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService>> e)
+        private static void client_OnFaulted(object sender, DataEventArgs<WcfClient<ICommandService<object>>> e)
         {
             CurrentContext.Default.Log.Error("Error occured in communication channel, will re-attempt to create it");
         }
