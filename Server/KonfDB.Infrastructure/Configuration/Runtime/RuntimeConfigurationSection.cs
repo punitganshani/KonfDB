@@ -24,6 +24,7 @@
 #endregion
 
 using System.Configuration;
+using KonfDB.Infrastructure.Enums;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
@@ -48,6 +49,13 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         {
             get { return (string) this["logConfigPath"]; }
             set { this["logConfigPath"] = value; }
+        }
+
+        [ConfigurationProperty("securityMode", IsRequired = false)]
+        public ServiceSecurityMode ServiceSecurity
+        {
+            get { return (ServiceSecurityMode)this["securityMode"]; }
+            set { this["securityMode"] = value; }
         }
 
         [ConfigurationProperty("server", IsRequired = false)]

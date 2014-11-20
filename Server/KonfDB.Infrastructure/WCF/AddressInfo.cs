@@ -25,8 +25,11 @@
 
 using System;
 using System.ServiceModel;
+using System.ServiceModel.Description;
+using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF.Bindings;
+using Binding = System.ServiceModel.Channels.Binding;
 
 namespace KonfDB.Infrastructure.WCF
 {
@@ -39,8 +42,9 @@ namespace KonfDB.Infrastructure.WCF
         public string ServerName { get; private set; }
         public string Port { get; private set; }
         public string ServiceName { get; private set; }
+        public ServiceSecurityMode SecurityMode { get; private set; }
 
-        public AddressInfo(ServiceType type, string serverName, string port, string serviceName)
+        public AddressInfo(ServiceType type, string serverName, string port, string serviceName, ServiceSecurityMode mode)
         {
             if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(port) || string.IsNullOrEmpty(serverName))
                 throw new ArgumentException("One or more arguments are either NULL or empty.");
@@ -49,6 +53,7 @@ namespace KonfDB.Infrastructure.WCF
             this.ServerName = serverName;
             this.Port = port;
             this.ServiceName = serviceName;
+            this.SecurityMode = mode;
         }
 
         public override string ToString()
@@ -58,10 +63,12 @@ namespace KonfDB.Infrastructure.WCF
                 var prefix = string.Empty;
                 switch (Type)
                 {
-                    case ServiceType.BasicHttp:
-                        prefix = "http";
+                    case ServiceType.HTTP:
+                    case ServiceType.REST:
+                    case ServiceType.HTTPPlus:
+                        prefix = this.SecurityMode == ServiceSecurityMode.BasicSSL ? "https" : "http";
                         break;
-                    case ServiceType.NetTcp:
+                    case ServiceType.TCP:
                         prefix = "net.tcp";
                         break;
                 }
@@ -75,32 +82,104 @@ namespace KonfDB.Infrastructure.WCF
         {
             ChannelFactory<I> channelfactory = null;
             string prefix = string.Empty;
+            Binding binding = null;
+            bool useSSL = this.SecurityMode == ServiceSecurityMode.BasicSSL;
             switch (Type)
             {
-                case ServiceType.BasicHttp:
-                    prefix = "http";
-                    channelfactory = new ChannelFactory<I>(new HttpBinding());
+                case ServiceType.HTTP:
+                    prefix = useSSL ? "https" : "http";
+                    if (useSSL)
+                    {
+                        binding = new HttpBinding
+                        {
+                            Security =
+                            {
+                                Mode = BasicHttpSecurityMode.Transport,
+                                Transport =
+                                {
+                                    ClientCredentialType = HttpClientCredentialType.None,
+                                    Realm = string.Empty,
+                                    ProxyCredentialType = HttpProxyCredentialType.None
+                                }
+                            }
+                        };
+                    }
+                    else
+                    {
+                        binding = new HttpBinding();
+                    }
                     break;
-                case ServiceType.NetTcp:
-                    channelfactory = new ChannelFactory<I>(new TcpBinding());
+                case ServiceType.HTTPPlus:
+                    prefix = useSSL ? "https" : "http";
+                    if (useSSL)
+                    {
+                        binding = new HttpPlusBinding()
+                        {
+                            Security =
+                            {
+                                Mode = System.ServiceModel.SecurityMode.Transport,
+                                Transport =
+                                {
+                                    ClientCredentialType = HttpClientCredentialType.None,
+                                    Realm = string.Empty,
+                                    ProxyCredentialType = HttpProxyCredentialType.None
+                                }
+                            }
+                        };
+                    }
+                    else
+                    {
+                        binding = new HttpPlusBinding();
+                    }
+                    break;
+                case ServiceType.TCP:
+                    binding = new TcpBinding();
                     prefix = "net.tcp";
                     break;
-                    //case ServiceType.AzureRelay:
-                    //    channelfactory = new ChannelFactory<I>(new NetTcpRelayBinding())
-                    //break;
+                case ServiceType.REST:
+                    if (useSSL)
+                    {
+                        binding = new RestBinding()
+                        {
+                            Security =
+                            {
+                                Mode = WebHttpSecurityMode.Transport,
+                                Transport =
+                                {
+                                    ClientCredentialType = HttpClientCredentialType.None,
+                                    Realm = string.Empty,
+                                    ProxyCredentialType = HttpProxyCredentialType.None
+                                }
+                            }
+                        };
+                    }
+                    else
+                    {
+                        binding = new RestBinding();
+
+                    }
+                    prefix = useSSL ? "https" : "http";
+                    break;
             }
 
+            if (binding == null)
+                throw new NullReferenceException("No appropriate binding found for type:" + Type);
             _address = String.Format(UriFormat, prefix, ServerName, Port, ServiceName);
 
-            CurrentContext.Default.Log.SvcInfo(String.Format("Creating WCF Client at {0}", _address));
-            if (channelfactory != null)
-            {
-                var channel = channelfactory.CreateChannel(new EndpointAddress(_address));
-                channelfactory.Endpoint.AttachDataResolver();
 
-                return channel;
+            CurrentContext.Default.Log.SvcInfo(String.Format("Creating WCF Client at {0}", _address));
+
+            channelfactory = new ChannelFactory<I>(binding, new EndpointAddress(_address));
+
+            if (binding is RestBinding)
+            {
+                channelfactory.Endpoint.Behaviors.Add(new WebHttpBehavior());
             }
-            throw new NotImplementedException("Could not create ChannelFactory, check ServiceType:" + Type);
+
+            var channel = channelfactory.CreateChannel();
+            channelfactory.Endpoint.AttachDataResolver();
+
+            return channel;
         }
     }
 }

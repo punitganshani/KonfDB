@@ -25,52 +25,52 @@
 
 using System;
 using KonfDB.Infrastructure.WCF.Endpoints;
+using KonfDB.Infrastructure.WCF.Interfaces;
 
 namespace KonfDB.Infrastructure.WCF.Bindings
 {
     public class Binding : IBinding
     {
-        public string Port { get; set; }
+        public BindingConfiguration Configuration { get; set; }
         public System.ServiceModel.Channels.Binding WcfBinding { get; set; }
-        public ServiceType ServiceType { get; set; }
         public Type EndPointType { get; set; }
         public DataTypeSupport DataTypes { get; set; }
-        private Binding(ServiceType type, string port, System.ServiceModel.Channels.Binding wcfBinding,
+
+        private Binding(BindingConfiguration config, System.ServiceModel.Channels.Binding wcfBinding,
             Type endpointType, DataTypeSupport dataTypes)
         {
-            ServiceType = type;
-            Port = port;
+            Configuration = config;
             WcfBinding = wcfBinding;
             EndPointType = endpointType;
             DataTypes = dataTypes;
         }
 
-        internal static IBinding Create(ServiceType type, string port, System.ServiceModel.Channels.Binding wcfBinding,
+        internal static IBinding Create(BindingConfiguration config, System.ServiceModel.Channels.Binding wcfBinding,
             Type endpointType, DataTypeSupport dataTypes)
         {
-            return new Binding(type, port, wcfBinding, endpointType, dataTypes);
+            return new Binding(config, wcfBinding, endpointType, dataTypes);
         }
 
         public override string ToString()
         {
-            return String.Format("{0} -> {1}", ServiceType, Port);
+            return String.Format("{0} -> {1}", Configuration.ServiceType, Configuration.Port);
         }
     }
 
     public class BindingFactory
     {
-        public static IBinding Create(ServiceType type, string port)
+        public static IBinding Create(BindingConfiguration config)
         {
-            switch (type)
+            switch (config.ServiceType)
             {
-                case ServiceType.BasicHttp:
-                    return Binding.Create(type, port, new HttpBinding(), typeof (HttpEndpoint), DataTypeSupport.Native);
-                case ServiceType.NetTcp:
-                    return Binding.Create(type, port, new TcpBinding(), typeof (NetTcpEndpoint), DataTypeSupport.Native);
+                case ServiceType.HTTP:
+                    return Binding.Create(config, new HttpBinding(), typeof (HttpEndpoint), DataTypeSupport.Native);
+                case ServiceType.TCP:
+                    return Binding.Create(config, new TcpBinding(), typeof (NetTcpEndpoint), DataTypeSupport.Native);
                 case ServiceType.REST:
-                    return Binding.Create(type, port, new RestBinding(), typeof(RestEndpoint), DataTypeSupport.Json);
-                case ServiceType.AzureRelay:
-                    throw new NotImplementedException("Pending Implementation 'AzureRelay'");
+                    return Binding.Create(config, new RestBinding(), typeof (RestEndpoint), DataTypeSupport.Json);
+                case ServiceType.HTTPPlus:
+                    return Binding.Create(config, new HttpPlusBinding(), typeof (HttpPlusEndpoint), DataTypeSupport.Native);
             }
 
             throw new NotImplementedException("Unknown Binding");

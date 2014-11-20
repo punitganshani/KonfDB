@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'CommandService.cs' is part of KonfDB application - 
+//     This file 'NativeCommandService.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,27 +23,15 @@
 
 #endregion
 
-using System;
-using System.Data.Entity.Validation;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KonfDB.Engine.Commands;
 using KonfDB.Infrastructure.Adapter;
-using KonfDB.Infrastructure.Attributes;
-using KonfDB.Infrastructure.Exceptions;
-using KonfDB.Infrastructure.Extensions;
-using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
-using KonfDB.Infrastructure.Shell;
-using KonfDB.Infrastructure.Utilities;
 
 namespace KonfDB.Engine.Services
 {
     internal class NativeCommandService : ICommandService<object>
     {
         private readonly ServiceCore _core = new ServiceCore();
+
         public ServiceCommandOutput<object> ExecuteCommand(string command, string token)
         {
             var commandOutput = _core.ExecuteCommand(command, token);

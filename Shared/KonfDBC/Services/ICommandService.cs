@@ -43,6 +43,4 @@ namespace KonfDB.Infrastructure.Services
             UriTemplate = "/List/{command}")]
         string[] GetCommandsStartingWith(string command);
     }
-
-
 }

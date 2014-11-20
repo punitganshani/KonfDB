@@ -24,7 +24,6 @@
 #endregion
 
 using System;
-using System.Net.Mail;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;

@@ -60,18 +60,37 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="FakeObjects\DummyJsonCommandService.cs" />
+    <Compile Include="FakeObjects\DummyNativeCommandService.cs" />
+    <Compile Include="FakeObjects\UnitTestContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandArgsTest.cs" />
     <Compile Include="EncryptionTest.cs" />
+    <Compile Include="ServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
+      <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>
+      <Name>KonfDB.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KonfDB.Engine\KonfDB.Engine.csproj">
+      <Project>{bf994794-04ed-43ca-86b0-482a996756f7}</Project>
+      <Name>KonfDB.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KonfDB.Infrastructure\KonfDB.Infrastructure.csproj">
       <Project>{82E5ECA3-9B1C-430B-96EF-89A083C45B7A}</Project>
       <Name>KonfDB.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="konfdb.snk" />
+    <None Include="RootTrustedCA.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Server.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

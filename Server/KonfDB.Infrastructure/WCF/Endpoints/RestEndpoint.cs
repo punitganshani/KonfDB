@@ -23,12 +23,11 @@
 
 #endregion
 
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF.Behavior;
-using KonfDB.Infrastructure.WCF.Bindings;
-using Binding = System.ServiceModel.Channels.Binding;
+using KonfDB.Infrastructure.WCF.Interfaces;
 
 namespace KonfDB.Infrastructure.WCF.Endpoints
 {
@@ -38,21 +37,47 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
         {
             const string addressUriFormat = "{0}://{1}:{2}/{3}/";
 
-            string endpointAddress = string.Format(addressUriFormat, "http", serverName, binding.Port, serviceName);
+            string endpointAddress = string.Format(addressUriFormat, "http", serverName, binding.Configuration.Port,
+                serviceName);
 
-            // add endpoint of service
-            var wcfBinding = binding.WcfBinding;
-            var restEndPoint = host.AddServiceEndpoint(typeof (T), wcfBinding, endpointAddress);
-            restEndPoint.Behaviors.Add(new WebHttpBehavior());
-            restEndPoint.Behaviors.Add(new FaultingWebHttpBehavior());
+            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            serviceEndpoint.Behaviors.Add(new WebHttpBehavior());
+            serviceEndpoint.Behaviors.Add(new FaultingWebHttpBehavior());
 
-            return restEndPoint;
+            return serviceEndpoint;
         }
 
-        internal static Binding CreateMex(ServiceType serviceTypes)
+
+        public ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
+            ISecurity security)
         {
-            CurrentContext.Default.Log.Debug("Created MEX type : " + serviceTypes);
-            return MetadataExchangeBindings.CreateMexHttpBinding();
+            const string addressUriFormat = "{0}://{1}:{2}/{3}/";
+            string endpointAddress = string.Format(addressUriFormat, "https", serverName, binding.Configuration.Port,
+                serviceName);
+            var httpBinding = binding.WcfBinding as WebHttpBinding;
+            var smb = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
+            if (smb == null)
+            {
+                smb = new ServiceMetadataBehavior();
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                host.Description.Behaviors.Add(smb);
+            }
+
+            httpBinding.Security.Mode = WebHttpSecurityMode.Transport;
+            httpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+
+            var mexAddress = new Uri(endpointAddress + "MEX");
+            smb.HttpsGetEnabled = true;
+            smb.HttpsGetUrl = mexAddress;
+
+            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            serviceEndpoint.Behaviors.Add(new WebHttpBehavior());
+            serviceEndpoint.Behaviors.Add(new FaultingWebHttpBehavior());
+
+            host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                MetadataExchangeBindings.CreateMexHttpsBinding(), mexAddress);
+
+            return serviceEndpoint;
         }
     }
 }

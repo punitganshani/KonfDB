@@ -25,7 +25,8 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using KonfDB.Infrastructure.WCF.Bindings;
+using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.WCF.Interfaces;
 
 namespace KonfDB.Infrastructure.WCF.Endpoints
 {
@@ -34,12 +35,19 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
         public ServiceEndpoint Host<T>(ServiceHost host, string serverName, string serviceName, IBinding binding)
         {
             const string addressUriFormat = "{0}://{1}:{2}/{3}/";
-            string endpointAddress = string.Format(addressUriFormat, "net.tcp", serverName, binding.Port,
+            string endpointAddress = string.Format(addressUriFormat, "net.tcp", serverName, binding.Configuration.Port,
                 serviceName);
 
-            // add endpoint of service
-            var wcfBinding = binding.WcfBinding;
-            return host.AddServiceEndpoint(typeof (T), wcfBinding, endpointAddress);
+            return host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+        }
+
+        public ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
+            ISecurity security)
+        {
+            CurrentContext.Default.Log.Info("TCP does not support " + security.SecurityMode +
+                                            ". Communication will be setup without SSL");
+
+            return Host<T>(host, serverName, serviceName, binding);
         }
     }
 }

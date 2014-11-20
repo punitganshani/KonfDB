@@ -80,6 +80,9 @@
     <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Interfaces\ICacheConfiguration.cs">
       <Link>Configuration\Interfaces\ICacheConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Interfaces\ICertificateConfiguration.cs">
+      <Link>Configuration\Interfaces\ICertificateConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Runtime\ServiceTypeElement.cs">
       <Link>Configuration\Runtime\ServiceTypeElement.cs</Link>
     </Compile>
@@ -106,6 +109,9 @@
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\UserAlreadyExistsException.cs">
       <Link>Exceptions\UserAlreadyExistsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\CertificateExtensions.cs">
+      <Link>Extensions\CertificateExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\EnumExtensions.cs">
       <Link>Extensions\EnumExtensions.cs</Link>
@@ -134,11 +140,17 @@
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Behavior\FaultingWebHttpBehavior.cs">
       <Link>WCF\Behavior\FaultingWebHttpBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\BindingConfiguration.cs">
+      <Link>WCF\Bindings\BindingConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\BindingFactory.cs">
       <Link>WCF\Bindings\BindingFactory.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\HttpBinding.cs">
       <Link>WCF\Bindings\HttpBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\HttpPlusBinding.cs">
+      <Link>WCF\Bindings\HttpPlusBinding.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\RestBinding.cs">
       <Link>WCF\Bindings\RestBinding.cs</Link>
@@ -148,6 +160,9 @@
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\HttpEndpoint.cs">
       <Link>WCF\Endpoints\HttpEndpoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\HttpPlusEndpoint.cs">
+      <Link>WCF\Endpoints\HttpPlusEndpoint.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\NetTcpEndpoint.cs">
       <Link>WCF\Endpoints\NetTcpEndpoint.cs</Link>
@@ -163,6 +178,9 @@
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\IEndPoint.cs">
       <Link>WCF\Interfaces\IEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\ISecurity.cs">
+      <Link>WCF\Interfaces\ISecurity.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceError.cs">
       <Link>WCF\ServiceError.cs</Link>

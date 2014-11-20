@@ -41,9 +41,6 @@ namespace KonfDB.Infrastructure.WCF.Bindings
                 "NetTcp is used on Port-Sharing basis. Ensure port sharing is enabled. Execute: sc.exe config NetTcpPortSharing start= demand");
             this.PortSharingEnabled = true;
 
-            //TODO: CurrentContext.Default.Log.SvcInfo("Setting security mode.");
-            //this.Security.Mode = SecurityMode.None;
-
             // Buffer size
             this.MaxReceivedMessageSize = 6553600;
             this.MaxBufferPoolSize = 5242880;

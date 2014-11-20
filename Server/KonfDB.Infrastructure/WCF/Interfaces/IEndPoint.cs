@@ -25,12 +25,14 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using KonfDB.Infrastructure.WCF.Bindings;
 
-namespace KonfDB.Infrastructure.WCF.Endpoints
+namespace KonfDB.Infrastructure.WCF.Interfaces
 {
     public interface IEndPoint
     {
         ServiceEndpoint Host<T>(ServiceHost host, string serverName, string serviceName, IBinding binding);
+
+        ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
+            ISecurity security);
     }
 }

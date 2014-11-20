@@ -26,7 +26,6 @@
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
 using KonfDB.Infrastructure.Database.Enums;
-using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 

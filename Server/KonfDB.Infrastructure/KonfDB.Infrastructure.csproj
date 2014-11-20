@@ -66,6 +66,9 @@
     <Compile Include="Attributes\IgnoreCacheAttribute.cs" />
     <Compile Include="Caching\InMemoryCacheStore.cs" />
     <Compile Include="Configuration\Interfaces\ICacheConfiguration.cs" />
+    <Compile Include="Configuration\Interfaces\ICertificateConfiguration.cs" />
+    <Compile Include="Configuration\Providers\Certificate\CertificateProviderCollection.cs" />
+    <Compile Include="Configuration\Providers\Certificate\CertificateProviderElement.cs" />
     <Compile Include="Configuration\Runtime\SuperUserElement.cs" />
     <Compile Include="Database\Metadata.cs" />
     <Compile Include="Database\StateActions\BaseStateAction.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="Encryption\SHA256Encryption.cs" />
     <Compile Include="Exceptions\StateWorkflowException.cs" />
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Extensions\CertificateExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\CommandInput.cs" />
@@ -131,8 +135,13 @@
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Utilities\SmartConsole.cs" />
     <Compile Include="WCF\AddressInfo.cs" />
+    <Compile Include="WCF\Bindings\BindingConfiguration.cs" />
     <Compile Include="WCF\Bindings\BindingFactory.cs" />
     <Compile Include="Services\IAuthCommand.cs" />
+    <Compile Include="WCF\Bindings\HttpPlusBinding.cs" />
+    <Compile Include="WCF\ServiceSecurity.cs" />
+    <Compile Include="WCF\Endpoints\HttpPlusEndpoint.cs" />
+    <Compile Include="WCF\Interfaces\ISecurity.cs" />
     <Compile Include="WCF\Interfaces\IBinding.cs" />
     <Compile Include="WCF\Endpoints\HttpEndpoint.cs" />
     <Compile Include="WCF\Endpoints\RestEndpoint.cs" />

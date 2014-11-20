@@ -61,13 +61,13 @@ namespace KonfDB.Infrastructure.Extensions
         public static ServiceType GetWcfServiceType(this EndPointType endPointType)
         {
             if (endPointType == EndPointType.http)
-                return ServiceType.BasicHttp;
+                return ServiceType.HTTP;
             if (endPointType == EndPointType.tcp)
-                return ServiceType.NetTcp;
+                return ServiceType.TCP;
             if (endPointType == EndPointType.rest)
                 return ServiceType.REST;
-            if (endPointType == EndPointType.azurerelay)
-                return ServiceType.AzureRelay;
+            if (endPointType == EndPointType.wshttp)
+                return ServiceType.HTTPPlus;
 
             throw new InvalidDataException("No ServiceType exists for EndPointType: " + endPointType);
         }

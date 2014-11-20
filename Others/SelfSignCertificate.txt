@@ -1,0 +1,2 @@
+makecert -sk RootCA -sky signature -sr localmachine -n "CN=PGPC" -ss TRUST -r RootTrustedCA.cer 
+makecert -sk server -ss MY -sky exchange -sr localmachine -n "CN=PGPC" -ic RootTrustedCA.cer -is TRUST Server.cer -pe

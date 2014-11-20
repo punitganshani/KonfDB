@@ -38,9 +38,9 @@ namespace KonfDBCF.Configuration.Runtime
         }
 
         [ConfigurationProperty("client", IsRequired = true)]
-        public ServiceTypeElement Client
+        public ClientServiceTypeElement Client
         {
-            get { return (ServiceTypeElement) this["client"]; }
+            get { return (ClientServiceTypeElement) this["client"]; }
             set { this["client"] = value; }
         }
 

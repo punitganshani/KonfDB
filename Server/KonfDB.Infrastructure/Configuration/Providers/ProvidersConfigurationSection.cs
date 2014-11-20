@@ -24,6 +24,7 @@
 #endregion
 
 using System.Configuration;
+using KonfDB.Infrastructure.Configuration.Providers.Certificate;
 using KonfDB.Infrastructure.Configuration.Providers.Database;
 using KonfDB.Infrastructure.Configuration.Providers.Types;
 
@@ -37,9 +38,10 @@ namespace KonfDB.Infrastructure.Configuration.Providers
             get { return (DatabaseProviderCollection) base["databaseProviders"]; }
         }
 
-        public DatabaseProviderElement ThisProvider
+        [ConfigurationProperty("certificates", IsRequired = false)]
+        public CertificateProviderCollection Certificate
         {
-            get { return Database.Default; }
+            get { return (CertificateProviderCollection) base["certificates"]; }
         }
 
         [ConfigurationProperty("providerTypes", IsRequired = true)]

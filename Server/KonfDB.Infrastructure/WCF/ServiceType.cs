@@ -27,9 +27,9 @@ namespace KonfDB.Infrastructure.WCF
 {
     public enum ServiceType
     {
-        BasicHttp,
-        NetTcp,
+        HTTP,
+        TCP,
         REST,
-        AzureRelay
+        HTTPPlus
     }
 }

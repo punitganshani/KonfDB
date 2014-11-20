@@ -28,12 +28,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading;
+using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Shell;
-using KonfDB.Infrastructure.WCF.Bindings;
-using KonfDB.Infrastructure.WCF.Endpoints;
+using KonfDB.Infrastructure.WCF.Interfaces;
 using Binding = KonfDB.Infrastructure.WCF.Bindings.BindingFactory;
 
 namespace KonfDB.Infrastructure.WCF
@@ -47,6 +48,10 @@ namespace KonfDB.Infrastructure.WCF
         private Hashtable _ports = new Hashtable();
         private List<IBinding> Bindings { get; set; }
 
+        private bool _hosted;
+        private bool _secured;
+        private ISecurity _security;
+
         public WcfService(string serverName, string serviceName)
         {
             //creating binding list
@@ -56,7 +61,7 @@ namespace KonfDB.Infrastructure.WCF
             _serviceName = serviceName;
 
             //create Service host
-            _svcHost = new ServiceHost(typeof(TService));
+            _svcHost = new ServiceHost(typeof (TService));
             _svcHost.Faulted += _svcHost_Faulted;
         }
 
@@ -68,7 +73,7 @@ namespace KonfDB.Infrastructure.WCF
                 Stop();
                 _svcHost.Abort();
                 CurrentContext.Default.Log.Debug("Service is stopped");
-                _svcHost = new ServiceHost(typeof(TService));
+                _svcHost = new ServiceHost(typeof (TService));
                 Host();
                 CurrentContext.Default.Log.Info("Service was in Faulted state. Re-hosting the service");
             }
@@ -80,25 +85,29 @@ namespace KonfDB.Infrastructure.WCF
 
         public void AddBinding(IBinding binding)
         {
-            if (_ports.ContainsKey(binding.Port))
+            if (_ports.ContainsKey(binding.Configuration.Port))
             {
                 var ex =
-                    new Exception("You are trying to add service of type '" + binding.ServiceType + "' on port '" +
-                                  binding.Port + "'." + Environment.NewLine
-                                  + "Service of type '" + _ports[binding.Port] + "' is already hosted on the same port.");
+                    new Exception("You are trying to add service of type '" + binding.Configuration.ServiceType +
+                                  "' on port '" +
+                                  binding.Configuration.Port + "'." + Environment.NewLine
+                                  + "Service of type '" + _ports[binding.Configuration.Port] +
+                                  "' is already hosted on the same port.");
 
                 CurrentContext.Default.Log.Error("An error occured", ex);
                 throw ex;
             }
 
-            _ports.Add(binding.Port, binding.ServiceType);
+            _ports.Add(binding.Configuration.Port, binding.Configuration.ServiceType);
 
             Bindings.Add(binding);
-            CurrentContext.Default.Log.Debug("Added a binding of the type : " + binding.ServiceType);
+            CurrentContext.Default.Log.Debug("Added a binding of the type : " + binding.Configuration.ServiceType);
         }
 
         public void Host()
         {
+            if (_hosted) return;
+
             if (Bindings.Count == 0)
             {
                 CurrentContext.Default.Log.Debug("No bindings found, will not host the service : ");
@@ -106,12 +115,14 @@ namespace KonfDB.Infrastructure.WCF
             }
 
             ConfigureEndPoints();
+
             var threadService = new Thread(StartService);
             threadService.Start();
         }
 
         public void Stop()
         {
+            _hosted = false;
             _pause.Set();
         }
 
@@ -129,11 +140,12 @@ namespace KonfDB.Infrastructure.WCF
                 return;
             }
 
-            CurrentContext.Default.Log.Debug("Service running on: " + Thread.CurrentThread.ManagedThreadId);
+            CurrentContext.Default.Log.Debug("Communication Service running on thread: " +
+                                             Thread.CurrentThread.ManagedThreadId);
             try
             {
-                CurrentContext.Default.Log.Debug("Hosting services on: " + GetAddressUrl());
                 _svcHost.Open();
+                _hosted = true;
             }
             catch (AddressAlreadyInUseException addressException)
             {
@@ -150,15 +162,26 @@ namespace KonfDB.Infrastructure.WCF
 
         private void ConfigureEndPoints()
         {
+            bool needsSecuredBindings = _security != null && _security.SecurityMode != ServiceSecurityMode.None;
             foreach (var binding in Bindings)
             {
                 var endPointTypeInstance = Activator.CreateInstance(binding.EndPointType);
-
                 if (endPointTypeInstance.InheritsFrom<IEndPoint>())
                 {
-                    var endPoint = (IEndPoint)endPointTypeInstance;
-                    var wcfEndPoint = endPoint.Host<TInterface>(_svcHost, _serverName, _serviceName, binding);
-                    CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndPoint.Address + " for type : " + binding.ServiceType);
+                    var endPoint = (IEndPoint) endPointTypeInstance;
+                    ServiceEndpoint wcfEndpoint;
+                    if (needsSecuredBindings)
+                    {
+                        wcfEndpoint = endPoint.HostSecured<TInterface>(_svcHost, _serverName, _serviceName, binding,
+                            _security);
+                    }
+                    else
+                    {
+                        wcfEndpoint = endPoint.Host<TInterface>(_svcHost, _serverName, _serviceName, binding);
+                    }
+
+                    CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndpoint.Address + " for type : " +
+                                                     binding.Configuration.ServiceType);
                 }
             }
 
@@ -175,7 +198,7 @@ namespace KonfDB.Infrastructure.WCF
         public override string ToString()
         {
             var builder = new StringBuilder();
-            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof(TService).Name, x.ToString())));
+            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof (TService).Name, x.ToString())));
             return builder.ToString().Trim();
         }
 
@@ -186,6 +209,19 @@ namespace KonfDB.Infrastructure.WCF
             _svcHost = null;
             _ports = null;
             Bindings = null;
+            _secured = false;
+            _hosted = false;
+        }
+
+        public void SetSecured(ISecurity security)
+        {
+            if (_secured) return;
+            if (Bindings.Count == 0) return;
+            if (_svcHost.Credentials.ServiceCertificate.Certificate != null) return;
+
+            _security = security;
+            _svcHost.Credentials.ServiceCertificate.Certificate = security.CertificateConfiguration.GetX509Certificate();
+            _secured = true;
         }
     }
 }

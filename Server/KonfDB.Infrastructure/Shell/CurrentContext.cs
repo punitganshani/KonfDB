@@ -59,7 +59,7 @@ namespace KonfDB.Infrastructure.Shell
             this.Cache = cacheStore;
         }
 
-        internal static IContext CreateDefault(Logger logger, IArguments arguments, InMemoryCacheStore cacheStore)
+        public static IContext CreateDefault(Logger logger, IArguments arguments, InMemoryCacheStore cacheStore)
         {
             return _defaultContext ?? (_defaultContext = new CurrentContext(logger, arguments, cacheStore));
         }

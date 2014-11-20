@@ -76,6 +76,7 @@
     <Compile Include="Enums\AuditReason.cs" />
     <Compile Include="Enums\EnvironmentType.cs" />
     <Compile Include="Enums\RoleType.cs" />
+    <Compile Include="Enums\ServiceSecurityMode.cs" />
     <Compile Include="Enums\SuiteTypes.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Interfaces\IAuthenticationOutput.cs" />

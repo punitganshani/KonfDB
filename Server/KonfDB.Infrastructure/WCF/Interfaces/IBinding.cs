@@ -24,14 +24,15 @@
 #endregion
 
 using System;
+using KonfDB.Infrastructure.WCF.Bindings;
+using Binding = System.ServiceModel.Channels.Binding;
 
-namespace KonfDB.Infrastructure.WCF.Bindings
+namespace KonfDB.Infrastructure.WCF.Interfaces
 {
     public interface IBinding
     {
-        string Port { get; set; }
-        System.ServiceModel.Channels.Binding WcfBinding { get; set; }
-        ServiceType ServiceType { get; set; }
+        Binding WcfBinding { get; set; }
+        BindingConfiguration Configuration { get; set; }
         Type EndPointType { get; set; }
         DataTypeSupport DataTypes { get; set; }
     }
@@ -39,7 +40,7 @@ namespace KonfDB.Infrastructure.WCF.Bindings
     [Flags]
     public enum DataTypeSupport
     {
-        Native=2,
-        Json=4
+        Native = 2,
+        Json = 4
     }
 }

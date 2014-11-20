@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using KonfDB.Infrastructure.Common;
+using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Shell;
 
 namespace KonfDB.Infrastructure.WCF
@@ -117,9 +118,9 @@ namespace KonfDB.Infrastructure.WCF
         }
 
         public static WcfClient<T> Create(ServiceType type, string serverName,
-            string port, string serviceName)
+            string port, string serviceName, ServiceSecurityMode mode = ServiceSecurityMode.None)
         {
-            var address = new AddressInfo(type, serverName, port, serviceName);
+            var address = new AddressInfo(type, serverName, port, serviceName, mode);
             var obj = address.CreateChannel<T>();
             return new WcfClient<T>(obj, type, serverName, port, serviceName);
         }

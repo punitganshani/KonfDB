@@ -31,11 +31,13 @@ using System.ServiceProcess;
 using System.Threading;
 using KonfDB.Engine.Services;
 using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.WCF;
 using KonfDB.Infrastructure.WCF.Bindings;
+using KonfDB.Infrastructure.WCF.Interfaces;
 
 namespace KonfDBHost
 {
@@ -69,12 +71,19 @@ namespace KonfDBHost
                     AppContext.Current.Config.Runtime.SuperUser.Password), null);
 
             var serviceConfig = AppContext.Current.Config.Runtime.Server;
-            _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost", "CommandService");
+            _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost",
+                "CommandService");
             _serviceHostJson = new WcfService<ICommandService<string>, JsonCommandService>("localhost", "CommandService");
 
             for (int i = 0; i < serviceConfig.Count; i++)
             {
-                var binding = BindingFactory.Create(serviceConfig[i].GetWcfServiceType(), serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture));
+                var configuration = new BindingConfiguration
+                {
+                    Port = serviceConfig[i].Port.ToString(CultureInfo.InvariantCulture),
+                    ServiceType = serviceConfig[i].GetWcfServiceType()
+                };
+
+                var binding = BindingFactory.Create(configuration);
                 if (binding.DataTypes.IsSet(DataTypeSupport.Native))
                 {
                     _serviceHostNative.AddBinding(binding);
@@ -84,7 +93,19 @@ namespace KonfDBHost
                     _serviceHostJson.AddBinding(binding);
                 }
             }
- 
+
+            if (AppContext.Current.Config.Runtime.ServiceSecurity == ServiceSecurityMode.BasicSSL)
+            {
+                var serviceSecurity = new ServiceSecurity
+                {
+                    CertificateConfiguration = AppContext.Current.Config.Providers.Certificate.Default,
+                    SecurityMode = AppContext.Current.Config.Runtime.ServiceSecurity
+                };
+
+                _serviceHostJson.SetSecured(serviceSecurity);
+                _serviceHostNative.SetSecured(serviceSecurity);
+            }
+
             _serviceHostNative.Host();
             _serviceHostJson.Host();
 
@@ -105,7 +126,7 @@ namespace KonfDBHost
             var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>)settingsOutput.Data;
+                var settings = (Dictionary<string, string>) settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     AppContext.Current.ApplicationParams.Add(setting.Key, setting.Value);

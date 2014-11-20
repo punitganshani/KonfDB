@@ -25,10 +25,8 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using KonfDB.Infrastructure.Shell;
-using KonfDB.Infrastructure.WCF.Bindings;
+using KonfDB.Infrastructure.WCF.Interfaces;
 using Binding = KonfDB.Infrastructure.WCF.Bindings.BindingFactory;
 
 namespace KonfDB.Infrastructure.WCF.Endpoints
@@ -38,40 +36,54 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
         public ServiceEndpoint Host<T>(ServiceHost host, string serverName, string serviceName, IBinding binding)
         {
             const string addressUriFormat = "{0}://{1}:{2}/{3}/";
-
-            string endpointAddress = string.Format(addressUriFormat, "http", serverName, binding.Port,
+            string endpointAddress = string.Format(addressUriFormat, "http", serverName, binding.Configuration.Port,
                 serviceName);
-
-            #region MEX
-
-            // MEX
+            ;
             var smb = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
-            var mexAddress = new Uri(endpointAddress + "MEX");
             if (smb == null)
             {
-                var mexBinding = new CustomBinding(CreateMex(binding.ServiceType));
-
-                var metaBehavior = new ServiceMetadataBehavior {HttpGetEnabled = true, HttpGetUrl = mexAddress};
-                host.Description.Behaviors.Add(metaBehavior);
-                host.AddServiceEndpoint(typeof (IMetadataExchange), mexBinding, mexAddress);
-            }
-            else
-            {
-                smb.HttpGetEnabled = true;
-                smb.HttpGetUrl = mexAddress;
+                smb = new ServiceMetadataBehavior {MetadataExporter = {PolicyVersion = PolicyVersion.Policy15}};
+                host.Description.Behaviors.Add(smb);
             }
 
-            #endregion
+            var mexAddress = new Uri(endpointAddress + "MEX");
+            smb.HttpGetEnabled = true;
+            smb.HttpGetUrl = mexAddress;
 
-            // add endpoint of service
-            var wcfBinding = binding.WcfBinding;
-            return host.AddServiceEndpoint(typeof (T), wcfBinding, endpointAddress);
+            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                MetadataExchangeBindings.CreateMexHttpBinding(), mexAddress);
+
+            return serviceEndpoint;
         }
 
-        internal static System.ServiceModel.Channels.Binding CreateMex(ServiceType serviceTypes)
+        public ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
+            ISecurity security)
         {
-            CurrentContext.Default.Log.Debug("Created MEX type : " + serviceTypes);
-            return MetadataExchangeBindings.CreateMexHttpBinding();
+            const string addressUriFormat = "{0}://{1}:{2}/{3}/";
+            string endpointAddress = string.Format(addressUriFormat, "https", serverName, binding.Configuration.Port,
+                serviceName);
+            var httpBinding = binding.WcfBinding as BasicHttpBinding;
+            var smb = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
+            if (smb == null)
+            {
+                smb = new ServiceMetadataBehavior();
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                host.Description.Behaviors.Add(smb);
+            }
+
+            httpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+            httpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+
+            var mexAddress = new Uri(endpointAddress + "MEX");
+            smb.HttpsGetEnabled = true;
+            smb.HttpsGetUrl = mexAddress;
+
+            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                MetadataExchangeBindings.CreateMexHttpsBinding(), mexAddress);
+
+            return serviceEndpoint;
         }
     }
 }

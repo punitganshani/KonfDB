@@ -34,7 +34,7 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         tcp = 100,
         http = 200,
         rest = 300,
-        azurerelay = 400
+        wshttp = 400
     }
 
     public class ServiceTypeElement : ConfigurationElement
@@ -53,16 +53,19 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
             set { this["type"] = value; }
         }
 
-        [ConfigurationProperty("host", IsRequired = false)]
+        public ServiceType GetWcfServiceType()
+        {
+            return this.Type.GetWcfServiceType();
+        }
+    }
+
+    public class ClientServiceTypeElement : ServiceTypeElement
+    {
+        [ConfigurationProperty("host", IsRequired = true, IsKey = true)]
         public string Host
         {
             get { return (string) this["host"]; }
             set { this["host"] = value; }
-        }
-
-        public ServiceType GetWcfServiceType()
-        {
-            return this.Type.GetWcfServiceType();
         }
     }
 }

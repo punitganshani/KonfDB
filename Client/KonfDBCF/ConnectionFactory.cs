@@ -29,6 +29,7 @@ using System.ServiceModel;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
@@ -125,10 +126,18 @@ namespace KonfDBCF
             _username = arguments["username"];
             _host = arguments["host"];
 
+
+            if (arguments.ContainsKey("securityMode") &&
+                arguments["securityMode"].ToEnum<ServiceSecurityMode>() == ServiceSecurityMode.BasicSSL)
+            {
+                //TODO: Nothing to do as of now, but keeping a placeholder in case we go for Mutual SSL
+            }
+
             if (_commandServiceProxy == null)
             {
                 WcfClient<ICommandService<object>> client =
-                    WcfClient<ICommandService<object>>.Create(_endPointType.GetWcfServiceType(), _host,
+                    WcfClient<ICommandService<object>>.Create(_endPointType.GetWcfServiceType(),
+                        _host,
                         _port.ToString(CultureInfo.InvariantCulture),
                         "CommandService");
                 client.OnFaulted += client_OnFaulted;

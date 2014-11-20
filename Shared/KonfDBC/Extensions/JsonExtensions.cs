@@ -25,7 +25,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Extensions
@@ -41,7 +40,7 @@ namespace KonfDB.Infrastructure.Extensions
                 Formatting = Formatting.Indented,
                 ObjectCreationHandling = ObjectCreationHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
-            }; 
+            };
         }
 
         public static T FromJsonToObject<T>(this string value)
@@ -59,7 +58,7 @@ namespace KonfDB.Infrastructure.Extensions
             var valueAsList = value as IList;
             if (valueAsList != null)
             {
-                return ToJson((IList)value, settings);
+                return ToJson((IList) value, settings);
             }
 
             try
@@ -79,7 +78,7 @@ namespace KonfDB.Infrastructure.Extensions
 
         public static string ToJsonUnIndented(this object value)
         {
-            var settings =   new JsonSerializerSettings
+            var settings = new JsonSerializerSettings
             {
                 Formatting = Formatting.None,
                 ObjectCreationHandling = ObjectCreationHandling.Auto,
@@ -90,7 +89,7 @@ namespace KonfDB.Infrastructure.Extensions
 
         public static string ToJson<T>(this List<T> value)
         {
-            return JsonConvert.SerializeObject(value, typeof(List<T>), Settings);
+            return JsonConvert.SerializeObject(value, typeof (List<T>), Settings);
         }
 
         public static string ToJson(this IList value)
@@ -100,7 +99,7 @@ namespace KonfDB.Infrastructure.Extensions
 
         public static string ToJson<T>(this List<T> value, JsonSerializerSettings settings)
         {
-            return JsonConvert.SerializeObject(value, typeof(List<T>), settings);
+            return JsonConvert.SerializeObject(value, typeof (List<T>), settings);
         }
 
         public static string ToJson(this IList value, JsonSerializerSettings settings)

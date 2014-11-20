@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'GetApplicationConfiguration.cs' is part of KonfDB application - 
+//     This file 'HttpsService.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -26,34 +26,34 @@
 using System;
 using System.Collections.Generic;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
+using KonfDB.Infrastructure.Utilities;
+using KonfDBCF;
 
-namespace KonfDBCF.Sample
+namespace KonfDB.RefSamples.CoreWCF
 {
-    public class GetApplicationConfiguration
+    public class HttpsService
     {
         public static void GetAppConfiguration()
         {
-            try
+            var args = new CommandArgs(string.Empty);
+            args.Add("type", "http");
+            args.Add("port", "8090");
+            args.Add("host", "localhost");
+            args.Add("username", "konfdbuser_ro");
+            args.Add("password", "konfdbuser_ro");
+
+            args.Add("securityMode", "BasicSSL");
+
+            var userToken = ConnectionFactory.GetUserToken(args);
+            var commandService = ConnectionFactory.GetInstance();
+            var output = commandService.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9", userToken);
+            if (output != null)
             {
-                var userToken = CConnectionFactory.GetUserToken();
-                var commandService = CConnectionFactory.GetInstance();
-                // If we got back a token, means user was authenticated
-                if (userToken != null)
-                {
-                    var output = commandService.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9", userToken);
-                    if (output != null)
-                    {
-                        var parameters = (List<ConfigurationModel>) output.Data;
-                        parameters.ForEach(param => Console.WriteLine(param.ParameterName + "=" + param.ParameterValue));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
+                var parameters = (List<ConfigurationModel>) output.Data;
+                parameters.ForEach(param => Console.WriteLine(param.ParameterName + "=" + param.ParameterValue));
             }
 
-            Console.WriteLine("Press any key to exit..");
+
             Console.ReadKey();
         }
     }
