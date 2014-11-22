@@ -50,12 +50,12 @@ namespace KonfDB.Engine.Commands.Shared
 
         public string Keyword
         {
-            get { return "promote"; }
+            get { return "Promote"; }
         }
 
         public string Command
         {
-            get { return "promote /sid:id /from:id /to:id [/clone-param:y|n]"; }
+            get { return "Promote /sid:id /from:id /to:id [/clone-param:y|n]"; }
         }
 
         public string Help
