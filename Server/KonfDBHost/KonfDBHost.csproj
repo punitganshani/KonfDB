@@ -46,6 +46,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
+	<BuildPackage>true</BuildPackage>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,6 +57,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
+	<BuildPackage>true</BuildPackage>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>	
