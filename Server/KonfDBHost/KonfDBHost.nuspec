@@ -12,5 +12,24 @@
     <releaseNotes>Initial Release</releaseNotes>
     <copyright>Copyright Punit Ganshani, 2014</copyright>
     <tags>konfdb, configuration, cross-platform, .net, mobile, web, iis, windows service</tags>
+    <dependencies>
+            <dependency id="EntityFramework" version="6.1.1" />
+            <dependency id="log4net" version="2.0.3" />
+            <dependency id="Newtonsoft.Json" version="6.0.6" />
+        </dependencies>
   </metadata>
+   <files>
+        <file src="bin\Release-Net4.5\v4.5\KonfDBH.exe" target="lib\net45\KonfDBH.exe" />
+        <file src="bin\Release-Net4.5\v4.5\KonfDBH.exe.config" target="lib\net45\KonfDBH.exe.config" />
+        <file src="bin\Release-Net4.5\v4.5\KonfDBC.dll" target="lib\net45\KonfDBC.dll" />
+        <file src="bin\Release-Net4.5\v4.5\KonfDBE.dll" target="lib\net45\KonfDBE.dll" />
+        <file src="bin\Release-Net4.5\v4.5\KonfDBI.dll" target="lib\net45\KonfDBI.dll" />
+
+        <file src="bin\Release-Net4.0\v4.0\KonfDBH.exe" target="lib\net40\KonfDBH.exe" />
+        <file src="bin\Release-Net4.0\v4.0\KonfDBH.exe.config" target="lib\net40\KonfDBH.exe.config" />
+        
+        <file src="bin\Release-Net4.0\v4.0\KonfDBC.dll" target="lib\net40\KonfDBC.dll" />
+        <file src="bin\Release-Net4.0\v4.0\KonfDBE.dll" target="lib\net40\KonfDBE.dll" />
+        <file src="bin\Release-Net4.0\v4.0\KonfDBI.dll" target="lib\net40\KonfDBI.dll" />
+    </files>
 </package>
