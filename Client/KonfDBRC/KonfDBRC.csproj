@@ -142,9 +142,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)Package\$(ConfigurationName)\KonfDBRC"  /E /I /Y
-xcopy "$(TargetDir)*.exe*" "$(SolutionDir)Package\$(ConfigurationName)\KonfDBRC"  /E /I /Y
-del "$(SolutionDir)Package\$(ConfigurationName)\KonfDBRC\*.vshost*" /Q</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)Package\lib\$(NugetDirectory)\KonfDBRC"  /E /I /Y
+xcopy "$(TargetDir)*.exe*" "$(SolutionDir)Package\lib\$(NugetDirectory)\KonfDBRC"  /E /I /Y
+del "$(SolutionDir)Package\lib\$(NugetDirectory)\KonfDBRC\*.vshost*" /Q</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
