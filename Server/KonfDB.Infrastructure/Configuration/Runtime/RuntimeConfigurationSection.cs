@@ -54,7 +54,7 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         [ConfigurationProperty("securityMode", IsRequired = false)]
         public ServiceSecurityMode ServiceSecurity
         {
-            get { return (ServiceSecurityMode)this["securityMode"]; }
+            get { return (ServiceSecurityMode) this["securityMode"]; }
             set { this["securityMode"] = value; }
         }
 
@@ -65,9 +65,9 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         }
 
         [ConfigurationProperty("superuser", IsRequired = true)]
-        public SuperUserElement SuperUser
+        public UserElement SuperUser
         {
-            get { return (SuperUserElement) this["superuser"]; }
+            get { return (UserElement) this["superuser"]; }
             set { this["superuser"] = value; }
         }
     }

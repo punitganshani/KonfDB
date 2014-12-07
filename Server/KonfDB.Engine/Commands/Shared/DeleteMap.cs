@@ -59,7 +59,7 @@ namespace KonfDB.Engine.Commands.Shared
             var mapId = long.Parse(arguments["mid"]);
             var suiteId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            var success = AppContext.Current.Provider.ConfigurationStore.DeleteMapping(userId, suiteId, mapId);
+            var success = HostContext.Current.Provider.ConfigurationStore.DeleteMapping(userId, suiteId, mapId);
 
             output.DisplayMessage = success ? "Mapping deleted successfully!" : "Could not delete Mapping";
 

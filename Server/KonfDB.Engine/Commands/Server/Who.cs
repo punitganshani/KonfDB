@@ -55,7 +55,7 @@ namespace KonfDB.Engine.Commands.Server
 
         public CommandOutput OnExecute(CommandInput arguments)
         {
-            var authOutput = AppContext.Current.GetUsers();
+            var authOutput = HostContext.Current.GetUsers();
             var output = new CommandOutput
             {
                 PostAction = CommandOutput.PostCommandAction.None,

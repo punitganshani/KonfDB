@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var paramId = long.Parse(arguments["pid"]);
             long userId = arguments.GetUserId();
-            var success = AppContext.Current.Provider.ConfigurationStore.DeleteParameter(userId, paramId);
+            var success = HostContext.Current.Provider.ConfigurationStore.DeleteParameter(userId, paramId);
 
             output.DisplayMessage = success ? "Parameter deleted successfully!" : "Could not delete Parameter";
 

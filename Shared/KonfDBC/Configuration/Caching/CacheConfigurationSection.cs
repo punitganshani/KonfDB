@@ -28,12 +28,6 @@ using KonfDB.Infrastructure.Configuration.Interfaces;
 
 namespace KonfDB.Infrastructure.Configuration.Caching
 {
-    public enum CacheMode
-    {
-        Sliding,
-        Absolute
-    }
-
     public class CacheConfigurationSection : ConfigurationSection, ICacheConfiguration
     {
         [ConfigurationProperty("enabled", IsRequired = true)]

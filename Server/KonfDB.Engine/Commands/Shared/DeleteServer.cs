@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var serverId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            var success = AppContext.Current.Provider.ConfigurationStore.DeleteServer(userId, serverId);
+            var success = HostContext.Current.Provider.ConfigurationStore.DeleteServer(userId, serverId);
 
             output.DisplayMessage = success ? "Server deleted successfully!" : "Could not delete server";
 

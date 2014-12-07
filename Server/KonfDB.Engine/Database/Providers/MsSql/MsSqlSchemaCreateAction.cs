@@ -59,7 +59,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
                 }
                 catch (Exception ex)
                 {
-                    AppContext.Current.Log.Error("Error while creating table", ex);
+                    HostContext.Current.Log.Error("Error while creating table", ex);
                 }
             }
         }

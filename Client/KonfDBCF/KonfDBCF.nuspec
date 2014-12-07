@@ -4,12 +4,12 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners> 
+    <authors>Punit Ganshani</authors>
+    <owners>Punit Ganshani</owners> 
     <projectUrl>http://www.konfdb.com</projectUrl>
     <iconUrl>http://www.ganshani.com/konfdb/wp-content/uploads/sites/6/2014/09/cropped-logo1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>.NET Client Framework for KonfDB - Configuration Management as a Service</description>
     <releaseNotes>Bug fixes, configuration and service changes. Recommended to use with KonfDB 0.4</releaseNotes>
     <copyright>Copyright Punit Ganshani 2014</copyright>
     <tags>konfdb konfdbcf configuration</tags>

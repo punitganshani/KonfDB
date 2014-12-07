@@ -37,13 +37,13 @@ namespace KonfDB.Infrastructure.Shell
     /// <summary>
     ///     Application Context for KonfDBHost
     /// </summary>
-    internal class AppContext
+    internal class HostContext
     {
-        private static AppContext _current;
+        private static HostContext _current;
 
-        internal static AppContext Current
+        internal static HostContext Current
         {
-            get { return _current ?? (_current = new AppContext(AppConfig.ThisSection)); }
+            get { return _current ?? (_current = new HostContext(AppConfig.ThisSection)); }
         }
 
         internal AppType ApplicationType;
@@ -64,7 +64,7 @@ namespace KonfDB.Infrastructure.Shell
             get { return CurrentContext.Default.ApplicationParams; }
         }
 
-        private AppContext(AppConfig configuration)
+        private HostContext(AppConfig configuration)
         {
             Config = configuration;
             UserTokens = new List<string>();

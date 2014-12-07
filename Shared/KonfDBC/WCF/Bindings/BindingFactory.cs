@@ -70,7 +70,8 @@ namespace KonfDB.Infrastructure.WCF.Bindings
                 case ServiceType.REST:
                     return Binding.Create(config, new RestBinding(), typeof (RestEndpoint), DataTypeSupport.Json);
                 case ServiceType.HTTPPlus:
-                    return Binding.Create(config, new HttpPlusBinding(), typeof (HttpPlusEndpoint), DataTypeSupport.Native);
+                    return Binding.Create(config, new HttpPlusBinding(), typeof (HttpPlusEndpoint),
+                        DataTypeSupport.Native);
             }
 
             throw new NotImplementedException("Unknown Binding");

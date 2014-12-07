@@ -44,7 +44,8 @@ namespace KonfDB.Infrastructure.WCF
         public string ServiceName { get; private set; }
         public ServiceSecurityMode SecurityMode { get; private set; }
 
-        public AddressInfo(ServiceType type, string serverName, string port, string serviceName, ServiceSecurityMode mode)
+        public AddressInfo(ServiceType type, string serverName, string port, string serviceName,
+            ServiceSecurityMode mode)
         {
             if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(port) || string.IsNullOrEmpty(serverName))
                 throw new ArgumentException("One or more arguments are either NULL or empty.");
@@ -113,7 +114,7 @@ namespace KonfDB.Infrastructure.WCF
                     prefix = useSSL ? "https" : "http";
                     if (useSSL)
                     {
-                        binding = new HttpPlusBinding()
+                        binding = new HttpPlusBinding
                         {
                             Security =
                             {
@@ -139,7 +140,7 @@ namespace KonfDB.Infrastructure.WCF
                 case ServiceType.REST:
                     if (useSSL)
                     {
-                        binding = new RestBinding()
+                        binding = new RestBinding
                         {
                             Security =
                             {
@@ -156,7 +157,6 @@ namespace KonfDB.Infrastructure.WCF
                     else
                     {
                         binding = new RestBinding();
-
                     }
                     prefix = useSSL ? "https" : "http";
                     break;

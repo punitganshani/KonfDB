@@ -63,7 +63,7 @@ namespace KonfDB.Engine.Commands.Shared
             long userId = arguments.GetUserId();
             if (arguments["name"] != null)
             {
-                model = AppContext.Current.Provider.ConfigurationStore.GetServer(userId, arguments["name"]);
+                model = HostContext.Current.Provider.ConfigurationStore.GetServer(userId, arguments["name"]);
                 completed = true;
             }
             else if (arguments["id"] != null)
@@ -73,7 +73,7 @@ namespace KonfDB.Engine.Commands.Shared
 
                 if (serverId != -1)
                 {
-                    model = AppContext.Current.Provider.ConfigurationStore.GetServer(userId, serverId);
+                    model = HostContext.Current.Provider.ConfigurationStore.GetServer(userId, serverId);
                     completed = true;
                 }
             }

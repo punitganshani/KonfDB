@@ -59,7 +59,7 @@ namespace KonfDB.Engine.Commands.Shared
             long suiteId = -1;
             long userId = arguments.GetUserId();
             long.TryParse(arguments["sid"], out suiteId);
-            var model = AppContext.Current.Provider.ConfigurationStore.GetRegions(userId, suiteId);
+            var model = HostContext.Current.Provider.ConfigurationStore.GetRegions(userId, suiteId);
 
             output.Data = model;
             output.DisplayMessage = "Success";

@@ -58,10 +58,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -78,6 +79,12 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\TrustedAssemblyInfo.cs">
+      <Link>Properties\TrustedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Commands\Server\GetSettings.cs" />
     <Compile Include="Commands\Server\AddAudit.cs" />
     <Compile Include="Commands\Server\Who.cs" />
@@ -230,7 +237,6 @@
       <DependentUpon>KonfDBModel.edmx</DependentUpon>
       <LastGenOutput>KonfDBModel.cs</LastGenOutput>
     </None>
-    <None Include="konfdb.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

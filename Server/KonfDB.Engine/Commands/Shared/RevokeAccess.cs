@@ -57,7 +57,7 @@ namespace KonfDB.Engine.Commands.Shared
             string username = arguments["user"];
             long loggedInUserId = arguments.GetUserId();
 
-            bool success = AppContext.Current.Provider.ConfigurationStore.RevokeRoleAccessToSuite(suiteId,
+            bool success = HostContext.Current.Provider.ConfigurationStore.RevokeRoleAccessToSuite(suiteId,
                 loggedInUserId, username);
             output.Data = success;
             output.DisplayMessage = success

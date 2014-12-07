@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'SuperUserElement.cs' is part of KonfDB application - 
+//     This file 'ClientServiceTypeElement.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,23 +24,38 @@
 #endregion
 
 using System.Configuration;
+using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.WCF;
 
-namespace KonfDB.Infrastructure.Configuration.Runtime
+namespace KonfDBCF.Configuration.Runtime
 {
-    public class SuperUserElement : ConfigurationElement
+    public class ClientServiceTypeElement : ConfigurationElement, IServiceTypeElement
     {
-        [ConfigurationProperty("username", IsRequired = true)]
-        public string Username
+        [ConfigurationProperty("host", IsRequired = true, IsKey = true)]
+        public string Host
         {
-            get { return (string) this["username"]; }
-            set { this["username"] = value; }
+            get { return (string) this["host"]; }
+            set { this["host"] = value; }
         }
 
-        [ConfigurationProperty("password", IsRequired = true)]
-        public string Password
+        [ConfigurationProperty("port", IsRequired = true, IsKey = true)]
+        public int Port
         {
-            get { return (string) this["password"]; }
-            set { this["password"] = value; }
+            get { return (int) this["port"]; }
+            set { this["port"] = value; }
+        }
+
+        [ConfigurationProperty("type", IsRequired = true)]
+        public EndPointType Type
+        {
+            get { return (EndPointType) this["type"]; }
+            set { this["type"] = value; }
+        }
+
+        public ServiceType GetWcfServiceType()
+        {
+            return this.Type.GetWcfServiceType();
         }
     }
 }

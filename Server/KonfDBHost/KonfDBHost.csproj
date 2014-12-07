@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KonfDBHost</RootNamespace>
     <AssemblyName>KonfDBH</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion><NugetDirectory>net40</NugetDirectory>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <NugetDirectory>net40</NugetDirectory>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -46,36 +47,37 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
-	
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Net4.5|AnyCPU' ">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Net4.5|AnyCPU' ">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
-	
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>	
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Net4.5|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>	
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>konfdb.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>KonfDBHost.Program</StartupObject>
@@ -104,6 +106,9 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
@@ -120,7 +125,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="konfdb.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

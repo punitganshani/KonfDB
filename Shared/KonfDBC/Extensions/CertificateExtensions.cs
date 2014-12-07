@@ -62,7 +62,8 @@ namespace KonfDB.Infrastructure.Extensions
             var storeCertificate = certificate.GetX509Certificate();
 
             const string netshGrantAccess = "http add urlacl url=https://+:{0}/ user=EVERYONE";
-            const string netshAddCertificate = "http add sslcert ipport=0.0.0.0:{0} certhash={1} appid={{{2}}} clientcertnegotiation=enable";
+            const string netshAddCertificate =
+                "http add sslcert ipport=0.0.0.0:{0} certhash={1} appid={{{2}}} clientcertnegotiation=enable";
 
             var grantAccessProcess = new Process
             {
@@ -89,7 +90,7 @@ namespace KonfDB.Infrastructure.Extensions
 
             grantAccessProcess.Start();
             CurrentContext.Default.Log.Debug("netsh " + grantAccessProcess.StartInfo.Arguments + " >> " +
-                                          grantAccessProcess.StandardOutput.ReadToEnd());
+                                             grantAccessProcess.StandardOutput.ReadToEnd());
             grantAccessProcess.WaitForExit();
 
 
@@ -119,7 +120,8 @@ namespace KonfDB.Infrastructure.Extensions
 
             bindPortToCertificate.Start();
             string output = bindPortToCertificate.StandardOutput.ReadToEnd();
-            CurrentContext.Default.Log.Debug("Executed : netsh " + bindPortToCertificate.StartInfo.Arguments + " with output: " +
+            CurrentContext.Default.Log.Debug("Executed : netsh " + bindPortToCertificate.StartInfo.Arguments +
+                                             " with output: " +
                                              output);
             bindPortToCertificate.WaitForExit();
         }

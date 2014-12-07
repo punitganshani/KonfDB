@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var regionId = long.Parse(arguments["rid"]);
             long userId = arguments.GetUserId();
-            var success = AppContext.Current.Provider.ConfigurationStore.DeleteRegion(userId, regionId);
+            var success = HostContext.Current.Provider.ConfigurationStore.DeleteRegion(userId, regionId);
 
             output.DisplayMessage = success ? "Region deleted successfully!" : "Could not delete Region";
 

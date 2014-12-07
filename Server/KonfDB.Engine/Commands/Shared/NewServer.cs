@@ -59,7 +59,7 @@ namespace KonfDB.Engine.Commands.Shared
             var name = arguments["name"];
             long suiteId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            var server = AppContext.Current.Provider.ConfigurationStore.AddServer(new ServerModel
+            var server = HostContext.Current.Provider.ConfigurationStore.AddServer(new ServerModel
             {
                 ServerName = name,
                 IsActive = true,

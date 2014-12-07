@@ -70,7 +70,7 @@ namespace KonfDB.Engine.Commands.Shared
 
             if (suiteId != -1)
             {
-                listOfParams = AppContext.Current.Provider.ConfigurationStore.GetParametersLike(userId, suiteId, name);
+                listOfParams = HostContext.Current.Provider.ConfigurationStore.GetParametersLike(userId, suiteId, name);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace KonfDB.Engine.Commands.Shared
                 var pk = arguments["pk"];
                 if (pk != null)
                 {
-                    var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(userId, suiteId);
+                    var suite = HostContext.Current.Provider.ConfigurationStore.GetSuite(userId, suiteId);
 
                     if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                     {

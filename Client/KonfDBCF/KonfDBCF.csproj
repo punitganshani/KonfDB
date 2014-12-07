@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KonfDBCF</RootNamespace>
     <AssemblyName>KonfDBCF</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion><NugetDirectory>net40</NugetDirectory>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <NugetDirectory>net40</NugetDirectory>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -33,29 +34,29 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-	
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Net4.5|AnyCPU' ">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Net4.5|AnyCPU' ">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-	
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>	
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Net4.5|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>	
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -89,136 +90,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Caching\InMemoryCacheStore.cs">
-      <Link>Caching\InMemoryCacheStore.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Common\DataEventArgs.cs">
-      <Link>Common\DataEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Caching\CacheConfigurationSection.cs">
-      <Link>Configuration\Caching\CacheConfigurationSection.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Interfaces\ICacheConfiguration.cs">
-      <Link>Configuration\Interfaces\ICacheConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Interfaces\ICertificateConfiguration.cs">
-      <Link>Configuration\Interfaces\ICertificateConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Runtime\ServiceTypeElement.cs">
-      <Link>Configuration\Runtime\ServiceTypeElement.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Configuration\Runtime\SuperUserElement.cs">
-      <Link>Configuration\Runtime\SuperUserElement.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\DataResolvers\SharedTypeResolver.cs">
-      <Link>DataResolvers\SharedTypeResolver.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\BaseException.cs">
-      <Link>Exceptions\BaseException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\EncryptionException.cs">
-      <Link>Exceptions\EncryptionException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\InvalidConfigurationException.cs">
-      <Link>Exceptions\InvalidConfigurationException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\StateWorkflowException.cs">
-      <Link>Exceptions\StateWorkflowException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\UnauthorizedUserException.cs">
-      <Link>Exceptions\UnauthorizedUserException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Exceptions\UserAlreadyExistsException.cs">
-      <Link>Exceptions\UserAlreadyExistsException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\CertificateExtensions.cs">
-      <Link>Extensions\CertificateExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\EnumExtensions.cs">
-      <Link>Extensions\EnumExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Extensions\StringExtensions.cs">
-      <Link>Extensions\StringExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Logging\Logger.cs">
-      <Link>Logging\Logger.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Shell\CurrentContext.cs">
-      <Link>Shell\CurrentContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Shell\IContext.cs">
-      <Link>Shell\IContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Utilities\CommandArgs.cs">
-      <Link>Utilities\CommandArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\Utilities\IArguments.cs">
-      <Link>Utilities\IArguments.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\AddressInfo.cs">
-      <Link>WCF\AddressInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Behavior\FaultingWebHttpBehavior.cs">
-      <Link>WCF\Behavior\FaultingWebHttpBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\BindingConfiguration.cs">
-      <Link>WCF\Bindings\BindingConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\BindingFactory.cs">
-      <Link>WCF\Bindings\BindingFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\HttpBinding.cs">
-      <Link>WCF\Bindings\HttpBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\HttpPlusBinding.cs">
-      <Link>WCF\Bindings\HttpPlusBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\RestBinding.cs">
-      <Link>WCF\Bindings\RestBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Bindings\TcpBinding.cs">
-      <Link>WCF\Bindings\TcpBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\HttpEndpoint.cs">
-      <Link>WCF\Endpoints\HttpEndpoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\HttpPlusEndpoint.cs">
-      <Link>WCF\Endpoints\HttpPlusEndpoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\NetTcpEndpoint.cs">
-      <Link>WCF\Endpoints\NetTcpEndpoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Endpoints\RestEndpoint.cs">
-      <Link>WCF\Endpoints\RestEndpoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\FaultReason.cs">
-      <Link>WCF\FaultReason.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\IBinding.cs">
-      <Link>WCF\Interfaces\IBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\IEndPoint.cs">
-      <Link>WCF\Interfaces\IEndPoint.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Interfaces\ISecurity.cs">
-      <Link>WCF\Interfaces\ISecurity.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceError.cs">
-      <Link>WCF\ServiceError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\ServiceType.cs">
-      <Link>WCF\ServiceType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\Status.cs">
-      <Link>WCF\Status.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\WcfClient.cs">
-      <Link>WCF\WcfClient.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\KonfDB.Infrastructure\WCF\WCFExtensions.cs">
-      <Link>WCF\WCFExtensions.cs</Link>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configuration\Caching\CacheConfiguration.cs" />
+    <Compile Include="Configuration\Runtime\ClientServiceTypeElement.cs" />
     <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Configuration\ClientConfig.cs" />
     <Compile Include="Configuration\Runtime\RuntimeConfigurationSection.cs" />

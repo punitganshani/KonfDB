@@ -23,7 +23,6 @@
 
 #endregion
 
-using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 
 namespace KonfDBCF.Configuration.Caching

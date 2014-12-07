@@ -29,15 +29,7 @@ using KonfDB.Infrastructure.WCF;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
-    public enum EndPointType
-    {
-        tcp = 100,
-        http = 200,
-        rest = 300,
-        wshttp = 400
-    }
-
-    public class ServiceTypeElement : ConfigurationElement
+    public class ServiceTypeElement : ConfigurationElement, IServiceTypeElement
     {
         [ConfigurationProperty("port", IsRequired = true, IsKey = true)]
         public int Port

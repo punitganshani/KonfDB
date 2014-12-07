@@ -63,7 +63,7 @@ namespace KonfDBHost
             {
                 #region Console
 
-                AppContext.Current.Log.Debug("Running in Console Mode");
+                HostContext.Current.Log.Debug("Running in Console Mode");
                 Console.SetWindowPosition(0, 0);
                 Console.BackgroundColor = ConsoleColor.DarkGray;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -108,7 +108,7 @@ namespace KonfDBHost
 
                         services.StopService();
 
-                        AppContext.Current.Log.Info("Exiting...");
+                        HostContext.Current.Log.Info("Exiting...");
 
                         Thread.Sleep(500);
 

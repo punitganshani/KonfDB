@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'Program.cs' is part of KonfDB application - 
+//     This file 'WithConfigurationValues.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -24,29 +24,29 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using KonfDB.Infrastructure.Database.Entities.Configuration;
+using KonfDBCF;
 
-namespace KonfDBCF.Sample
+namespace KonfDB.RefSamples.ClientFramework
 {
-    internal class Program
+    public class WithConfigurationValues
     {
-        private static void Main(string[] args)
+        public static void GetAppConfiguration()
         {
             try
             {
-                // Create connection to Command Service of KonfDB based on settings
-                // in app.config file
-                var commandService = CConnectionFactory.GetInstance();
-
-                // Get the user token if authenticated
                 var userToken = CConnectionFactory.GetUserToken();
-
-                // var commands = commandService.GetCommandsStartingWith("");
-
+                var commandService = CConnectionFactory.GetInstance();
                 // If we got back a token, means user was authenticated
                 if (userToken != null)
                 {
-                    var output = commandService.ExecuteCommand("help", userToken);
-                    Console.WriteLine(output.DisplayMessage);
+                    var output = commandService.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9", userToken);
+                    if (output != null)
+                    {
+                        var parameters = (List<ConfigurationModel>) output.Data;
+                        parameters.ForEach(param => Console.WriteLine(param.ParameterName + "=" + param.ParameterValue));
+                    }
                 }
             }
             catch (Exception ex)

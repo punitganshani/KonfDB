@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var envId = long.Parse(arguments["eid"]);
             long userId = arguments.GetUserId();
-            var success = AppContext.Current.Provider.ConfigurationStore.DeleteEnvironment(userId, envId);
+            var success = HostContext.Current.Provider.ConfigurationStore.DeleteEnvironment(userId, envId);
 
             output.DisplayMessage = success ? "Environment deleted successfully!" : "Could not delete Environment";
 

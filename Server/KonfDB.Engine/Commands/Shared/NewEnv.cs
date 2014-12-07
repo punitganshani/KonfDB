@@ -65,7 +65,7 @@ namespace KonfDB.Engine.Commands.Shared
             var name = arguments["name"];
             long suiteId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            var environment = AppContext.Current.Provider.ConfigurationStore.AddEnvironment(new EnvironmentModel
+            var environment = HostContext.Current.Provider.ConfigurationStore.AddEnvironment(new EnvironmentModel
             {
                 EnvironmentName = name,
                 EnvironmentType = environmentType,

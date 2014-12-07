@@ -45,9 +45,9 @@ namespace KonfDBCF.Configuration.Runtime
         }
 
         [ConfigurationProperty("user", IsRequired = true)]
-        public SuperUserElement User
+        public UserElement User
         {
-            get { return (SuperUserElement) this["user"]; }
+            get { return (UserElement) this["user"]; }
             set { this["user"] = value; }
         }
     }

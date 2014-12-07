@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>KonfDBH</id>
-    <version>1.0.0.0</version>
-    <title>KonfDB Host</title>
+   <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
     <authors>Punit Ganshani</authors>
     <owners>Punit Ganshani</owners>
     <projectUrl>http://www.konfdb.com</projectUrl>
+	<iconUrl>http://www.ganshani.com/konfdb/wp-content/uploads/sites/6/2014/09/cropped-logo1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Configuration service for multi-tenant cross-platform applications</description>
     <releaseNotes>Initial Release</releaseNotes>

@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'ICacheConfiguration.cs' is part of KonfDB application - 
+//     This file 'TrustedAssemblyInfo.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,14 +23,10 @@
 
 #endregion
 
-using KonfDB.Infrastructure.Configuration.Caching;
+using System.Runtime.CompilerServices;
 
-namespace KonfDB.Infrastructure.Configuration.Interfaces
-{
-    public interface ICacheConfiguration
-    {
-        bool Enabled { get; set; }
-        CacheMode Mode { get; set; }
-        long DurationInSeconds { get; set; }
-    }
-}
+[assembly: InternalsVisibleTo("KonfDB, PublicKeyToken=null")]
+[assembly: InternalsVisibleTo("KonfDBH, PublicKeyToken=null")]
+[assembly: InternalsVisibleTo("KonfDBE, PublicKeyToken=null")]
+[assembly: InternalsVisibleTo("KonfDBI, PublicKeyToken=null")]
+[assembly: InternalsVisibleTo("KonfDBAH, PublicKeyToken=null")]

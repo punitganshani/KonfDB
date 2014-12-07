@@ -69,7 +69,7 @@ namespace KonfDB.Engine.Commands.Shared
             }
             try
             {
-                RegisterModel model = AppContext.Current.Provider.ConfigurationStore.AddUser(username, password,
+                RegisterModel model = HostContext.Current.Provider.ConfigurationStore.AddUser(username, password,
                     username.GetRandom());
 
                 output.DisplayMessage = "User Added";

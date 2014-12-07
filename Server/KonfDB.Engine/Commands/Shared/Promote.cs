@@ -77,7 +77,7 @@ namespace KonfDB.Engine.Commands.Shared
             var clone = arguments.HasArgument("clone-param") &&
                         arguments["clone-param"].Equals("y", StringComparison.InvariantCultureIgnoreCase);
 
-            var mappingsForSuite = AppContext.Current.Provider.ConfigurationStore.GetMapping(arguments.GetUserId(), sid);
+            var mappingsForSuite = HostContext.Current.Provider.ConfigurationStore.GetMapping(arguments.GetUserId(), sid);
             var sourceEnvironmentsMapping = mappingsForSuite.Where(x => x.EnvironmentId == fromId);
             var environmentsMapping = sourceEnvironmentsMapping as MappingModel[] ?? sourceEnvironmentsMapping.ToArray();
             if (!environmentsMapping.Any())
@@ -90,14 +90,14 @@ namespace KonfDB.Engine.Commands.Shared
             var targetMapping = new List<MappingModel>();
             if (clone)
             {
-                var suiteParameters = AppContext.Current.Provider.ConfigurationStore.GetParameters(
+                var suiteParameters = HostContext.Current.Provider.ConfigurationStore.GetParameters(
                     arguments.GetUserId(), sid);
                 foreach (var mapping in environmentsMapping)
                 {
                     var param = suiteParameters.FirstOrDefault(x => x.ParameterId == mapping.ParameterId);
                     if (param != null)
                     {
-                        var newParam = AppContext.Current.Provider.ConfigurationStore.AddParameter(param);
+                        var newParam = HostContext.Current.Provider.ConfigurationStore.AddParameter(param);
                         if (newParam != null)
                         {
                             mapping.ParameterId = newParam.AutoIncrementId;
@@ -119,7 +119,7 @@ namespace KonfDB.Engine.Commands.Shared
             bool success = true;
 
             targetMapping.ForEach(
-                mapping => success &= AppContext.Current.Provider.ConfigurationStore.AddMapping(mapping) != null);
+                mapping => success &= HostContext.Current.Provider.ConfigurationStore.AddMapping(mapping) != null);
 
             output.DisplayMessage = success
                 ? String.Format("Mappings{0} from environment {1} to {2}",

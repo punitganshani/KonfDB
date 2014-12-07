@@ -72,25 +72,25 @@ namespace KonfDB.Engine.Commands.Shared
 
             if (!long.TryParse(arguments["app"], out appId))
                 appId =
-                    AppContext.Current.Provider.ConfigurationStore.GetApplication(userId, arguments["app"])
+                    HostContext.Current.Provider.ConfigurationStore.GetApplication(userId, arguments["app"])
                         .ApplicationId.GetValueOrDefault();
 
             if (!long.TryParse(server, out serverId))
                 serverId =
-                    AppContext.Current.Provider.ConfigurationStore.GetServer(userId, server)
+                    HostContext.Current.Provider.ConfigurationStore.GetServer(userId, server)
                         .ServerId.GetValueOrDefault(-1);
 
             if (!long.TryParse(env, out envId))
                 envId =
-                    AppContext.Current.Provider.ConfigurationStore.GetEnvironment(userId, env)
+                    HostContext.Current.Provider.ConfigurationStore.GetEnvironment(userId, env)
                         .EnvironmentId.GetValueOrDefault(-1);
 
             if (!long.TryParse(region, out regionId))
                 regionId =
-                    AppContext.Current.Provider.ConfigurationStore.GetRegion(userId, region)
+                    HostContext.Current.Provider.ConfigurationStore.GetRegion(userId, region)
                         .RegionId.GetValueOrDefault(-1);
 
-            List<ConfigurationModel> model = AppContext.Current.Provider.ConfigurationStore.GetConfigurations(userId,
+            List<ConfigurationModel> model = HostContext.Current.Provider.ConfigurationStore.GetConfigurations(userId,
                 appId,
                 serverId, envId, regionId, string.Empty);
 
@@ -101,7 +101,7 @@ namespace KonfDB.Engine.Commands.Shared
                     var pk = arguments["unprotect"];
                     if (pk != null)
                     {
-                        var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
+                        var suite = HostContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
                             config.SuiteId);
 
                         if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))

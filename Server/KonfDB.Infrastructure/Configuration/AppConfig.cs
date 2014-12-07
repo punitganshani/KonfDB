@@ -25,6 +25,7 @@
 
 using System.Configuration;
 using KonfDB.Infrastructure.Configuration.Caching;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Providers;
 using KonfDB.Infrastructure.Configuration.Runtime;
 
@@ -48,7 +49,7 @@ namespace KonfDB.Infrastructure.Configuration
         }
 
         [ConfigurationProperty("cache", IsRequired = true)]
-        public CacheConfigurationSection Caching
+        public ICacheConfiguration Caching
         {
             get { return (CacheConfigurationSection) base.Sections["cache"]; }
         }

@@ -55,7 +55,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
                     }
                     catch (Exception ex)
                     {
-                        AppContext.Current.Log.Error(
+                        HostContext.Current.Log.Error(
                             "Error while executing reference data script: " + referenceDataScript, ex);
                     }
                 }

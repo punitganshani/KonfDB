@@ -61,16 +61,16 @@ namespace KonfDBHost
 
             // Ensure that the super user admin exists
             ServiceFacade.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                AppContext.Current.Config.Runtime.SuperUser.Username,
-                AppContext.Current.Config.Runtime.SuperUser.Password), null);
+                HostContext.Current.Config.Runtime.SuperUser.Username,
+                HostContext.Current.Config.Runtime.SuperUser.Password), null);
 
             // Ensure that the super user readonly exists
             ServiceFacade.ExecuteCommand(
                 String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
-                    AppContext.Current.Config.Runtime.SuperUser.Username,
-                    AppContext.Current.Config.Runtime.SuperUser.Password), null);
+                    HostContext.Current.Config.Runtime.SuperUser.Username,
+                    HostContext.Current.Config.Runtime.SuperUser.Password), null);
 
-            var serviceConfig = AppContext.Current.Config.Runtime.Server;
+            var serviceConfig = HostContext.Current.Config.Runtime.Server;
             _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost",
                 "CommandService");
             _serviceHostJson = new WcfService<ICommandService<string>, JsonCommandService>("localhost", "CommandService");
@@ -94,12 +94,12 @@ namespace KonfDBHost
                 }
             }
 
-            if (AppContext.Current.Config.Runtime.ServiceSecurity == ServiceSecurityMode.BasicSSL)
+            if (HostContext.Current.Config.Runtime.ServiceSecurity == ServiceSecurityMode.BasicSSL)
             {
                 var serviceSecurity = new ServiceSecurity
                 {
-                    CertificateConfiguration = AppContext.Current.Config.Providers.Certificate.Default,
-                    SecurityMode = AppContext.Current.Config.Runtime.ServiceSecurity
+                    CertificateConfiguration = HostContext.Current.Config.Providers.Certificate.Default,
+                    SecurityMode = HostContext.Current.Config.Runtime.ServiceSecurity
                 };
 
                 _serviceHostJson.SetSecured(serviceSecurity);
@@ -110,8 +110,8 @@ namespace KonfDBHost
             _serviceHostJson.Host();
 
             var authOutput = ServiceFacade.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
-                AppContext.Current.Config.Runtime.SuperUser.Username,
-                AppContext.Current.Config.Runtime.SuperUser.Password), null);
+                HostContext.Current.Config.Runtime.SuperUser.Username,
+                HostContext.Current.Config.Runtime.SuperUser.Password), null);
 
             var authenticationOutput = authOutput.Data as AuthenticationOutput;
             if (authenticationOutput == null)
@@ -129,7 +129,7 @@ namespace KonfDBHost
                 var settings = (Dictionary<string, string>) settingsOutput.Data;
                 foreach (var setting in settings)
                 {
-                    AppContext.Current.ApplicationParams.Add(setting.Key, setting.Value);
+                    HostContext.Current.ApplicationParams.Add(setting.Key, setting.Value);
                 }
             }
 
@@ -170,18 +170,18 @@ namespace KonfDBHost
         {
             //TODO: Handle unhandled exception
 
-            AppContext.Current.Log.Info(e.ExceptionObject.ToString());
+            HostContext.Current.Log.Info(e.ExceptionObject.ToString());
 
             if (e.IsTerminating)
             {
-                AppContext.Current.Log.Info("Terminating");
+                HostContext.Current.Log.Info("Terminating");
             }
         }
 
         private BaseProvider GetDatabaseProviderInstance()
         {
-            var defaultDatabaseConfig = AppContext.Current.Config.Providers.Database.Default;
-            var providerTypesConfig = AppContext.Current.Config.Providers.Types;
+            var defaultDatabaseConfig = HostContext.Current.Config.Providers.Database.Default;
+            var providerTypesConfig = HostContext.Current.Config.Providers.Types;
 
 
             if (!providerTypesConfig.IsValid(defaultDatabaseConfig.Type))
@@ -210,8 +210,8 @@ namespace KonfDBHost
 
         private void InitDatabase()
         {
-            AppContext.Current.Provider = GetDatabaseProviderInstance();
-            AppContext.Current.Log.Info("Agent Started: DataManagement");
+            HostContext.Current.Provider = GetDatabaseProviderInstance();
+            HostContext.Current.Log.Info("Agent Started: DataManagement");
         }
 
         private void InitializeComponent()

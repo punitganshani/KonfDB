@@ -66,8 +66,8 @@ namespace KonfDB.Engine.Commands.Shared
             long serverId = -1, appId = -1, regionId = -1, environmentId = -1;
             long userId = arguments.GetUserId();
 
-            var suite = AppContext.Current.Provider.ConfigurationStore.GetSuite(userId, suiteId);
-            var parameter = AppContext.Current.Provider.ConfigurationStore.GetParameter(userId, parameterId);
+            var suite = HostContext.Current.Provider.ConfigurationStore.GetSuite(userId, suiteId);
+            var parameter = HostContext.Current.Provider.ConfigurationStore.GetParameter(userId, parameterId);
             if (parameter.SuiteId != suite.SuiteId)
             {
                 output.DisplayMessage = "No such parameter id (pid) exists for suite id:" + suite.SuiteId;
@@ -110,7 +110,7 @@ namespace KonfDB.Engine.Commands.Shared
                 UserId = userId
             };
 
-            MappingModel mapping = AppContext.Current.Provider.ConfigurationStore.AddMapping(model);
+            MappingModel mapping = HostContext.Current.Provider.ConfigurationStore.AddMapping(model);
 
             output.Data = mapping;
             output.DisplayMessage = "Success";

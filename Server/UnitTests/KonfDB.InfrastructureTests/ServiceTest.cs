@@ -1,12 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿#region License and Product Information
+
+// 
+//     This file 'ServiceTest.cs' is part of KonfDB application - 
+//     a project perceived and developed by Punit Ganshani.
+// 
+//     KonfDB is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     KonfDB is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with KonfDB.  If not, see <http://www.gnu.org/licenses/>.
+// 
+//     You can also view the documentation and progress of this project 'KonfDB'
+//     on the project website, <http://www.konfdb.com> or on 
+//     <http://www.ganshani.com/applications/konfdb>
+
+#endregion
+
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
-using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
 using KonfDB.Infrastructure.WCF;
 using KonfDB.Infrastructure.WCF.Bindings;
@@ -66,14 +86,17 @@ namespace KonfDB.InfrastructureTests
                 _certificateConfiguration.BindCertificateToPort("6671");
                 _certificateConfiguration.BindCertificateToPort("6681");
             }
-            catch { }
+            catch
+            {
+            }
             store.Close();
-        } 
+        }
 
-        private ServiceCommandOutput<object> CheckServiceConnectivity(string port, ServiceType type, ServiceSecurityMode mode)
+        private ServiceCommandOutput<object> CheckServiceConnectivity(string port, ServiceType type,
+            ServiceSecurityMode mode)
         {
             var service = new WcfService<ICommandService<object>, DummyNativeCommandService>("localhost", ServiceName);
-            service.AddBinding(BindingFactory.Create(new BindingConfiguration { Port = port, ServiceType = type }));
+            service.AddBinding(BindingFactory.Create(new BindingConfiguration {Port = port, ServiceType = type}));
             if (mode == ServiceSecurityMode.BasicSSL)
             {
                 var serviceSecurity = new ServiceSecurity
@@ -94,10 +117,11 @@ namespace KonfDB.InfrastructureTests
             return output;
         }
 
-        private ServiceCommandOutput<string> CheckServiceConnectivityJson(string port, ServiceType type, ServiceSecurityMode mode)
+        private ServiceCommandOutput<string> CheckServiceConnectivityJson(string port, ServiceType type,
+            ServiceSecurityMode mode)
         {
             var service = new WcfService<ICommandService<string>, DummyJsonCommandService>("localhost", ServiceName);
-            service.AddBinding(BindingFactory.Create(new BindingConfiguration { Port = port, ServiceType = type }));
+            service.AddBinding(BindingFactory.Create(new BindingConfiguration {Port = port, ServiceType = type}));
             if (mode == ServiceSecurityMode.BasicSSL)
             {
                 var serviceSecurity = new ServiceSecurity
@@ -130,7 +154,6 @@ namespace KonfDB.InfrastructureTests
 
             Assert.IsNotNull(output);
             Assert.IsNotNull(output.DisplayMessage);
-
         }
 
         [TestMethod]

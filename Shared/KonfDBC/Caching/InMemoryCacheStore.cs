@@ -25,7 +25,6 @@
 
 using System;
 using System.Runtime.Caching;
-using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Shell;
 
