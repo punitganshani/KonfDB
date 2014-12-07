@@ -18,34 +18,36 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-      <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Net4.0|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-      <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Net4.5|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-	 <TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-     <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Net4.5|AnyCPU' ">
     <DebugType>none</DebugType>
-	 <TargetFrameworkVersion>v4.5</TargetFrameworkVersion><NugetDirectory>net45</NugetDirectory>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NugetDirectory>net45</NugetDirectory>
     <Optimize>true</Optimize>
-      <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
