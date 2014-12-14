@@ -23,32 +23,27 @@
 
 #endregion
 
-using System.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace KonfDB.Infrastructure.Configuration.Caching
 {
-    public class CacheConfigurationSection : ConfigurationSection, ICacheConfiguration
+    public class CacheConfigurationSection : ICacheConfiguration
     {
-        [ConfigurationProperty("enabled", IsRequired = true)]
-        public bool Enabled
-        {
-            get { return (bool) this["enabled"]; }
-            set { this["enabled"] = value; }
-        }
+        [JsonProperty("enabled")]
+        public bool Enabled { get; set; }
 
-        [ConfigurationProperty("mode", DefaultValue = CacheMode.Sliding, IsRequired = false)]
-        public CacheMode Mode
-        {
-            get { return (CacheMode) this["mode"]; }
-            set { this["mode"] = value; }
-        }
+        [JsonProperty("mode")]
+        [JsonConverter(typeof (StringEnumConverter))]
+        public CacheMode Mode { get; set; }
 
-        [ConfigurationProperty("duration", IsRequired = false)]
-        public long DurationInSeconds
+        [JsonProperty("duration")]
+        public long DurationInSeconds { get; set; }
+
+        public CacheConfigurationSection()
         {
-            get { return (long) this["duration"]; }
-            set { this["duration"] = value; }
+            Mode = CacheMode.Sliding;
         }
     }
 }

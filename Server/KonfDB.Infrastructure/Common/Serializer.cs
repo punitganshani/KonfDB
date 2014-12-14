@@ -46,7 +46,7 @@ namespace KonfDB.Infrastructure.Common
             Type type = typeof (T);
             if (_serializer.ContainsKey(type))
                 return _serializer[type];
-            XmlSerializer xs = new XmlSerializer(type);
+            var xs = new XmlSerializer(type);
             _serializer[type] = xs;
             return xs;
         }
@@ -56,15 +56,16 @@ namespace KonfDB.Infrastructure.Common
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
+        /// <param name="encoding"></param>
         /// <returns></returns>
         public static string Serialize<T>(T obj, Encoding encoding)
         {
             try
             {
                 string xmlString = null;
-                MemoryStream memoryStream = new MemoryStream();
-                XmlSerializer xs = GetSerializer<T>();
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, encoding);
+                var memoryStream = new MemoryStream();
+                var xs = GetSerializer<T>();
+                var xmlTextWriter = new XmlTextWriter(memoryStream, encoding);
                 xs.Serialize(xmlTextWriter, obj);
                 memoryStream = (MemoryStream) xmlTextWriter.BaseStream;
                 xmlString = Converter.ToString(memoryStream.ToArray());
@@ -80,12 +81,13 @@ namespace KonfDB.Infrastructure.Common
         ///     Reconstruct an object from an XML string
         /// </summary>
         /// <param name="xml"></param>
+        /// <param name="encoding"></param>
         /// <returns></returns>
         public static T Deserialize<T>(string xml, Encoding encoding)
         {
             XmlSerializer xs = GetSerializer<T>();
-            MemoryStream memoryStream = new MemoryStream(Converter.ToByte(xml));
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, encoding);
+            var memoryStream = new MemoryStream(Converter.ToByte(xml));
+            var xmlTextWriter = new XmlTextWriter(memoryStream, encoding);
             return (T) xs.Deserialize(memoryStream);
         }
     }

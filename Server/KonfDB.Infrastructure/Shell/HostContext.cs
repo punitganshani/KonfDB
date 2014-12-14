@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'AppContext.cs' is part of KonfDB application - 
+//     This file 'HostContext.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,11 +23,16 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
@@ -41,9 +46,49 @@ namespace KonfDB.Infrastructure.Shell
     {
         private static HostContext _current;
 
+        internal IHostConfig Config
+        {
+            get { return _config; }
+        }
+
+        private static IHostConfig _config;
+        private static string _configFilePath;
+
+        internal static HostContext CreateFrom(string configFilePath)
+        {
+            if (string.IsNullOrEmpty(configFilePath))
+                throw new ArgumentNullException("configFilePath");
+
+            if (_current != null
+                && !string.IsNullOrEmpty(_configFilePath)
+                && !_configFilePath.Equals(configFilePath))
+            {
+                _current.Log.Info("Current context may get overridden. Earlier loaded from :" + _configFilePath +
+                                  " now: " + configFilePath);
+            }
+
+            // No change in config file, so dont need to re load it
+            if (!string.IsNullOrEmpty(_configFilePath) && _configFilePath.Equals(configFilePath))
+                return _current;
+
+            if (!File.Exists(configFilePath))
+                throw new ConfigurationErrorsException("Could not find config file: " + configFilePath);
+
+            _config = File.ReadAllText(configFilePath).FromJsonToObject<HostConfig>();
+            _current = new HostContext(_config);
+            _configFilePath = configFilePath;
+            return _current;
+        }
+
         internal static HostContext Current
         {
-            get { return _current ?? (_current = new HostContext(AppConfig.ThisSection)); }
+            get
+            {
+                if (_current == null)
+                    throw new InvalidOperationException("HostContext should be initialized by CreateFrom");
+
+                return _current;
+            }
         }
 
         internal AppType ApplicationType;
@@ -64,9 +109,8 @@ namespace KonfDB.Infrastructure.Shell
             get { return CurrentContext.Default.ApplicationParams; }
         }
 
-        private HostContext(AppConfig configuration)
+        private HostContext(IHostConfig configuration)
         {
-            Config = configuration;
             UserTokens = new List<string>();
 
             ApplicationType = AppType.Server;
@@ -94,7 +138,6 @@ namespace KonfDB.Infrastructure.Shell
             get { return Config.Runtime.Audit; }
         }
 
-        internal AppConfig Config { get; private set; }
 
         internal BaseProvider Provider { get; set; }
 

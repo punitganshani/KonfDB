@@ -24,7 +24,7 @@
 #endregion
 
 using System.Collections.Generic;
-using KonfDB.Infrastructure.Configuration.Providers.Database;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Workflow;
 
@@ -32,16 +32,16 @@ namespace KonfDB.Infrastructure.Database.StateActions
 {
     public abstract class BaseStateAction : IStateAction<DatabaseStates>
     {
-        public DatabaseProviderElement Configuration { get; set; }
-        public string MasterConnectionString { get; set; }
-        public string InstanceConnectionString { get; set; }
+        protected IDatabaseProviderConfiguration Configuration { get; set; }
+        protected string MasterConnectionString { get; set; }
+        protected string InstanceConnectionString { get; set; }
 
         public DatabaseStates Execute(DatabaseStates currentState, Dictionary<string, object> dataDictionary,
             params object[] data)
         {
             MasterConnectionString = dataDictionary["$MasterConnectionString$"].ToString();
             InstanceConnectionString = dataDictionary["$InstanceConnectionString$"].ToString();
-            Configuration = dataDictionary["$Configuration$"] as DatabaseProviderElement;
+            Configuration = dataDictionary["$Configuration$"] as IDatabaseProviderConfiguration;
 
             return ExecuteState(currentState, dataDictionary, data);
         }

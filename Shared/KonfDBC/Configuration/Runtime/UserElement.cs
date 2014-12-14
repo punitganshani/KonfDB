@@ -23,25 +23,17 @@
 
 #endregion
 
-using System.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Configuration.Runtime
 {
-    public class UserElement : ConfigurationElement, IUserElement
+    public class UserElement : IUserConfiguration
     {
-        [ConfigurationProperty("username", IsRequired = true)]
-        public string Username
-        {
-            get { return (string) this["username"]; }
-            set { this["username"] = value; }
-        }
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
-        [ConfigurationProperty("password", IsRequired = true)]
-        public string Password
-        {
-            get { return (string) this["password"]; }
-            set { this["password"] = value; }
-        }
+        [JsonProperty("password")]
+        public string Password { get; set; }
     }
 }

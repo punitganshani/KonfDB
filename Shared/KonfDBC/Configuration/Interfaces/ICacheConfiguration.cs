@@ -23,6 +23,8 @@
 
 #endregion
 
+using Newtonsoft.Json;
+
 namespace KonfDB.Infrastructure.Configuration.Interfaces
 {
     public interface ICacheConfiguration
@@ -34,7 +36,7 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
 
     public enum CacheMode
     {
-        Sliding,
-        Absolute
+        [JsonProperty("sliding")] Sliding,
+        [JsonProperty("absolute")] Absolute
     }
 }

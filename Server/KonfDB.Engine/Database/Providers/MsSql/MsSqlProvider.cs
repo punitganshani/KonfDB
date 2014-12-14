@@ -29,7 +29,7 @@ using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using System.Reflection;
 using KonfDB.Engine.Database.Stores;
-using KonfDB.Infrastructure.Configuration.Providers.Database;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Abstracts;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Database.StateActions;
@@ -39,7 +39,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
     [Export(typeof (BaseProvider))]
     public class MsSqlProvider : BaseProvider
     {
-        public MsSqlProvider(DatabaseProviderElement configuration)
+        public MsSqlProvider(IDatabaseProviderConfiguration configuration)
             : base(configuration)
         {
         }

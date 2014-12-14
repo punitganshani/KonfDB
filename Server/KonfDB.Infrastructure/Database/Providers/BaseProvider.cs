@@ -25,7 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using KonfDB.Infrastructure.Configuration.Providers.Database;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Abstracts;
 using KonfDB.Infrastructure.Database.StateActions;
 using KonfDB.Infrastructure.Shell;
@@ -39,7 +39,7 @@ namespace KonfDB.Infrastructure.Database.Providers
 
         protected StateWorkflow<DatabaseStates> Workflow;
 
-        protected BaseProvider(DatabaseProviderElement configuration)
+        protected BaseProvider(IDatabaseProviderConfiguration configuration)
         {
             Configuration = configuration;
             Workflow = new StateWorkflow<DatabaseStates>(new StateWorkflowConfig<DatabaseStates>
@@ -71,7 +71,7 @@ namespace KonfDB.Infrastructure.Database.Providers
             Workflow.OnWorkflowEnded = (x, y) => OnInitialized();
         }
 
-        protected DatabaseProviderElement Configuration;
+        protected IDatabaseProviderConfiguration Configuration;
 
         public abstract DatabaseCheckAction GetDatabaseCheckAction();
         public abstract DatabaseCreateAction GetDatabaseCreateAction();

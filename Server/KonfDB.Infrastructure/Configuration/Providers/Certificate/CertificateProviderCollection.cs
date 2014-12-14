@@ -23,43 +23,29 @@
 
 #endregion
 
-using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Configuration.Providers.Certificate
 {
-    [ConfigurationCollection(typeof (CertificateProviderElement))]
-    public class CertificateProviderCollection : ConfigurationElementCollection
+    internal class CertificateProviderCollection
     {
-        [ConfigurationProperty("default", IsRequired = true, IsKey = true)]
-        public string DefaultCertificate
+        [JsonProperty("default")]
+        public string DefaultKey { get; set; }
+
+        [JsonIgnore]
+        public CertificateProviderConfiguration Default
         {
-            get { return (string) base["default"]; }
-            set { base["default"] = value; }
+            get { return Certificates.FirstOrDefault(x => x.CertificateKey == DefaultKey); }
         }
 
-        public CertificateProviderElement Default
-        {
-            get { return this[DefaultCertificate]; }
-        }
+        [JsonProperty("certificate")]
+        public List<CertificateProviderConfiguration> Certificates { get; set; }
 
-        public CertificateProviderElement this[string name]
+        public CertificateProviderCollection()
         {
-            get { return (CertificateProviderElement) base.BaseGet(name); }
-        }
-
-        public CertificateProviderElement this[int index]
-        {
-            get { return (CertificateProviderElement) base.BaseGet(index); }
-        }
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new CertificateProviderElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((CertificateProviderElement) element).CertificateKey;
+            Certificates = new List<CertificateProviderConfiguration>();
         }
     }
 }

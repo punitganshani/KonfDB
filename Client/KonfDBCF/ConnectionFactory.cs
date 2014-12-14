@@ -28,7 +28,7 @@ using System.Globalization;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
-using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Interfaces;

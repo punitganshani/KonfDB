@@ -27,9 +27,9 @@ namespace KonfDB.Infrastructure.WCF
 {
     public enum ServiceType
     {
-        HTTP,
-        TCP,
-        REST,
-        HTTPPlus
+        TCP = 100,
+        HTTP = 200,
+        REST = 300,
+        WSHTTP = 400
     }
 }

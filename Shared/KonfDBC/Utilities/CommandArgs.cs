@@ -86,7 +86,11 @@ namespace KonfDB.Infrastructure.Utilities
         public CommandArgs(string command)
         {
             _command = command;
-            Parse(Regex.Split(command, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
+            if (command == null)
+            {
+                _command = string.Empty;
+            }
+            Parse(Regex.Split(_command, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
         }
 
         public CommandArgs(IEnumerable<string> args)

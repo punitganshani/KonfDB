@@ -45,7 +45,6 @@ namespace KonfDB.Infrastructure.Common
         /// <summary>
         ///     Converts the String to UTF8 Byte array and is used in De serialization
         /// </summary>
-        /// <param name="pXmlString"></param>
         /// <returns></returns>
         public static Byte[] ToByte(string input)
         {

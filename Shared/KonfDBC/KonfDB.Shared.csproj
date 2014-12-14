@@ -91,8 +91,9 @@
     </Compile>
     <Compile Include="Adapter\ServiceOutputAdapter.cs" />
     <Compile Include="Configuration\Caching\CacheConfigurationSection.cs" />
-    <Compile Include="Configuration\Interfaces\IServiceTypeElement.cs" />
-    <Compile Include="Configuration\Interfaces\IUserElement.cs" />
+    <Compile Include="Configuration\Interfaces\ICertificateConfiguration.cs" />
+    <Compile Include="Configuration\Interfaces\IServiceTypeConfiguration.cs" />
+    <Compile Include="Configuration\Interfaces\IUserConfiguration.cs" />
     <Compile Include="Configuration\Runtime\UserElement.cs" />
     <Compile Include="Entities\Account\AuthenticationModel.cs" />
     <Compile Include="Entities\Account\RegisterModel.cs" />
@@ -135,9 +136,6 @@
     </Compile>
     <Compile Include="Configuration\Interfaces\ICacheConfiguration.cs">
       <!--<Link>Configuration\Interfaces\ICacheConfiguration.cs</Link>-->
-    </Compile>
-    <Compile Include="Configuration\Interfaces\ICertificateConfiguration.cs">
-      <!--<Link>Configuration\Interfaces\ICertificateConfiguration.cs</Link>-->
     </Compile>
     <Compile Include="DataResolvers\SharedTypeResolver.cs">
       <!--<Link>DataResolvers\SharedTypeResolver.cs</Link>-->
@@ -199,7 +197,7 @@
     <Compile Include="WCF\Bindings\HttpBinding.cs">
       <!--<Link>WCF\Bindings\HttpBinding.cs</Link>-->
     </Compile>
-    <Compile Include="WCF\Bindings\HttpPlusBinding.cs">
+    <Compile Include="WCF\Bindings\WsHttpBinding.cs">
       <!--<Link>WCF\Bindings\HttpPlusBinding.cs</Link>-->
     </Compile>
     <Compile Include="WCF\Bindings\RestBinding.cs">
@@ -211,7 +209,7 @@
     <Compile Include="WCF\Endpoints\HttpEndpoint.cs">
       <!--<Link>WCF\Endpoints\HttpEndpoint.cs</Link>-->
     </Compile>
-    <Compile Include="WCF\Endpoints\HttpPlusEndpoint.cs">
+    <Compile Include="WCF\Endpoints\WsHttpEndpoint.cs">
       <!--<Link>WCF\Endpoints\HttpPlusEndpoint.cs</Link>-->
     </Compile>
     <Compile Include="WCF\Endpoints\NetTcpEndpoint.cs">

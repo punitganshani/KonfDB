@@ -24,8 +24,10 @@
 #endregion
 
 using System;
+using System.IO;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Exceptions;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
@@ -39,10 +41,18 @@ namespace KonfDBCF.Core
     internal class ClientContextFromConfig
     {
         private static ClientContextFromConfig _current;
+        private static ClientConfig _config;
 
         internal static ClientContextFromConfig Current
         {
-            get { return _current ?? (_current = new ClientContextFromConfig(ClientConfig.ThisSection)); }
+            get
+            {
+                if (_config == null)
+                {
+                    _config = File.ReadAllText("konfdb.json").FromJsonToObject<ClientConfig>();
+                }
+                return _current ?? (_current = new ClientContextFromConfig(_config));
+            }
         }
 
         private ClientContextFromConfig(ClientConfig configuration)

@@ -24,47 +24,32 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
 namespace KonfDB.Infrastructure.Configuration.Providers.Types
 {
-    [ConfigurationCollection(typeof (ProviderTypeElement))]
-    public class ProviderTypesCollection : ConfigurationElementCollection
+    [ConfigurationCollection(typeof (ProviderTypeConfiguration))]
+    internal class ProviderTypesCollection : List<ProviderTypeConfiguration>
     {
-        public ProviderTypeElement this[string name]
+        public ProviderTypeConfiguration this[string name]
         {
-            get { return (ProviderTypeElement) base.BaseGet(name); }
+            get { return this.FirstOrDefault(x => x.Type == name); }
         }
 
-        public ProviderTypeElement this[int index]
+        public bool IsValid(string type)
         {
-            get { return (ProviderTypeElement) base.BaseGet(index); }
-        }
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new ProviderTypeElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((ProviderTypeElement) element).Type;
-        }
-
-        public bool IsValid(string name)
-        {
-            var keys = base.BaseGetAllKeys();
-            bool isValid = keys.Contains(name);
+            bool isValid = this.Any(x => x.Type == type);
 
             if (isValid)
             {
-                var providerType = this[name];
+                var providerType = this[type];
                 var typeOf = Type.GetType(providerType.AssemblyPath);
                 return typeOf != null;
             }
 
-            return isValid;
+            return false;
         }
     }
 }

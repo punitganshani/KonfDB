@@ -66,7 +66,7 @@ namespace KonfDB.Infrastructure.WCF
                 {
                     case ServiceType.HTTP:
                     case ServiceType.REST:
-                    case ServiceType.HTTPPlus:
+                    case ServiceType.WSHTTP:
                         prefix = this.SecurityMode == ServiceSecurityMode.BasicSSL ? "https" : "http";
                         break;
                     case ServiceType.TCP:
@@ -110,11 +110,11 @@ namespace KonfDB.Infrastructure.WCF
                         binding = new HttpBinding();
                     }
                     break;
-                case ServiceType.HTTPPlus:
+                case ServiceType.WSHTTP:
                     prefix = useSSL ? "https" : "http";
                     if (useSSL)
                     {
-                        binding = new HttpPlusBinding
+                        binding = new WsHttpBinding
                         {
                             Security =
                             {
@@ -130,7 +130,7 @@ namespace KonfDB.Infrastructure.WCF
                     }
                     else
                     {
-                        binding = new HttpPlusBinding();
+                        binding = new WsHttpBinding();
                     }
                     break;
                 case ServiceType.TCP:

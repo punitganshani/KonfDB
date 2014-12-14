@@ -23,39 +23,24 @@
 
 #endregion
 
-using System.Configuration;
 using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDBCF.Configuration.Runtime;
+using Newtonsoft.Json;
 
 namespace KonfDBCF.Configuration
 {
-    internal class ClientConfig : ConfigurationSectionGroup
+    internal class ClientConfig
     {
-        private new const string Name = "konfDB";
-        private static readonly ClientConfig Section;
+        [JsonProperty("runtime")]
+        public ClientRuntimeConfiguration Runtime { get; set; }
 
-        [ConfigurationProperty("runtime", IsRequired = true)]
-        public RuntimeConfigurationSection Runtime
-        {
-            get { return (RuntimeConfigurationSection) base.Sections["runtime"]; }
-        }
+        [JsonProperty("cache")]
+        public CacheConfigurationSection Caching { get; set; }
 
-        [ConfigurationProperty("cache", IsRequired = true)]
-        public CacheConfigurationSection Caching
+        public ClientConfig()
         {
-            get { return (CacheConfigurationSection) base.Sections["cache"]; }
-        }
-
-        static ClientConfig()
-        {
-            System.Configuration.Configuration config =
-                ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            Section = (ClientConfig) config.GetSectionGroup(Name);
-        }
-
-        public static ClientConfig ThisSection
-        {
-            get { return Section; }
+            Runtime = new ClientRuntimeConfiguration();
+            Caching = new CacheConfigurationSection();
         }
     }
 }

@@ -24,13 +24,21 @@
 #endregion
 
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace KonfDBCF.Configuration.Caching
 {
     public class CacheConfiguration : ICacheConfiguration
     {
+        [JsonProperty("enabled")]
         public bool Enabled { get; set; }
+
+        [JsonProperty("mode")]
+        [JsonConverter(typeof (StringEnumConverter))]
         public CacheMode Mode { get; set; }
+
+        [JsonProperty("duration")]
         public long DurationInSeconds { get; set; }
     }
 }

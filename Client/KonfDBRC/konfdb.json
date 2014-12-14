@@ -1,0 +1,19 @@
+﻿{
+  "runtime": {
+    "logConfigPath": "",
+    "client": {
+      "host": "localhost",
+      "port": 8885,
+      "type": "TCP"
+    },
+    "user": {
+      "username": "suser",
+      "password": "spwd"
+    }
+  },
+  "cache": {
+    "enabled": false,
+    "mode": "Absolute",
+    "duration": 30
+  }
+}

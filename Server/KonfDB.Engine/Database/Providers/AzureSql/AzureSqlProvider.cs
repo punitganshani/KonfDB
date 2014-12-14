@@ -30,7 +30,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using KonfDB.Engine.Database.Providers.MsSql;
 using KonfDB.Engine.Database.Stores;
-using KonfDB.Infrastructure.Configuration.Providers.Database;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Abstracts;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Database.StateActions;
@@ -40,7 +40,7 @@ namespace KonfDB.Engine.Database.Providers.AzureSql
     [Export(typeof (BaseProvider))]
     public class AzureSqlProvider : BaseProvider
     {
-        public AzureSqlProvider(DatabaseProviderElement configuration)
+        public AzureSqlProvider(IDatabaseProviderConfiguration configuration)
             : base(configuration)
         {
         }

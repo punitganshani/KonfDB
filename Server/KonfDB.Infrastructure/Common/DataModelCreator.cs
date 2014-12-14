@@ -37,7 +37,6 @@ namespace KonfDB.Infrastructure.Common
         ///     craetes a entity .cs file having fields of type and name same as columns in data table passed to it
         /// </summary>
         /// <param name="dt">datatable corresponding to which entity required</param>
-        /// <param name="fileName">full file name including directory path </param>
         public static void DataTable2Entity(DataTable dt, string className)
         {
             StringBuilder sb = new StringBuilder();

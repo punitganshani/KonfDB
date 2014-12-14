@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.WCF;
 
 namespace KonfDB.Infrastructure.Extensions
@@ -60,14 +60,14 @@ namespace KonfDB.Infrastructure.Extensions
 
         public static ServiceType GetWcfServiceType(this EndPointType endPointType)
         {
-            if (endPointType == EndPointType.http)
+            if (endPointType == EndPointType.HTTP)
                 return ServiceType.HTTP;
-            if (endPointType == EndPointType.tcp)
+            if (endPointType == EndPointType.TCP)
                 return ServiceType.TCP;
-            if (endPointType == EndPointType.rest)
+            if (endPointType == EndPointType.REST)
                 return ServiceType.REST;
-            if (endPointType == EndPointType.wshttp)
-                return ServiceType.HTTPPlus;
+            if (endPointType == EndPointType.WSHTTP)
+                return ServiceType.WSHTTP;
 
             throw new InvalidDataException("No ServiceType exists for EndPointType: " + endPointType);
         }

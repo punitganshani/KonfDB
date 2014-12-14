@@ -23,43 +23,29 @@
 
 #endregion
 
-using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Configuration.Providers.Database
 {
-    [ConfigurationCollection(typeof (DatabaseProviderElement))]
-    public class DatabaseProviderCollection : ConfigurationElementCollection
+    internal class DatabaseProviderCollection
     {
-        [ConfigurationProperty("default", IsRequired = true, IsKey = true)]
-        public string DefaultProvider
+        [JsonProperty("default")]
+        public string DefaultKey { get; set; }
+
+        [JsonIgnore]
+        public DatabaseProviderConfiguration Default
         {
-            get { return (string) base["default"]; }
-            set { base["default"] = value; }
+            get { return Databases.FirstOrDefault(x => x.Key == DefaultKey); }
         }
 
-        public DatabaseProviderElement Default
-        {
-            get { return this[DefaultProvider]; }
-        }
+        [JsonProperty("database")]
+        public List<DatabaseProviderConfiguration> Databases { get; set; }
 
-        public DatabaseProviderElement this[string name]
+        public DatabaseProviderCollection()
         {
-            get { return (DatabaseProviderElement) base.BaseGet(name); }
-        }
-
-        public DatabaseProviderElement this[int index]
-        {
-            get { return (DatabaseProviderElement) base.BaseGet(index); }
-        }
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new DatabaseProviderElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((DatabaseProviderElement) element).ProviderName;
+            Databases = new List<DatabaseProviderConfiguration>();
         }
     }
 }

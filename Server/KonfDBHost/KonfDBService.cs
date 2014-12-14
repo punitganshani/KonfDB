@@ -35,6 +35,7 @@ using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.Utilities;
 using KonfDB.Infrastructure.WCF;
 using KonfDB.Infrastructure.WCF.Bindings;
 using KonfDB.Infrastructure.WCF.Interfaces;
@@ -43,6 +44,7 @@ namespace KonfDBHost
 {
     public class KonfDBH : ServiceBase
     {
+        private readonly IArguments _arguments;
         private Thread _thread;
         private ManualResetEvent _shutdownEvent;
         private WcfService<ICommandService<object>, NativeCommandService> _serviceHostNative;
@@ -50,9 +52,16 @@ namespace KonfDBHost
         public ServiceCore ServiceFacade;
         public string AuthenticationToken;
 
+        public KonfDBH(IArguments arguments)
+        {
+            _arguments = arguments;
+        }
+
         protected override void OnStart(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            HostContext.CreateFrom(_arguments.GetValue("configPath", "konfdb.json"));
+
             InitDatabase();
 
             #region Run Command Service
@@ -184,11 +193,11 @@ namespace KonfDBHost
             var providerTypesConfig = HostContext.Current.Config.Providers.Types;
 
 
-            if (!providerTypesConfig.IsValid(defaultDatabaseConfig.Type))
-                throw new ConfigurationErrorsException("Provider type not found: " + defaultDatabaseConfig.Type +
+            if (!providerTypesConfig.IsValid(defaultDatabaseConfig.ProviderType))
+                throw new ConfigurationErrorsException("Provider type not found: " + defaultDatabaseConfig.ProviderType +
                                                        " for database provider: " +
-                                                       defaultDatabaseConfig.ProviderName);
-            var providerConfiguration = providerTypesConfig[defaultDatabaseConfig.Type];
+                                                       defaultDatabaseConfig.Key);
+            var providerConfiguration = providerTypesConfig[defaultDatabaseConfig.ProviderType];
 
             Type providerType = Type.GetType(providerConfiguration.AssemblyPath);
             if (providerType != null)
@@ -205,7 +214,7 @@ namespace KonfDBHost
             }
 
             throw new InvalidOperationException(string.Format("Unknown Case: Could not get database provider for :{0}",
-                defaultDatabaseConfig.Type));
+                defaultDatabaseConfig.ProviderType));
         }
 
         private void InitDatabase()

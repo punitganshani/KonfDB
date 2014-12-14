@@ -40,9 +40,9 @@ namespace KonfDBHost
         [MTAThread]
         internal static void Main(string[] args)
         {
-            var backgroundService = new KonfDBH();
-            var services = new ServiceBase[] {backgroundService};
             IArguments argsDictionary = new CommandArgs(args);
+            var backgroundService = new KonfDBH(argsDictionary);
+            var services = new ServiceBase[] {backgroundService};
 
             if (argsDictionary.ContainsKey("install"))
             {
@@ -63,6 +63,7 @@ namespace KonfDBHost
             {
                 #region Console
 
+                HostContext.CreateFrom(argsDictionary.GetValue("configPath", "konfdb.json"));
                 HostContext.Current.Log.Debug("Running in Console Mode");
                 Console.SetWindowPosition(0, 0);
                 Console.BackgroundColor = ConsoleColor.DarkGray;

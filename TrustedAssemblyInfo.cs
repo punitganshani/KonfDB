@@ -30,3 +30,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("KonfDBE, PublicKeyToken=null")]
 [assembly: InternalsVisibleTo("KonfDBI, PublicKeyToken=null")]
 [assembly: InternalsVisibleTo("KonfDBAH, PublicKeyToken=null")]
+[assembly: InternalsVisibleTo("KonfDB.Tests, PublicKeyToken=null")]

@@ -42,10 +42,10 @@ namespace KonfDB.Infrastructure.Common
         {
             if (string.IsNullOrEmpty(applicationName))
             {
-                NameValueCollection appSettings = ConfigurationSettings.AppSettings;
+                NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
                 //application name
-                if (appSettings != null && !string.IsNullOrEmpty(appSettings["ApplicationName"]))
+                if (!string.IsNullOrEmpty(appSettings["ApplicationName"]))
                 {
                     applicationName = appSettings["ApplicationName"];
                 }
@@ -57,7 +57,7 @@ namespace KonfDB.Infrastructure.Common
                     string fullName = appDomain.FriendlyName;
                     applicationName = fullName;
 
-                    int lastDot = fullName.LastIndexOf(".");
+                    int lastDot = fullName.LastIndexOf(".", StringComparison.Ordinal);
                     if (lastDot != -1)
                         applicationName = fullName.Substring(0, lastDot);
                 }
@@ -115,19 +115,12 @@ namespace KonfDB.Infrastructure.Common
             if (string.IsNullOrEmpty(logDirectory))
             {
                 string logPath = string.Empty;
-                NameValueCollection appSettings = ConfigurationSettings.AppSettings;
+                NameValueCollection appSettings = ConfigurationManager.AppSettings;
                 //location to store log files
-                if (appSettings != null && !string.IsNullOrEmpty(appSettings["LogPath"]))
-                {
-                    logPath = appSettings["LogPath"];
-                }
-                else
-                {
-                    logPath = "C:\\logs\\";
-                }
-                string applicationName = GetApplicationName();
-                Directory.CreateDirectory(logPath + applicationName);
-                return logPath + applicationName;
+                logPath = !string.IsNullOrEmpty(appSettings["LogPath"]) ? appSettings["LogPath"] : "C:\\logs\\";
+                string appName = GetApplicationName();
+                Directory.CreateDirectory(logPath + appName);
+                return logPath + appName;
             }
             return logDirectory;
         }
