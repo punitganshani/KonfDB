@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/vxopc3esq3e1cgtv?svg=true)](https://ci.appveyor.com/project/punitganshani/konfdb)
+
 Thanks for stopping by!
 
 KonfDB is a complete open-source solution to configuration management for multi-tenant applications hosted on any platform.  You can now get rid of your XML and JSON configuration files and get onboarded to KonfDB where you can access and change your application configuration from almost anywhere with no effort.
