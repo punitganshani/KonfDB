@@ -33,7 +33,7 @@ namespace KonfDB.Infrastructure.Shell
     {
         IArguments ApplicationParams { get; set; }
 
-        Logger Log { get; set; }
+        ILogger Log { get; set; }
 
         InMemoryCacheStore Cache { get; set; }
     }

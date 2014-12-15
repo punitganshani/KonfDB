@@ -48,18 +48,18 @@ namespace KonfDB.Infrastructure.Shell
 
         public IArguments ApplicationParams { get; set; }
 
-        public Logger Log { get; set; }
+        public ILogger Log { get; set; }
 
         public InMemoryCacheStore Cache { get; set; }
 
-        private CurrentContext(Logger logger, IArguments arguments, InMemoryCacheStore cacheStore)
+        private CurrentContext(ILogger logger, IArguments arguments, InMemoryCacheStore cacheStore)
         {
             this.Log = logger;
             this.ApplicationParams = arguments;
             this.Cache = cacheStore;
         }
 
-        public static IContext CreateDefault(Logger logger, IArguments arguments, InMemoryCacheStore cacheStore)
+        public static IContext CreateDefault(ILogger logger, IArguments arguments, InMemoryCacheStore cacheStore)
         {
             return _defaultContext ?? (_defaultContext = new CurrentContext(logger, arguments, cacheStore));
         }

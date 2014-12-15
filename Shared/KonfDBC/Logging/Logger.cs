@@ -34,29 +34,20 @@ using log4net.Layout;
 
 namespace KonfDB.Infrastructure.Logging
 {
-    public class Logger
+    public class Logger : ILogger
     {
         private readonly ILog _log;
-        private static Logger _instance;
-
-        public static Logger CreateInstance(bool isConsole, string configurationFilePath)
-        {
-            if (_instance == null)
-                _instance = new Logger(isConsole, configurationFilePath);
-
-            return _instance;
-        }
-
-        private Logger(bool isConsole, string configurationFilePath)
+       
+        public Logger(bool isConsole, string configurationFilePath)
         {
             if (!string.IsNullOrEmpty(configurationFilePath) && File.Exists(configurationFilePath))
             {
                 XmlConfigurator.Configure(new FileInfo(configurationFilePath));
-                _log = CreateLog();
+                _log = LogFactory.CreateLog();
             }
             else
             {
-                _log = CreateLog();
+                _log = LogFactory.CreateLog();
                 var appenders = new List<IAppender> {CreateFileAppender("FileAppender", @"Logs\KonfDB.log")};
 
                 if (isConsole)
@@ -65,12 +56,6 @@ namespace KonfDB.Infrastructure.Logging
                 BasicConfigurator.Configure(appenders.ToArray());
             }
         }
-
-        private ILog CreateLog()
-        {
-            return LogManager.GetLogger("KonfDB");
-        }
-
         private static AppenderSkeleton CreateConsoleAppender()
         {
             var consoleAppender = new ConsoleAppender
@@ -116,25 +101,11 @@ namespace KonfDB.Infrastructure.Logging
             _log.InfoFormat(format, args);
         }
 
-        public void Info(object message, Exception exception)
-        {
-            if (!_log.IsInfoEnabled) return;
-
-            _log.Info(message, exception);
-        }
-
         public void Debug(object message)
         {
             if (!_log.IsDebugEnabled) return;
 
             _log.Debug(message);
-        }
-
-        public void Debug(object message, Exception exception)
-        {
-            if (!_log.IsDebugEnabled) return;
-
-            _log.Debug(message, exception);
         }
 
         public void DebugFormat(string format, params object[] args)

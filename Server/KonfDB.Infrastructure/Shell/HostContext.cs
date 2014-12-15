@@ -93,7 +93,7 @@ namespace KonfDB.Infrastructure.Shell
 
         internal AppType ApplicationType;
 
-        internal Logger Log
+        internal ILogger Log
         {
             get { return CurrentContext.Default.Log; }
         }
@@ -115,7 +115,7 @@ namespace KonfDB.Infrastructure.Shell
 
             ApplicationType = AppType.Server;
 
-            var logger = Logger.CreateInstance(true, configuration.Runtime.LogConfigPath);
+            var logger = LogFactory.CreateInstance(true, configuration.Runtime.LogConfigPath);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
             var cache = new InMemoryCacheStore(Config.Caching)
             {

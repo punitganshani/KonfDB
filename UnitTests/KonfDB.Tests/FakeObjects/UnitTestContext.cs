@@ -41,7 +41,7 @@ namespace KonfDB.Tests.FakeObjects
                 throw new InvalidOperationException(
                     "Current Context could not be initialized. No arguments passed to the context");
 
-            var logger = Logger.CreateInstance(Environment.UserInteractive,
+            var logger = LogFactory.CreateInstance(Environment.UserInteractive,
                 arguments.ContainsKey(@"runtime-logConfigPath") ? arguments["runtime-logConfigPath"] : string.Empty);
 
             CurrentContext.CreateDefault(logger, arguments, null);
@@ -69,7 +69,7 @@ namespace KonfDB.Tests.FakeObjects
                 _current = new UnitTestContext(arguments);
         }
 
-        public Logger Log
+        public ILogger Log
         {
             get { return CurrentContext.Default.Log; }
         }
