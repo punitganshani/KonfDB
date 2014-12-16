@@ -59,7 +59,8 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             long suiteId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            List<MappingModel> listOfMaps = HostContext.Current.Provider.ConfigurationStore.GetMapping(userId, suiteId);
+            List<MappingModel> listOfMaps = CurrentHostContext.Default.Provider.ConfigurationStore.GetMapping(userId,
+                suiteId);
             output.Data = listOfMaps;
             output.DisplayMessage = "Success";
 

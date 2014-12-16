@@ -69,7 +69,7 @@ namespace KonfDB.Engine.Commands.Server
             if (arguments.HasArgument("autoLoad"))
                 bool.TryParse(arguments["autoLoad"], out autoLoad);
 
-            output.Data = HostContext.Current.Provider.ConfigurationStore.GetSettings(active, autoLoad);
+            output.Data = CurrentHostContext.Default.Provider.ConfigurationStore.GetSettings(active, autoLoad);
 
             return output;
         }

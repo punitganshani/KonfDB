@@ -65,10 +65,10 @@ namespace KonfDB.Engine.Commands.Shared
 
             // Authenticate in DB
             AuthenticationModel authInfo =
-                HostContext.Current.Provider.ConfigurationStore.GetAuthenticatedInfo(username, password, token);
+                CurrentHostContext.Default.Provider.ConfigurationStore.GetAuthenticatedInfo(username, password, token);
 
-            if (!HostContext.Current.UserTokens.Contains(token))
-                HostContext.Current.UserTokens.Add(token);
+            if (!CurrentHostContext.Default.UserTokens.Contains(token))
+                CurrentHostContext.Default.UserTokens.Add(token);
 
             var authenticationOutput = CurrentContext.Default.Cache.Get(token,
                 () => new AuthenticationOutput

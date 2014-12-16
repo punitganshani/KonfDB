@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var applicationId = long.Parse(arguments["aid"]);
             long userId = arguments.GetUserId();
-            var success = HostContext.Current.Provider.ConfigurationStore.DeleteApplication(userId, applicationId);
+            var success = CurrentHostContext.Default.Provider.ConfigurationStore.DeleteApplication(userId, applicationId);
 
             output.DisplayMessage = success ? "Application deleted successfully!" : "Could not delete application";
 

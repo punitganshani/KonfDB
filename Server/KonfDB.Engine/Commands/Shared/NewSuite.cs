@@ -107,7 +107,7 @@ namespace KonfDB.Engine.Commands.Shared
                     Description = "All Servers in Suite " + name
                 });
 
-                var suite = HostContext.Current.Provider.ConfigurationStore.AddSuite(model);
+                var suite = CurrentHostContext.Default.Provider.ConfigurationStore.AddSuite(model);
                 output.Data = suite;
                 output.DisplayMessage = "Success";
 

@@ -64,7 +64,7 @@ namespace KonfDB.Engine.Commands.Shared
             long userId = arguments.GetUserId();
             if (isEncrypted)
             {
-                var suite = HostContext.Current.Provider.ConfigurationStore.GetSuite(userId, suiteId);
+                var suite = CurrentHostContext.Default.Provider.ConfigurationStore.GetSuite(userId, suiteId);
                 if (suite != null)
                 {
                     value = EncryptionEngine.Default.Encrypt(value, suite.PublicKey);
@@ -79,7 +79,7 @@ namespace KonfDB.Engine.Commands.Shared
                 }
             }
 
-            var parameter = HostContext.Current.Provider.ConfigurationStore.AddParameter(new ParameterModel
+            var parameter = CurrentHostContext.Default.Provider.ConfigurationStore.AddParameter(new ParameterModel
             {
                 ParameterName = name,
                 ParameterValue = string.IsNullOrEmpty(value) ? string.Empty : value,

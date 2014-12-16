@@ -60,7 +60,7 @@ namespace KonfDB.Engine.Commands.Shared
             long userId = arguments.GetUserId();
 
             long.TryParse(arguments["sid"], out suiteId);
-            var model = HostContext.Current.Provider.ConfigurationStore.GetEnvironments(userId, suiteId);
+            var model = CurrentHostContext.Default.Provider.ConfigurationStore.GetEnvironments(userId, suiteId);
 
             output.Data = model;
             output.DisplayMessage = "Success";

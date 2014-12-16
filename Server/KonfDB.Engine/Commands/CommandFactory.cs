@@ -44,7 +44,7 @@ namespace KonfDB.Engine.Commands
 
         internal static CommandFactory Initiate()
         {
-            return _commandFactory ?? (_commandFactory = new CommandFactory(HostContext.Current.ApplicationType));
+            return _commandFactory ?? (_commandFactory = new CommandFactory(CurrentHostContext.Default.ApplicationType));
         }
 
         private CommandFactory(AppType appType)

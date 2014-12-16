@@ -64,7 +64,7 @@ namespace KonfDB.Engine.Commands.Shared
 
             if (arguments["name"] != null)
             {
-                model = HostContext.Current.Provider.ConfigurationStore.GetApplication(userId, arguments["name"]);
+                model = CurrentHostContext.Default.Provider.ConfigurationStore.GetApplication(userId, arguments["name"]);
                 completed = true;
             }
             else if (arguments["id"] != null)
@@ -74,7 +74,7 @@ namespace KonfDB.Engine.Commands.Shared
 
                 if (appId != -1)
                 {
-                    model = HostContext.Current.Provider.ConfigurationStore.GetApplication(userId, appId);
+                    model = CurrentHostContext.Default.Provider.ConfigurationStore.GetApplication(userId, appId);
                     completed = true;
                 }
             }

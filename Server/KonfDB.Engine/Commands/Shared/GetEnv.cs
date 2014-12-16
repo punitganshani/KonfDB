@@ -64,7 +64,7 @@ namespace KonfDB.Engine.Commands.Shared
 
             if (arguments["name"] != null)
             {
-                model = HostContext.Current.Provider.ConfigurationStore.GetEnvironment(userId, arguments["name"]);
+                model = CurrentHostContext.Default.Provider.ConfigurationStore.GetEnvironment(userId, arguments["name"]);
                 completed = true;
             }
             else if (arguments["id"] != null)
@@ -74,7 +74,7 @@ namespace KonfDB.Engine.Commands.Shared
 
                 if (envId != -1)
                 {
-                    model = HostContext.Current.Provider.ConfigurationStore.GetEnvironment(userId, envId);
+                    model = CurrentHostContext.Default.Provider.ConfigurationStore.GetEnvironment(userId, envId);
                     completed = true;
                 }
             }

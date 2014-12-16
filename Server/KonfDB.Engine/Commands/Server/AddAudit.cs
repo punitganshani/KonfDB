@@ -87,7 +87,7 @@ namespace KonfDB.Engine.Commands.Server
             model.UserId = arguments.GetUserId();
             if (model.Key == null)
                 model.Key = "<Unknown>";
-            HostContext.Current.Provider.ConfigurationStore.AddAuditRecord(model);
+            CurrentHostContext.Default.Provider.ConfigurationStore.AddAuditRecord(model);
 
             return new CommandOutput
             {

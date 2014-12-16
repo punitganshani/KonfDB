@@ -56,7 +56,7 @@ namespace KonfDB.Engine.Commands.Shared
         public CommandOutput OnExecute(CommandInput arguments)
         {
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
-            var listOfSuites = HostContext.Current.Provider.ConfigurationStore.GetSuites(arguments.GetUserId());
+            var listOfSuites = CurrentHostContext.Default.Provider.ConfigurationStore.GetSuites(arguments.GetUserId());
 
             output.Data = listOfSuites;
             output.DisplayMessage = "Success";

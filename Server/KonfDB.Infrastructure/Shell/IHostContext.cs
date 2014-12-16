@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'StreamExtensions.cs' is part of KonfDB application - 
+//     This file 'IHostContext.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,16 +23,26 @@
 
 #endregion
 
-using System.IO;
+using System.Collections.Generic;
+using KonfDB.Infrastructure.Common;
+using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Services;
 
-namespace KonfDB.Infrastructure.Extensions
+namespace KonfDB.Infrastructure.Shell
 {
-    public static class StreamExtensions
+    internal interface IHostContext : IContext
     {
-        public static string ReadToEnd(this Stream stream)
-        {
-            var reader = new StreamReader(stream);
-            return reader.ReadToEnd();
-        }
+        BaseProvider Provider { get; }
+
+        AppType ApplicationType { get; }
+
+        bool AuditEnabled { get; }
+
+        IHostConfig Config { get; }
+
+        List<string> UserTokens { get; }
+
+        List<AuthenticationOutput> GetUsers();
     }
 }

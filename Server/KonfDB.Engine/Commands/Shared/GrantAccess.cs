@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             string username = arguments["user"];
             long loggedInUserId = arguments.GetUserId();
             RoleType role = arguments.HasArgument("role") ? arguments["role"].ToEnum<RoleType>() : RoleType.ReadOnly;
-            bool success = HostContext.Current.Provider.ConfigurationStore.GrantRoleAccessToSuite(suiteId,
+            bool success = CurrentHostContext.Default.Provider.ConfigurationStore.GrantRoleAccessToSuite(suiteId,
                 loggedInUserId,
                 username, role);
 

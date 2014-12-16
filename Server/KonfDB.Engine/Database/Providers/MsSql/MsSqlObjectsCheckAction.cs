@@ -50,7 +50,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
                 }
                 catch (Exception ex)
                 {
-                    HostContext.Current.Log.Error("Error while validating schemas", ex);
+                    CurrentHostContext.Default.Log.Error("Error while validating schemas", ex);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
                 }
                 catch (Exception ex)
                 {
-                    HostContext.Current.Log.Error("Error while validating tables", ex);
+                    CurrentHostContext.Default.Log.Error("Error while validating tables", ex);
                 }
             }
 

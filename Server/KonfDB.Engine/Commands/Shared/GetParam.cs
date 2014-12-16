@@ -66,7 +66,7 @@ namespace KonfDB.Engine.Commands.Shared
 
             if (arguments["name"] != null)
             {
-                model = HostContext.Current.Provider.ConfigurationStore.GetParameter(userId, arguments["name"]);
+                model = CurrentHostContext.Default.Provider.ConfigurationStore.GetParameter(userId, arguments["name"]);
                 completed = true;
             }
             else if (arguments["id"] != null)
@@ -76,7 +76,7 @@ namespace KonfDB.Engine.Commands.Shared
 
                 if (paramId != -1)
                 {
-                    model = HostContext.Current.Provider.ConfigurationStore.GetParameter(userId, paramId);
+                    model = CurrentHostContext.Default.Provider.ConfigurationStore.GetParameter(userId, paramId);
                     completed = true;
                 }
             }
@@ -92,7 +92,7 @@ namespace KonfDB.Engine.Commands.Shared
                 var pk = arguments["pk"];
                 if (pk != null && model.IsEncrypted)
                 {
-                    var suite = HostContext.Current.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
+                    var suite = CurrentHostContext.Default.Provider.ConfigurationStore.GetSuite(arguments.GetUserId(),
                         model.SuiteId);
 
                     if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))

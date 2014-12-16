@@ -51,7 +51,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
                 }
                 catch (Exception ex)
                 {
-                    HostContext.Current.Log.Error("Error while creating database", ex);
+                    CurrentHostContext.Default.Log.Error("Error while creating database", ex);
                 }
             }
         }

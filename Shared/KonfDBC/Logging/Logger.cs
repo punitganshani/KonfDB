@@ -37,7 +37,7 @@ namespace KonfDB.Infrastructure.Logging
     public class Logger : ILogger
     {
         private readonly ILog _log;
-       
+
         public Logger(bool isConsole, string configurationFilePath)
         {
             if (!string.IsNullOrEmpty(configurationFilePath) && File.Exists(configurationFilePath))
@@ -56,6 +56,7 @@ namespace KonfDB.Infrastructure.Logging
                 BasicConfigurator.Configure(appenders.ToArray());
             }
         }
+
         private static AppenderSkeleton CreateConsoleAppender()
         {
             var consoleAppender = new ConsoleAppender

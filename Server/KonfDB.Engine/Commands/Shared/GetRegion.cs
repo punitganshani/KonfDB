@@ -63,7 +63,7 @@ namespace KonfDB.Engine.Commands.Shared
             long userId = arguments.GetUserId();
             if (arguments["name"] != null)
             {
-                model = HostContext.Current.Provider.ConfigurationStore.GetRegion(userId, arguments["name"]);
+                model = CurrentHostContext.Default.Provider.ConfigurationStore.GetRegion(userId, arguments["name"]);
                 completed = true;
             }
             else if (arguments["id"] != null)
@@ -73,7 +73,7 @@ namespace KonfDB.Engine.Commands.Shared
 
                 if (regionId != -1)
                 {
-                    model = HostContext.Current.Provider.ConfigurationStore.GetRegion(userId, regionId);
+                    model = CurrentHostContext.Default.Provider.ConfigurationStore.GetRegion(userId, regionId);
                     completed = true;
                 }
             }

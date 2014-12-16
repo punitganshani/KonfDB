@@ -58,7 +58,7 @@ namespace KonfDB.Engine.Commands.Shared
             var output = new CommandOutput {PostAction = CommandOutput.PostCommandAction.None};
             var suiteId = long.Parse(arguments["sid"]);
             long userId = arguments.GetUserId();
-            var success = HostContext.Current.Provider.ConfigurationStore.DeleteSuite(new SuiteModel
+            var success = CurrentHostContext.Default.Provider.ConfigurationStore.DeleteSuite(new SuiteModel
             {
                 UserId = userId,
                 SuiteId = suiteId

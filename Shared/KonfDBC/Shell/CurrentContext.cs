@@ -40,7 +40,7 @@ namespace KonfDB.Infrastructure.Shell
             {
                 if (_defaultContext == null)
                 {
-                    throw new ArgumentNullException("CurrentContext has not been initialized");
+                    throw new InvalidOperationException("CurrentContext has not been initialized");
                 }
                 return _defaultContext;
             }

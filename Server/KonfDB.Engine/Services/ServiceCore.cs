@@ -55,7 +55,7 @@ namespace KonfDB.Engine.Services
 
         public CommandOutput ExecuteCommand(string command, string token)
         {
-            var userTokenFromCache = HostContext.Current.Cache.Get<AuthenticationOutput>(token);
+            var userTokenFromCache = CurrentHostContext.Default.Cache.Get<AuthenticationOutput>(token);
 
             CommandOutput commandOutput = null;
             try
@@ -76,7 +76,7 @@ namespace KonfDB.Engine.Services
                     if (RequiresCaching(commandObject))
                     {
                         // cache it
-                        commandOutput = HostContext.Current.Cache.Get(command, () =>
+                        commandOutput = CurrentHostContext.Default.Cache.Get(command, () =>
                             ExecuteCommandInternal(input, commandObject));
                     }
                     else
@@ -109,7 +109,7 @@ namespace KonfDB.Engine.Services
                     }
                 }
 
-                HostContext.Current.Log.Error(builder.ToString());
+                CurrentHostContext.Default.Log.Error(builder.ToString());
                 commandOutput = new CommandOutput
                 {
                     MessageType = CommandOutput.DisplayMessageType.Error,
@@ -118,7 +118,7 @@ namespace KonfDB.Engine.Services
             }
             catch (Exception ex)
             {
-                HostContext.Current.Log.Error(ex.GetDetails());
+                CurrentHostContext.Default.Log.Error(ex.GetDetails());
                 commandOutput = new CommandOutput
                 {
                     MessageType = CommandOutput.DisplayMessageType.Error,
@@ -133,7 +133,7 @@ namespace KonfDB.Engine.Services
             CommandInput input, ICommand commandObject)
         {
             // Audit an AUTH Command
-            if (HostContext.Current.AuditEnabled)
+            if (CurrentHostContext.Default.AuditEnabled)
             {
                 var authCommand = commandObject as IAuditCommand;
                 if (authCommand != null)
@@ -153,7 +153,7 @@ namespace KonfDB.Engine.Services
                             ExecuteCommandInternal(auditInput, _auditCommand);
                         })
                             .ContinueWith(task =>
-                                HostContext.Current.Log.ErrorFormat("Error adding audit record {0}",
+                                CurrentHostContext.Default.Log.ErrorFormat("Error adding audit record {0}",
                                     task.Exception.GetDetails()), TaskContinuationOptions.OnlyOnFaulted);
                     }
                 }

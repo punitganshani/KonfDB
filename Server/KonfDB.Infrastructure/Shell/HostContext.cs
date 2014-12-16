@@ -24,18 +24,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using KonfDB.Infrastructure.Caching;
-using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
-using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Extensions;
-using KonfDB.Infrastructure.Logging;
-using KonfDB.Infrastructure.Services;
-using KonfDB.Infrastructure.Utilities;
 
 namespace KonfDB.Infrastructure.Shell
 {
@@ -59,14 +52,6 @@ namespace KonfDB.Infrastructure.Shell
             if (string.IsNullOrEmpty(configFilePath))
                 throw new ArgumentNullException("configFilePath");
 
-            if (_current != null
-                && !string.IsNullOrEmpty(_configFilePath)
-                && !_configFilePath.Equals(configFilePath))
-            {
-                _current.Log.Info("Current context may get overridden. Earlier loaded from :" + _configFilePath +
-                                  " now: " + configFilePath);
-            }
-
             // No change in config file, so dont need to re load it
             if (!string.IsNullOrEmpty(_configFilePath) && _configFilePath.Equals(configFilePath))
                 return _current;
@@ -75,8 +60,8 @@ namespace KonfDB.Infrastructure.Shell
                 throw new ConfigurationErrorsException("Could not find config file: " + configFilePath);
 
             _config = File.ReadAllText(configFilePath).FromJsonToObject<HostConfig>();
-            _current = new HostContext(_config);
             _configFilePath = configFilePath;
+            _current = new HostContext(_config);
             return _current;
         }
 
@@ -91,64 +76,9 @@ namespace KonfDB.Infrastructure.Shell
             }
         }
 
-        internal AppType ApplicationType;
-
-        internal ILogger Log
-        {
-            get { return CurrentContext.Default.Log; }
-        }
-
-        internal InMemoryCacheStore Cache
-        {
-            get { return CurrentContext.Default.Cache; }
-        }
-
-
-        internal IArguments ApplicationParams
-        {
-            get { return CurrentContext.Default.ApplicationParams; }
-        }
-
         private HostContext(IHostConfig configuration)
         {
-            UserTokens = new List<string>();
-
-            ApplicationType = AppType.Server;
-
-            var logger = LogFactory.CreateInstance(true, configuration.Runtime.LogConfigPath);
-            var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
-            var cache = new InMemoryCacheStore(Config.Caching)
-            {
-                OnItemRemove = x =>
-                {
-                    Log.Debug("Item removed from cache: " + x.CacheItem.Key + " Reason : " + x.RemovedReason);
-                    if (x.CacheItem.Value is AuthenticationOutput)
-                    {
-                        // User has been removed from cache. Login expired
-                        UserTokens.Remove(x.CacheItem.Key);
-                    }
-                }
-            };
-
-            CurrentContext.CreateDefault(logger, commandArgs, cache);
-        }
-
-        internal bool AuditEnabled
-        {
-            get { return Config.Runtime.Audit; }
-        }
-
-
-        internal BaseProvider Provider { get; set; }
-
-
-        internal List<string> UserTokens { get; set; }
-
-        public List<AuthenticationOutput> GetUsers()
-        {
-            var users = new List<AuthenticationOutput>();
-            UserTokens.ForEach(x => users.Add(Cache.Get<AuthenticationOutput>(x)));
-            return users;
+            CurrentHostContext.CreateDefault(configuration);
         }
     }
 }

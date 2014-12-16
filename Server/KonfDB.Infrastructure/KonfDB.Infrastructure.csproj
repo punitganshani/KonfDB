@@ -136,7 +136,9 @@
     <Compile Include="Encryption\IEncryptionEngine.cs" />
     <Compile Include="Services\IAuditCommand.cs" />
     <Compile Include="Services\ICommand.cs" />
+    <Compile Include="Shell\CurrentHostContext.cs" />
     <Compile Include="Shell\HostContext.cs" />
+    <Compile Include="Shell\IHostContext.cs" />
     <Compile Include="Shell\ServiceHost.cs" />
     <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Utilities\SmartConsole.cs" />
