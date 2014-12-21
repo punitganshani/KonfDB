@@ -26,6 +26,8 @@
 using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Providers;
+using KonfDB.Infrastructure.Configuration.Providers.Certificate;
+using KonfDB.Infrastructure.Configuration.Providers.Database;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using Newtonsoft.Json;
 
@@ -39,14 +41,18 @@ namespace KonfDB.Infrastructure.Configuration
         [JsonProperty("cache")]
         public CacheConfigurationSection Caching { get; private set; }
 
-        [JsonProperty("providers")]
-        public ProvidersConfiguration Providers { get; private set; }
+        [JsonProperty("database")]
+        public DatabaseProviderCollection Database { get; set; }
+
+        [JsonProperty("certificates")]
+        public CertificateProviderCollection Certificate { get; set; }
 
         public HostConfig()
         {
             Runtime = new HostRuntimeConfiguration();
             Caching = new CacheConfigurationSection();
-            Providers = new ProvidersConfiguration();
+            Database = new DatabaseProviderCollection();
+            Certificate = new CertificateProviderCollection();
         }
     }
 }

@@ -25,6 +25,8 @@
 
 using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDB.Infrastructure.Configuration.Providers;
+using KonfDB.Infrastructure.Configuration.Providers.Certificate;
+using KonfDB.Infrastructure.Configuration.Providers.Database;
 using KonfDB.Infrastructure.Configuration.Runtime;
 
 namespace KonfDB.Infrastructure.Configuration.Interfaces
@@ -33,6 +35,7 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
     {
         HostRuntimeConfiguration Runtime { get; }
         CacheConfigurationSection Caching { get; }
-        ProvidersConfiguration Providers { get; }
+        DatabaseProviderCollection Database { get; set; }
+        CertificateProviderCollection Certificate { get; set; }
     }
 }

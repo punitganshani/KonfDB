@@ -104,7 +104,7 @@ namespace KonfDBHost
             {
                 var serviceSecurity = new ServiceSecurity
                 {
-                    CertificateConfiguration = CurrentHostContext.Default.Config.Providers.Certificate.Default,
+                    CertificateConfiguration = CurrentHostContext.Default.Config.Certificate.Default,
                     SecurityMode = CurrentHostContext.Default.Config.Runtime.ServiceSecurity
                 };
 

@@ -67,8 +67,8 @@ namespace KonfDB.Tests.Configuration
             config.Caching.DurationInSeconds = 30;
             config.Caching.Mode = CacheMode.Absolute;
 
-            config.Providers.Certificate.DefaultKey = "testCert";
-            config.Providers.Certificate.Certificates.Add(new CertificateProviderConfiguration
+            config.Certificate.DefaultKey = "testCert";
+            config.Certificate.Certificates.Add(new CertificateProviderConfiguration
             {
                 CertificateKey = "testCert",
                 StoreLocation = StoreLocation.LocalMachine,
@@ -77,8 +77,8 @@ namespace KonfDB.Tests.Configuration
                 Value = "localhost"
             });
 
-            config.Providers.Database.DefaultKey = "localsql";
-            config.Providers.Database.Databases.Add(new DatabaseProviderConfiguration
+            config.Database.DefaultKey = "localsql";
+            config.Database.Databases.Add(new DatabaseProviderConfiguration
             {
                 Key = "localsql",
                 Host = @"localhost\sqlexpress",
@@ -89,7 +89,7 @@ namespace KonfDB.Tests.Configuration
                 Location = @"c:\temp",
                 ProviderType = "MsSql"
             });
-            config.Providers.Database.Databases.Add(new DatabaseProviderConfiguration
+            config.Database.Databases.Add(new DatabaseProviderConfiguration
             {
                 Key = "azure",
                 Host = @"tcp:lbxcft14aq.database.windows.net",
@@ -98,17 +98,6 @@ namespace KonfDB.Tests.Configuration
                 Username = "dbName@lbxcft14aq",
                 Password = "dBPassword",
                 ProviderType = "AzureSql"
-            });
-
-            config.Providers.Types.Add(new ProviderTypeConfiguration
-            {
-                AssemblyPath = "KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE",
-                Type = "MsSql"
-            });
-            config.Providers.Types.Add(new ProviderTypeConfiguration
-            {
-                AssemblyPath = "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE",
-                Type = "AzureSql"
             });
 
             var configJson = config.ToJson();

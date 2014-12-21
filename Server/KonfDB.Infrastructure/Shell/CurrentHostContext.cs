@@ -31,6 +31,8 @@ using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Exceptions;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
@@ -122,32 +124,24 @@ namespace KonfDB.Infrastructure.Shell
 
         private BaseProvider GetDatabaseProviderInstance(IHostConfig configuration)
         {
-            var defaultDatabaseConfig = configuration.Providers.Database.Default;
-            var providerTypesConfig = configuration.Providers.Types;
+            var defaultDatabaseConfig = configuration.Database.Default;
+            Type providerType = Type.GetType(defaultDatabaseConfig.ProviderType);
 
+            if (providerType == null)
+                throw new InvalidConfigurationException("Could not locate Database Provider :" + defaultDatabaseConfig.ProviderType);
 
-            if (!providerTypesConfig.IsValid(defaultDatabaseConfig.ProviderType))
-                throw new ConfigurationErrorsException("Provider type not found: " + defaultDatabaseConfig.ProviderType +
-                                                       " for database provider: " +
-                                                       defaultDatabaseConfig.Key);
-            var providerConfiguration = providerTypesConfig[defaultDatabaseConfig.ProviderType];
+            if (!providerType.ImplementsClass<BaseProvider>())
+                throw new InvalidConfigurationException("Database Provider does not implement BaseProvider:" + defaultDatabaseConfig.ProviderType);
 
-            Type providerType = Type.GetType(providerConfiguration.AssemblyPath);
-            if (providerType != null)
+            var instance = Activator.CreateInstance(providerType, defaultDatabaseConfig);
+
+            var baseProvider = instance as BaseProvider;
+            if (baseProvider != null)
             {
-                var instance = Activator.CreateInstance(providerType, defaultDatabaseConfig);
-
-                var baseProvider = instance as BaseProvider;
-                if (baseProvider != null)
-                {
-                    baseProvider.Init();
-                    return baseProvider;
-                }
-                throw new InvalidOperationException("Type : " + providerType + " does not inherit from BaseProvider");
+                baseProvider.Init();
+                return baseProvider;
             }
-
-            throw new InvalidOperationException(string.Format("Unknown Case: Could not get database provider for :{0}",
-                defaultDatabaseConfig.ProviderType));
+            throw new InvalidOperationException("Type : " + providerType + " does not inherit from BaseProvider");
         }
     }
 }

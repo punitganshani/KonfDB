@@ -95,7 +95,6 @@
     <Compile Include="Attributes\IgnoreCacheAttribute.cs" />
     <Compile Include="Configuration\Interfaces\IDatabaseProviderConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IHostConfig.cs" />
-    <Compile Include="Configuration\Interfaces\IProvidersConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IProviderTypeConfiguration.cs" />
     <Compile Include="Configuration\Providers\Certificate\CertificateProviderCollection.cs" />
     <Compile Include="Configuration\Providers\Certificate\CertificateProviderConfiguration.cs" />
@@ -121,7 +120,6 @@
     <Compile Include="Common\Serializer.cs" />
     <Compile Include="Configuration\Providers\Database\DatabaseProviderCollection.cs" />
     <Compile Include="Configuration\Providers\Database\DatabaseProviderConfiguration.cs" />
-    <Compile Include="Configuration\Providers\ProvidersConfiguration.cs" />
     <Compile Include="Configuration\HostConfig.cs" />
     <Compile Include="Configuration\Providers\Types\ProviderTypeConfiguration.cs" />
     <Compile Include="Configuration\Providers\Types\ProviderTypesCollection.cs" />

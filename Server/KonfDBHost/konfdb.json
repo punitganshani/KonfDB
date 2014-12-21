@@ -3,7 +3,7 @@
         "audit": true,
         "log": {
             "provider": "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
-            "params": "-logConfigPath:log4net.xml -ShowOnConsole:true"
+            "params": "-logConfigPath:log4net-config.xml -ShowOnConsole:true"
         },
         "securityMode": "None",
         "server": [
@@ -34,51 +34,39 @@
         "mode": "Absolute",
         "duration": 30
     },
-    "providers": {
-        "databaseProviders": {
-            "default": "localsql",
-            "database": [
-                {
-                    "key": "localsql",
-                    "providerType": "MsSql",
-                    "host": "localhost\\sqlexpress",
-                    "port": 8080,
-                    "instanceName": "konf",
-                    "username": "sa",
-                    "password": "SomePwdStrong*0889",
-                    "location": "c:\\temp"
-                },
-                {
-                    "key": "azure",
-                    "providerType": "AzureSql",
-                    "host": "tcp:lbxcft14aq.database.windows.net",
-                    "port": 1433,
-                    "instanceName": "dbName",
-                    "username": "dbName@lbxcft14aq",
-                    "password": "dBPassword"
-                }
-            ]
-        },
-        "certificates": {
-            "default": "testCert",
-            "certificate": [
-                {
-                    "key": "testCert",
-                    "storeLocation": "LocalMachine",
-                    "storeName": "My",
-                    "findBy": "FindBySubjectName",
-                    "value": "localhost"
-                }
-            ]
-        },
-        "providerTypes": [
+    "database": {
+        "default": "localsql",
+        "database": [
             {
-                "type": "MsSql",
-                "assemblyPath": "KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE"
+                "key": "localsql",
+                "providerType": "KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE",
+                "host": "localhost\\sqlexpress",
+                "port": 8080,
+                "instanceName": "konf",
+                "username": "sa",
+                "password": "SomePwdStrong*0889",
+                "location": "c:\\temp"
             },
             {
-                "type": "AzureSql",
-                "assemblyPath": "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE"
+                "key": "azure",
+                "providerType": "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE",
+                "host": "tcp:lbxcft14aq.database.windows.net",
+                "port": 1433,
+                "instanceName": "dbName",
+                "username": "dbName@lbxcft14aq",
+                "password": "dBPassword"
+            }
+        ]
+    },
+    "certificates": {
+        "default": "testCert",
+        "certificate": [
+            {
+                "key": "testCert",
+                "storeLocation": "LocalMachine",
+                "storeName": "My",
+                "findBy": "FindBySubjectName",
+                "value": "localhost"
             }
         ]
     }
