@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using KonfDB.Infrastructure.Utilities;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
@@ -34,23 +35,24 @@ using log4net.Layout;
 
 namespace KonfDB.Infrastructure.Logging
 {
-    public class Logger : ILogger
+    public sealed class Logger : BaseLogger
     {
         private readonly ILog _log;
 
-        public Logger(bool isConsole, string configurationFilePath)
+        public Logger(IArguments args)
+            : base(args)
         {
-            if (!string.IsNullOrEmpty(configurationFilePath) && File.Exists(configurationFilePath))
+            if (args.ContainsKey("logConfigPath") && File.Exists(args["logConfigPath"]))
             {
-                XmlConfigurator.Configure(new FileInfo(configurationFilePath));
-                _log = LogFactory.CreateLog();
+                XmlConfigurator.Configure(new FileInfo(args["logConfigPath"]));
+                _log = LogManager.GetLogger("KonfDB");
             }
             else
             {
-                _log = LogFactory.CreateLog();
-                var appenders = new List<IAppender> {CreateFileAppender("FileAppender", @"Logs\KonfDB.log")};
+                _log = LogManager.GetLogger("KonfDB");
+                var appenders = new List<IAppender> { CreateFileAppender("FileAppender", @"Logs\KonfDB.log") };
 
-                if (isConsole)
+                if (args.GetValue("ShowOnConsole", "false").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
                     appenders.Add(CreateConsoleAppender());
 
                 BasicConfigurator.Configure(appenders.ToArray());
@@ -62,7 +64,7 @@ namespace KonfDB.Infrastructure.Logging
             var consoleAppender = new ConsoleAppender
             {
                 Threshold = Level.All,
-                Layout = new PatternLayout {ConversionPattern = "[%t] %-5p - %m%n"}
+                Layout = new PatternLayout { ConversionPattern = "[%t] %-5p - %m%n" }
             };
 
             //consoleAppender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Error, 
@@ -78,8 +80,8 @@ namespace KonfDB.Infrastructure.Logging
 
         private static IAppender CreateFileAppender(string name, string fileName)
         {
-            var appender = new FileAppender {Name = name, File = fileName, AppendToFile = true};
-            var layout = new PatternLayout {ConversionPattern = "%d [%t] %-5p %c [%x] - %m%n"};
+            var appender = new FileAppender { Name = name, File = fileName, AppendToFile = true };
+            var layout = new PatternLayout { ConversionPattern = "%d [%t] %-5p %c [%x] - %m%n" };
             layout.ActivateOptions();
 
             appender.Layout = layout;
@@ -88,63 +90,63 @@ namespace KonfDB.Infrastructure.Logging
             return appender;
         }
 
-        public void Info(object message)
+        public override void Info(object message)
         {
             if (!_log.IsInfoEnabled) return;
 
             _log.Info(message);
         }
 
-        public void InfoFormat(string format, params object[] args)
+        public override void InfoFormat(string format, params object[] args)
         {
             if (!_log.IsInfoEnabled) return;
 
             _log.InfoFormat(format, args);
         }
 
-        public void Debug(object message)
+        public override void Debug(object message)
         {
             if (!_log.IsDebugEnabled) return;
 
             _log.Debug(message);
         }
 
-        public void DebugFormat(string format, params object[] args)
+        public override void DebugFormat(string format, params object[] args)
         {
             if (!_log.IsDebugEnabled) return;
 
             _log.DebugFormat(format, args);
         }
 
-        public void Error(object message)
+        public override void Error(object message)
         {
             if (!_log.IsErrorEnabled) return;
 
             _log.Error(message);
         }
 
-        public void Error(object message, Exception exception)
+        public override void Error(object message, Exception exception)
         {
             if (!_log.IsErrorEnabled) return;
 
             _log.Error(message, exception);
         }
 
-        public void ErrorFormat(string format, params object[] args)
+        public override void ErrorFormat(string format, params object[] args)
         {
             if (!_log.IsErrorEnabled) return;
 
             _log.ErrorFormat(format, args);
         }
 
-        public void SvcInfo(object message)
+        public override void SvcInfo(object message)
         {
             if (!_log.IsInfoEnabled) return;
 
             _log.Info(message);
         }
 
-        public void SvcInfo(object message, Exception exception)
+        public override void SvcInfo(object message, Exception exception)
         {
             if (!_log.IsInfoEnabled) return;
 

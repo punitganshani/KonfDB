@@ -29,6 +29,7 @@ using System.Configuration;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
@@ -69,7 +70,7 @@ namespace KonfDB.Infrastructure.Shell
             set { CurrentContext.Default.ApplicationParams = value; }
         }
 
-        public ILogger Log
+        public BaseLogger Log
         {
             get { return CurrentContext.Default.Log; }
             set { CurrentContext.Default.Log = value; }
@@ -87,7 +88,7 @@ namespace KonfDB.Infrastructure.Shell
             this.Config = configuration;
             this.UserTokens = new List<string>();
 
-            var logger = LogFactory.CreateInstance(true, configuration.Runtime.LogConfigPath);
+            var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
             var cache = new InMemoryCacheStore(configuration.Caching)
             {

@@ -32,7 +32,7 @@ namespace KonfDB.Engine.Shell
 {
     public static class ServiceHost
     {
-        public static bool RunAsConsoleIfRequested<T>(ManualResetEvent shutdownEvent, params string[] args)
+        public static bool ShowOnConsoleIfRequested<T>(ManualResetEvent shutdownEvent, params string[] args)
             where T : ServiceBase, new()
         {
             var service = new T();

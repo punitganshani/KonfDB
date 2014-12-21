@@ -25,6 +25,7 @@
 
 using System;
 using KonfDB.Infrastructure.Caching;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
@@ -41,8 +42,16 @@ namespace KonfDB.Tests.FakeObjects
                 throw new InvalidOperationException(
                     "Current Context could not be initialized. No arguments passed to the context");
 
-            var logger = LogFactory.CreateInstance(Environment.UserInteractive,
-                arguments.ContainsKey(@"runtime-logConfigPath") ? arguments["runtime-logConfigPath"] : string.Empty);
+            var element = new LogElement
+            {
+                Parameters = "-ShowOnConsole:true ",
+                ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC"
+            };
+
+            if (arguments.ContainsKey("runtime-logConfigPath"))
+                element.Parameters += "-path:" + arguments["runtime-logConfigPath"];
+
+            var logger = LogFactory.CreateInstance(element);
 
             CurrentContext.CreateDefault(logger, arguments, null);
         }
@@ -69,7 +78,7 @@ namespace KonfDB.Tests.FakeObjects
                 _current = new UnitTestContext(arguments);
         }
 
-        public ILogger Log
+        public BaseLogger Log
         {
             get { return CurrentContext.Default.Log; }
         }

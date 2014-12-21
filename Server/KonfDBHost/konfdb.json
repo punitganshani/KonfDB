@@ -1,82 +1,85 @@
 ﻿{
-  "runtime": {
-    "audit": true,
-    "logConfigPath": "",
-    "securityMode": "None",
-    "server": [
-      {
-        "port": 8885,
-        "type": "TCP"
-      },
-      {
-        "port": 8880,
-        "type": "HTTP"
-      },
-      {
-        "port": 8890,
-        "type": "WSHTTP"
-      },
-      {
-        "port": 8882,
-        "type": "REST"
-      }
-    ],
-    "superuser": {
-      "username": "suser",
-      "password": "spwd"
-    }
-  },
-  "cache": {
-    "enabled": false,
-    "mode": "Absolute",
-    "duration": 30
-  },
-  "providers": {
-    "databaseProviders": {
-      "default": "localsql",
-      "database": [
-        {
-          "key": "localsql",
-          "providerType": "MsSql",
-          "host": "localhost\\sqlexpress",
-          "port": 8080,
-          "instanceName": "konf",
-          "username": "sa",
-          "password": "SomePwdStrong*0889",
-          "location": "c:\\temp"
+    "runtime": {
+        "audit": true,
+        "log": {
+            "provider": "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
+            "params": "-logConfigPath:log4net.xml -ShowOnConsole:true"
         },
-        {
-          "key": "azure",
-          "providerType": "AzureSql",
-          "host": "tcp:lbxcft14aq.database.windows.net",
-          "port": 1433,
-          "instanceName": "dbName",
-          "username": "dbName@lbxcft14aq",
-          "password": "dBPassword"
+        "securityMode": "None",
+        "server": [
+            {
+                "port": 8885,
+                "type": "TCP"
+            },
+            {
+                "port": 8880,
+                "type": "HTTP"
+            },
+            {
+                "port": 8890,
+                "type": "WSHTTP"
+            },
+            {
+                "port": 8882,
+                "type": "REST"
+            }
+        ],
+        "superuser": {
+            "username": "suser",
+            "password": "spwd"
         }
-      ]
     },
-    "certificates": {
-      "default": "testCert",
-      "certificate": [
-        {
-          "key": "testCert",
-          "storeLocation": "LocalMachine",
-          "storeName": "My",
-          "findBy": "FindBySubjectName",
-          "value": "localhost"
-        }
-      ]
+    "cache": {
+        "enabled": false,
+        "mode": "Absolute",
+        "duration": 30
     },
-    "providerTypes": [
-      {
-        "type": "MsSql",
-        "assemblyPath": "KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE"
-      },
-      {
-        "type": "AzureSql",
-        "assemblyPath": "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE"
-      }
-    ]
-  }
+    "providers": {
+        "databaseProviders": {
+            "default": "localsql",
+            "database": [
+                {
+                    "key": "localsql",
+                    "providerType": "MsSql",
+                    "host": "localhost\\sqlexpress",
+                    "port": 8080,
+                    "instanceName": "konf",
+                    "username": "sa",
+                    "password": "SomePwdStrong*0889",
+                    "location": "c:\\temp"
+                },
+                {
+                    "key": "azure",
+                    "providerType": "AzureSql",
+                    "host": "tcp:lbxcft14aq.database.windows.net",
+                    "port": 1433,
+                    "instanceName": "dbName",
+                    "username": "dbName@lbxcft14aq",
+                    "password": "dBPassword"
+                }
+            ]
+        },
+        "certificates": {
+            "default": "testCert",
+            "certificate": [
+                {
+                    "key": "testCert",
+                    "storeLocation": "LocalMachine",
+                    "storeName": "My",
+                    "findBy": "FindBySubjectName",
+                    "value": "localhost"
+                }
+            ]
+        },
+        "providerTypes": [
+            {
+                "type": "MsSql",
+                "assemblyPath": "KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE"
+            },
+            {
+                "type": "AzureSql",
+                "assemblyPath": "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE"
+            }
+        ]
+    }
 }

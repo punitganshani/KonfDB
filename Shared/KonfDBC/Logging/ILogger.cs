@@ -24,19 +24,27 @@
 #endregion
 
 using System;
+using KonfDB.Infrastructure.Utilities;
 
 namespace KonfDB.Infrastructure.Logging
 {
-    public interface ILogger
+    public abstract class BaseLogger
     {
-        void Info(object message);
-        void InfoFormat(string format, params object[] args);
-        void Debug(object message);
-        void DebugFormat(string format, params object[] args);
-        void Error(object message);
-        void Error(object message, Exception exception);
-        void ErrorFormat(string format, params object[] args);
-        void SvcInfo(object message);
-        void SvcInfo(object message, Exception exception);
+        private IArguments _arguments;
+
+        protected BaseLogger(IArguments args)
+        {
+            _arguments = args;
+        }
+
+        public abstract void Info(object message);
+        public abstract void InfoFormat(string format, params object[] args);
+        public abstract void Debug(object message);
+        public abstract void DebugFormat(string format, params object[] args);
+        public abstract void Error(object message);
+        public abstract void Error(object message, Exception exception);
+        public abstract void ErrorFormat(string format, params object[] args);
+        public abstract void SvcInfo(object message);
+        public abstract void SvcInfo(object message, Exception exception);
     }
 }

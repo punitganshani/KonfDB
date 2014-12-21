@@ -38,8 +38,8 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         [JsonProperty("params")]
         public string Parameters { get; set; }
 
-        [JsonProperty("logConfigPath")]
-        public string LogConfigPath { get; set; }
+        [JsonProperty("log")]
+        public LogElement LogInfo { get; set; }
 
         [JsonProperty("securityMode")]
         [JsonConverter(typeof (StringEnumConverter))]

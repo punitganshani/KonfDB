@@ -123,7 +123,7 @@ namespace KonfDBHost
             if (authenticationOutput == null)
             {
                 throw new InvalidOperationException(
-                    "Could not authenticate server user.  Check the sanity of database.");
+                   "Could not authenticate server user: " + authOutput.DisplayMessage);
             }
 
             AuthenticationToken = authenticationOutput.Token;

@@ -94,6 +94,7 @@
     <Compile Include="Configuration\Interfaces\ICertificateConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IServiceTypeConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IUserConfiguration.cs" />
+    <Compile Include="Configuration\Runtime\LogElement.cs" />
     <Compile Include="Configuration\Runtime\UserElement.cs" />
     <Compile Include="Entities\Account\AuthenticationModel.cs" />
     <Compile Include="Entities\Account\RegisterModel.cs" />

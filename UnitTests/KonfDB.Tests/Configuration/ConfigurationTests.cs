@@ -48,14 +48,18 @@ namespace KonfDB.Tests.Configuration
                 Runtime =
                 {
                     Audit = true,
-                    LogConfigPath = string.Empty,
+                    LogInfo = new LogElement
+                    {
+                        ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
+                        Parameters = @"-path:konfdb\log.txt"
+                    },
                     ServiceSecurity = ServiceSecurityMode.None
                 }
             };
-            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8885, Type = EndPointType.TCP});
-            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8880, Type = EndPointType.HTTP});
-            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8890, Type = EndPointType.WSHTTP});
-            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8882, Type = EndPointType.REST});
+            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8885, Type = EndPointType.TCP });
+            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8880, Type = EndPointType.HTTP });
+            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8890, Type = EndPointType.WSHTTP });
+            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8882, Type = EndPointType.REST });
             config.Runtime.SuperUser.Username = "suser";
             config.Runtime.SuperUser.Password = "spwd";
 
@@ -119,7 +123,11 @@ namespace KonfDB.Tests.Configuration
             {
                 Runtime =
                 {
-                    LogConfigPath = string.Empty,
+                    LogInfo = new LogElement
+                    {
+                        ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
+                        Parameters = @"-path:konfdb\log.txt"
+                    },
                 }
             };
             config.Runtime.Client.Host = "localhost";

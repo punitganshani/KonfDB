@@ -1,19 +1,22 @@
 ﻿{
-  "runtime": {
-    "logConfigPath": "",
-    "client": {
-      "host": "localhost",
-      "port": 8885,
-      "type": "TCP"
+    "runtime": {
+        "log": {
+            "provider": "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
+            "params": "-ShowOnConsole:true"
+        },
+        "client": {
+            "host": "localhost",
+            "port": 8885,
+            "type": "TCP"
+        },
+        "user": {
+            "username": "suser",
+            "password": "spwd"
+        }
     },
-    "user": {
-      "username": "suser",
-      "password": "spwd"
+    "cache": {
+        "enabled": false,
+        "mode": "Absolute",
+        "duration": 30
     }
-  },
-  "cache": {
-    "enabled": false,
-    "mode": "Absolute",
-    "duration": 30
-  }
 }

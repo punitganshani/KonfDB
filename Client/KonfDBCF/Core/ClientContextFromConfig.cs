@@ -63,7 +63,7 @@ namespace KonfDBCF.Core
 
             Config = configuration;
 
-            var logger = LogFactory.CreateInstance(Environment.UserInteractive, configuration.Runtime.LogConfigPath);
+            var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
 
             if (configuration.Runtime == null)
                 throw new InvalidConfigurationException("Could not find Runtime Configuration for KonfDBCF");
@@ -77,7 +77,7 @@ namespace KonfDBCF.Core
             CurrentContext.CreateDefault(logger, new CommandArgs(string.Empty), cache);
         }
 
-        public ILogger Log
+        public BaseLogger Log
         {
             get { return CurrentContext.Default.Log; }
         }

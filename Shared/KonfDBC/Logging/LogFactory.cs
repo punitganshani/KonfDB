@@ -23,26 +23,34 @@
 
 #endregion
 
+using System;
+using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Exceptions;
+using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Utilities;
 using log4net;
 
 namespace KonfDB.Infrastructure.Logging
 {
     public class LogFactory
     {
-        private static ILogger _instance;
-
-        public static ILogger CreateInstance(bool isConsole, string configurationFilePath)
+        private static BaseLogger _instance;
+        internal static BaseLogger CreateInstance(LogElement logElement)
         {
             if (_instance == null)
-                _instance = new Logger(isConsole, configurationFilePath);
+            {
+                Type providerType = Type.GetType(logElement.ProviderType);
+                if (providerType == null)
+                    throw new InvalidConfigurationException("Could not locate Log Provider :" + logElement.ProviderType);
+
+                if (!providerType.ImplementsClass<BaseLogger>())
+                    throw new InvalidConfigurationException("Log Provider does not implement ILogger:" + logElement.ProviderType);
+
+                var args = new CommandArgs(logElement.Parameters);
+                _instance = (BaseLogger)Activator.CreateInstance(providerType, args);
+            }
 
             return _instance;
-        }
-
-
-        public static ILog CreateLog()
-        {
-            return LogManager.GetLogger("KonfDB");
         }
     }
 }

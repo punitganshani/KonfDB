@@ -30,8 +30,8 @@ namespace KonfDBCF.Configuration.Runtime
 {
     internal class ClientRuntimeConfiguration
     {
-        [JsonProperty("logConfigPath")]
-        public string LogConfigPath { get; set; }
+        [JsonProperty("log")]
+        public LogElement LogInfo { get; set; }
 
         [JsonProperty("client")]
         public ClientServiceTypeConfiguration Client { get; set; }

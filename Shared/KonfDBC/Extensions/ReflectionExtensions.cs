@@ -55,6 +55,20 @@ namespace KonfDB.Infrastructure.Extensions
             return InheritanceCache[key];
         }
 
+        public static bool ImplementsClass<TClass>(this Type inputType)
+        {
+            if (inputType == null) return false;
+
+            //attempt interfaces
+            var interfaceType = typeof(TClass); 
+            string key = String.Format(@"{0}{1}", inputType.FullName, interfaceType.FullName);
+
+            if (!InheritanceCache.ContainsKey(key))
+                InheritanceCache[key] = inputType.BaseType == interfaceType;
+
+            return InheritanceCache[key];
+        }
+
         public static T GetCustomAttributesValue<T>(this Type input)
         {
             return GetCustomAttributesValue<T>(input, false);
