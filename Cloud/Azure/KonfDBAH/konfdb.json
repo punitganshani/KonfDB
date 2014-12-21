@@ -1,0 +1,55 @@
+﻿{
+    "runtime": {
+        "audit": true,
+        "log": {
+            "provider": "KonfDBAH.Logging.AzureLogger, KonfDBAH",
+            "params": ""
+        },
+        "securityMode": "None",
+        "server": [
+            {
+                "port": 8885,
+                "type": "TCP"
+            },
+            {
+                "port": 8880,
+                "type": "HTTP"
+            },
+            {
+                "port": 8890,
+                "type": "WSHTTP"
+            },
+            {
+                "port": 8892,
+                "type": "REST"
+            }
+        ],
+        "superuser": {
+            "username": "azureuser",
+            "password": "aZuReu$rpWd"
+        }
+    },
+    "cache": {
+        "enabled": false,
+        "mode": "Absolute",
+        "duration": 30
+    },
+    "database": {
+        "default": "azure",
+        "database": [
+            {
+                "key": "azure",
+                "providerType": "KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE",
+                "host": "tcp:host.database.windows.net",
+                "port": 1433,
+                "instanceName": "konfdb",
+                "username": "userid@host",
+                "password": "dBPassword"
+            }
+        ]
+    },
+    "certificates": {
+        "default": "none",
+        "certificate": [ ]
+    }
+}

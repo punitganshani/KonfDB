@@ -23,7 +23,6 @@
 
 #endregion
 
-using System;
 using KonfDB.Infrastructure.Attributes;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Database.Entities.Account;
@@ -87,7 +86,7 @@ namespace KonfDB.Engine.Commands.Shared
             }
             catch
             {
-                throw; 
+                throw;
             }
 
             return output;

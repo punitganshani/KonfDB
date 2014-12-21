@@ -55,10 +55,10 @@ namespace KonfDB.Tests.Configuration
                     ServiceSecurity = ServiceSecurityMode.None
                 }
             };
-            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8885, Type = EndPointType.TCP });
-            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8880, Type = EndPointType.HTTP });
-            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8890, Type = EndPointType.WSHTTP });
-            config.Runtime.Server.Add(new ServiceTypeConfiguration { Port = 8882, Type = EndPointType.REST });
+            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8885, Type = EndPointType.TCP});
+            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8880, Type = EndPointType.HTTP});
+            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8890, Type = EndPointType.WSHTTP});
+            config.Runtime.Server.Add(new ServiceTypeConfiguration {Port = 8882, Type = EndPointType.REST});
             config.Runtime.SuperUser.Username = "suser";
             config.Runtime.SuperUser.Password = "spwd";
 

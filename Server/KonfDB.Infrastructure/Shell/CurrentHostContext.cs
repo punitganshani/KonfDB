@@ -25,11 +25,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
-using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
@@ -128,10 +126,12 @@ namespace KonfDB.Infrastructure.Shell
             Type providerType = Type.GetType(defaultDatabaseConfig.ProviderType);
 
             if (providerType == null)
-                throw new InvalidConfigurationException("Could not locate Database Provider :" + defaultDatabaseConfig.ProviderType);
+                throw new InvalidConfigurationException("Could not locate Database Provider :" +
+                                                        defaultDatabaseConfig.ProviderType);
 
             if (!providerType.ImplementsClass<BaseProvider>())
-                throw new InvalidConfigurationException("Database Provider does not implement BaseProvider:" + defaultDatabaseConfig.ProviderType);
+                throw new InvalidConfigurationException("Database Provider does not implement BaseProvider:" +
+                                                        defaultDatabaseConfig.ProviderType);
 
             var instance = Activator.CreateInstance(providerType, defaultDatabaseConfig);
 

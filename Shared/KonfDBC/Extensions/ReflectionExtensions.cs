@@ -60,7 +60,7 @@ namespace KonfDB.Infrastructure.Extensions
             if (inputType == null) return false;
 
             //attempt interfaces
-            var interfaceType = typeof(TClass); 
+            var interfaceType = typeof (TClass);
             string key = String.Format(@"{0}{1}", inputType.FullName, interfaceType.FullName);
 
             if (!InheritanceCache.ContainsKey(key))

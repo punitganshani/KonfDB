@@ -25,7 +25,6 @@
 
 using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDB.Infrastructure.Configuration.Interfaces;
-using KonfDB.Infrastructure.Configuration.Providers;
 using KonfDB.Infrastructure.Configuration.Providers.Certificate;
 using KonfDB.Infrastructure.Configuration.Providers.Database;
 using KonfDB.Infrastructure.Configuration.Runtime;

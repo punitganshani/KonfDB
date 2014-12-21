@@ -50,9 +50,10 @@ namespace KonfDB.Infrastructure.Logging
             else
             {
                 _log = LogManager.GetLogger("KonfDB");
-                var appenders = new List<IAppender> { CreateFileAppender("FileAppender", @"Logs\KonfDB.log") };
+                var appenders = new List<IAppender> {CreateFileAppender("FileAppender", @"Logs\KonfDB.log")};
 
-                if (args.GetValue("ShowOnConsole", "false").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
+                if (args.GetValue("ShowOnConsole", "false")
+                    .Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
                     appenders.Add(CreateConsoleAppender());
 
                 BasicConfigurator.Configure(appenders.ToArray());
@@ -64,7 +65,7 @@ namespace KonfDB.Infrastructure.Logging
             var consoleAppender = new ConsoleAppender
             {
                 Threshold = Level.All,
-                Layout = new PatternLayout { ConversionPattern = "[%t] %-5p - %m%n" }
+                Layout = new PatternLayout {ConversionPattern = "[%t] %-5p - %m%n"}
             };
 
             //consoleAppender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Error, 
@@ -80,8 +81,8 @@ namespace KonfDB.Infrastructure.Logging
 
         private static IAppender CreateFileAppender(string name, string fileName)
         {
-            var appender = new FileAppender { Name = name, File = fileName, AppendToFile = true };
-            var layout = new PatternLayout { ConversionPattern = "%d [%t] %-5p %c [%x] - %m%n" };
+            var appender = new FileAppender {Name = name, File = fileName, AppendToFile = true};
+            var layout = new PatternLayout {ConversionPattern = "%d [%t] %-5p %c [%x] - %m%n"};
             layout.ActivateOptions();
 
             appender.Layout = layout;

@@ -28,13 +28,13 @@ using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Utilities;
-using log4net;
 
 namespace KonfDB.Infrastructure.Logging
 {
     public class LogFactory
     {
         private static BaseLogger _instance;
+
         internal static BaseLogger CreateInstance(LogElement logElement)
         {
             if (_instance == null)
@@ -44,10 +44,11 @@ namespace KonfDB.Infrastructure.Logging
                     throw new InvalidConfigurationException("Could not locate Log Provider :" + logElement.ProviderType);
 
                 if (!providerType.ImplementsClass<BaseLogger>())
-                    throw new InvalidConfigurationException("Log Provider does not implement ILogger:" + logElement.ProviderType);
+                    throw new InvalidConfigurationException("Log Provider does not implement ILogger:" +
+                                                            logElement.ProviderType);
 
                 var args = new CommandArgs(logElement.Parameters);
-                _instance = (BaseLogger)Activator.CreateInstance(providerType, args);
+                _instance = (BaseLogger) Activator.CreateInstance(providerType, args);
             }
 
             return _instance;

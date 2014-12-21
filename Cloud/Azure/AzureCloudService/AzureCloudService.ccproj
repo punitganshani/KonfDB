@@ -83,4 +83,7 @@
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.4\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
+    <Target Name="CopyWorkerRoleConfigurations" BeforeTargets="AfterPackageComputeService">
+    <Copy SourceFiles="..\KonfDBAH\bin\$(Configuration)\$(TargetFrameworkVersion)\konfdb.json" DestinationFolder="$(IntermediateOutputPath)KonfDBAH" OverwriteReadOnlyFiles="true" />
+  </Target>
 </Project>
