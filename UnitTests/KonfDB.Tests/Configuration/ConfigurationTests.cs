@@ -28,7 +28,6 @@ using KonfDB.Infrastructure.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Providers.Certificate;
 using KonfDB.Infrastructure.Configuration.Providers.Database;
-using KonfDB.Infrastructure.Configuration.Providers.Types;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
