@@ -78,5 +78,28 @@ namespace KonfDB.Tests.Utilities
             CommandArgs args = new CommandArgs(String.Format("GetSuite /name:{0}", StringWithQuotes));
             Assert.AreEqual(StringWithQuotes, args["name"]);
         }
+
+        [TestMethod]
+        public void TestAzureUserConnectionString()
+        {
+            var args = new CommandArgs("-username=myuser -password=pwd"); 
+            Assert.AreEqual("myuser", args["username"]);
+            Assert.AreEqual("pwd", args["password"]);
+        }
+
+        [TestMethod]
+        public void TestAzureDatabaseConnectionString()
+        {
+            var args = new CommandArgs("-providerType=AzureSqlProvider -host=tcp:host.database.windows.net -port=1433 -instanceName=konfdb -username=userid@host -password=dBPassword");
+
+            Assert.AreEqual("AzureSqlProvider", args["providerType"]);
+            Assert.AreEqual("tcp:host.database.windows.net", args["host"]);
+            Assert.AreEqual("1433", args["port"]);
+            Assert.AreEqual("konfdb", args["instanceName"]);
+            Assert.AreEqual("userid@host", args["username"]);
+            Assert.AreEqual("dBPassword", args["password"]);
+        
+        
+        }
     }
 }

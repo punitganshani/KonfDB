@@ -4,6 +4,9 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="konfdb.runtime.superuser" value="-username:azureuser -password:pwd" />
+      <Setting name="konfdb.database" value="-providerType=AzureSqlProvider -host=tcp:host.database.windows.net -port=1433 -instanceName=konfdb -username=userid@host -password=dBPassword" />
+      <Setting name="konfdb.configuration.mode" value="Azure" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

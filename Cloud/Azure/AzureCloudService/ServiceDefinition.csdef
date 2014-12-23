@@ -5,6 +5,15 @@
       <Import moduleName="Diagnostics" />
     </Imports>
     <ConfigurationSettings>
+      <Setting name="konfdb.runtime.superuser" />
+      <Setting name="konfdb.database" />
+      <Setting name="konfdb.configuration.mode" />
     </ConfigurationSettings>
+    <Endpoints>
+      <InputEndpoint name="TCP" protocol="tcp" port="8885" localPort="8885" />
+      <InputEndpoint name="HTTP" protocol="http" port="8880" localPort="8880" />
+      <InputEndpoint name="WSHTTP" protocol="http" port="8890" localPort="8890" />
+      <InputEndpoint name="REST" protocol="http" port="8892" localPort="8892" />
+    </Endpoints>
   </WorkerRole>
 </ServiceDefinition>

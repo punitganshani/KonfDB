@@ -57,6 +57,13 @@ namespace KonfDBAH.Shell
             return _current;
         }
 
+        internal static AzureContext CreateFrom(IHostConfig config)
+        {
+            _config = config;
+            _current = new AzureContext(_config);
+            return _current;
+        }
+
         internal static AzureContext CreateFrom(Stream configStream)
         {
             if (configStream == null)

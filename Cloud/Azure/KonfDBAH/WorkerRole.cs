@@ -30,7 +30,12 @@ using System.Globalization;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using KonfDB.Engine.Database.EntityFramework;
 using KonfDB.Engine.Services;
+using KonfDB.Infrastructure.Configuration;
+using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Configuration.Providers.Database;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
@@ -39,6 +44,7 @@ using KonfDB.Infrastructure.Utilities;
 using KonfDB.Infrastructure.WCF;
 using KonfDB.Infrastructure.WCF.Bindings;
 using KonfDB.Infrastructure.WCF.Interfaces;
+using KonfDBAH.Logging;
 using KonfDBAH.Shell;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
@@ -46,9 +52,8 @@ namespace KonfDBAH
 {
     public class WorkerRole : RoleEntryPoint
     {
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
-        private readonly IArguments _arguments;
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly ManualResetEvent _runCompleteEvent = new ManualResetEvent(false);
         private WcfService<ICommandService<object>, NativeCommandService> _serviceHostNative;
         private WcfService<ICommandService<string>, JsonCommandService> _serviceHostJson;
         public ServiceCore ServiceFacade;
@@ -60,11 +65,11 @@ namespace KonfDBAH
 
             try
             {
-                this.RunAsync(this.cancellationTokenSource.Token).Wait();
+                this.RunAsync(this._cancellationTokenSource.Token).Wait();
             }
             finally
             {
-                this.runCompleteEvent.Set();
+                this._runCompleteEvent.Set();
             }
         }
 
@@ -77,7 +82,17 @@ namespace KonfDBAH
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
 
             bool result = base.OnStart();
-            AzureContext.CreateFrom("konfdb.json");
+
+            var configMode = RoleEnvironment.GetConfigurationSettingValue("konfdb.configuration.mode");
+            if (configMode.Equals("azure", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var config = LoadConfigurationFromAzureUI();
+                AzureContext.CreateFrom(config);
+            }
+            else
+            {
+                AzureContext.CreateFrom("konfdb.json");
+            }
 
             CurrentContext.Default.Log.Info("KonfDBAH Started Successfully!");
 
@@ -152,7 +167,7 @@ namespace KonfDBAH
             var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>) settingsOutput.Data;
+                var settings = (Dictionary<string, string>)settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentContext.Default.ApplicationParams.Add(setting.Key, setting.Value);
@@ -167,12 +182,94 @@ namespace KonfDBAH
             return result;
         }
 
+        private IHostConfig LoadConfigurationFromAzureUI()
+        {
+            var userConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.runtime.superuser");
+            var databaseConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.database");
+
+            var superuserArgs = new CommandArgs(userConnectionString);
+            var databaseArgs = new CommandArgs(databaseConnectionString);
+
+            IHostConfig hostConfig = new HostConfig();
+            hostConfig.Runtime.Audit = true;
+            hostConfig.Runtime.LogInfo = new LogElement
+            {
+                ProviderType = typeof(AzureLogger).AssemblyQualifiedName
+            };
+            hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.None;
+            hostConfig.Runtime.SuperUser = new UserElement
+            {
+                Username = superuserArgs.GetValue("username", "azureuser"),
+                Password = superuserArgs.GetValue("password", "aZuReu$rpWd"),
+            };
+
+            hostConfig.Database.DefaultKey = "default";
+            hostConfig.Database.Databases.Add(new DatabaseProviderConfiguration
+            {
+                Key = "default",
+                Host = databaseArgs["host"],
+                Port = int.Parse(databaseArgs["port"]),
+                InstanceName = databaseArgs["instanceName"],
+                Username = databaseArgs["username"],
+                Password = databaseArgs["password"],
+                ProviderType = GetProvider(databaseArgs["providerType"]),
+                Location = databaseArgs.GetValue("location", string.Empty)
+            });
+
+            foreach (var endPoint in RoleEnvironment.CurrentRoleInstance.InstanceEndpoints)
+            {
+                hostConfig.Runtime.Server.Add(new ServiceTypeConfiguration
+                {
+                    Port = endPoint.Value.IPEndpoint.Port,
+                    Type = ConvertAzureProtocol(endPoint.Key, endPoint.Value.Protocol)
+                });
+            }
+
+            return hostConfig;
+        }
+
+        private string GetProvider(string provider)
+        {
+            if (provider.Equals("AzureSqlProvider", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return @"KonfDB.Engine.Database.Providers.AzureSql.AzureSqlProvider, KonfDBE";
+            }
+
+            return @"KonfDB.Engine.Database.Providers.MsSql.MsSqlProvider, KonfDBE";
+        }
+
+        private EndPointType ConvertAzureProtocol(string key, string protocol)
+        {
+            if (key.Equals("http", StringComparison.InvariantCultureIgnoreCase)
+                && protocol.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return EndPointType.HTTP;
+            }
+            if (key.Equals("tcp", StringComparison.InvariantCultureIgnoreCase)
+                && protocol.Equals("tcp", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return EndPointType.TCP;
+            }
+            if (key.Equals("wshttp", StringComparison.InvariantCultureIgnoreCase)
+                && protocol.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return EndPointType.WSHTTP;
+            }
+            if (key.Equals("rest", StringComparison.InvariantCultureIgnoreCase)
+                && protocol.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return EndPointType.REST;
+            }
+
+            return EndPointType.REST;
+        }
+
         public override void OnStop()
         {
             CurrentContext.Default.Log.Info("KonfDBAH is stopping");
 
-            this.cancellationTokenSource.Cancel();
-            this.runCompleteEvent.WaitOne();
+            this._cancellationTokenSource.Cancel();
+            this._runCompleteEvent.WaitOne();
 
             base.OnStop();
 
@@ -183,11 +280,8 @@ namespace KonfDBAH
         {
             return Task.Factory.StartNew(() =>
             {
-                // TODO: Replace the following with your own logic.
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    CurrentContext.Default.Log.Info("Working");
-
                     Thread.Sleep(1000);
                 }
             });
