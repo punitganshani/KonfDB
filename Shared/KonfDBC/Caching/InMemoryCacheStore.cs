@@ -25,8 +25,6 @@
 
 using System;
 using System.Runtime.Caching;
-using System.Security.Cryptography.X509Certificates;
-using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Shell;
@@ -39,14 +37,12 @@ namespace KonfDB.Infrastructure.Caching
     {
         public enum CacheMode
         {
-            [JsonProperty("sliding")]
-            Sliding,
-            [JsonProperty("absolute")]
-            Absolute
+            [JsonProperty("sliding")] Sliding,
+            [JsonProperty("absolute")] Absolute
         }
 
         private static readonly ObjectCache Cache;
-       
+
         static InMemoryCacheStore()
         {
             Cache = MemoryCache.Default;
@@ -56,7 +52,7 @@ namespace KonfDB.Infrastructure.Caching
         private readonly CacheMode _mode = CacheMode.Absolute;
 
         private readonly CacheEntryRemovedCallback _itemRemovedCallback;
-      
+
         public InMemoryCacheStore(ICacheConfiguration cacheConfiguration)
             : base(cacheConfiguration)
         {
@@ -99,15 +95,15 @@ namespace KonfDB.Infrastructure.Caching
 
         private static string CreateUniqueKey<T>(string key, string region)
         {
-            return String.Format("[{0}|key={1}{2}]", region, key, typeof(T).FullName);
+            return String.Format("[{0}|key={1}{2}]", region, key, typeof (T).FullName);
         }
 
         public override T Get<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
             if (Cache.Contains(cacheKey))
             {
-                return (T)Cache[cacheKey];
+                return (T) Cache[cacheKey];
             }
 
             return default(T);
@@ -121,13 +117,13 @@ namespace KonfDB.Infrastructure.Caching
 
             // Cache is enabled, so check in cache
             T newObject;
-            string region = typeof(T).Name;
+            string region = typeof (T).Name;
             string cacheKey = CreateUniqueKey<T>(key, region);
 
             if (Cache.Contains(cacheKey))
             {
                 CurrentContext.Default.Log.Debug("Got from cache :" + cacheKey);
-                newObject = (T)Cache[cacheKey];
+                newObject = (T) Cache[cacheKey];
             }
             else
             {
@@ -153,7 +149,7 @@ namespace KonfDB.Infrastructure.Caching
 
         public override void Remove<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
 
             if (Cache.Contains(cacheKey))
                 Cache.Remove(cacheKey);

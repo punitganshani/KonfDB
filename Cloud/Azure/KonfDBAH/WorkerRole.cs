@@ -30,7 +30,6 @@ using System.Globalization;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using KonfDB.Engine.Database.EntityFramework;
 using KonfDB.Engine.Services;
 using KonfDB.Infrastructure.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
@@ -167,7 +166,7 @@ namespace KonfDBAH
             var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>)settingsOutput.Data;
+                var settings = (Dictionary<string, string>) settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentContext.Default.ApplicationParams.Add(setting.Key, setting.Value);
@@ -191,10 +190,10 @@ namespace KonfDBAH
             var databaseArgs = new CommandArgs(databaseConnectionString);
 
             IHostConfig hostConfig = new HostConfig();
-            hostConfig.Runtime.Audit = new AuditElement { Enabled = true };
+            hostConfig.Runtime.Audit = new AuditElement {Enabled = true};
             hostConfig.Runtime.LogInfo = new LogElement
             {
-                ProviderType = typeof(AzureLogger).AssemblyQualifiedName
+                ProviderType = typeof (AzureLogger).AssemblyQualifiedName
             };
             hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.None;
             hostConfig.Runtime.SuperUser = new UserElement

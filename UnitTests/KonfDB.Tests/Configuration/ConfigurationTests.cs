@@ -23,7 +23,6 @@
 
 #endregion
 
-using System;
 using System.Security.Cryptography.X509Certificates;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration;
@@ -48,7 +47,7 @@ namespace KonfDB.Tests.Configuration
             {
                 Runtime =
                 {
-                    Audit = new AuditElement { Enabled = true },
+                    Audit = new AuditElement {Enabled = true},
                     LogInfo = new LogElement
                     {
                         ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
@@ -127,7 +126,7 @@ namespace KonfDB.Tests.Configuration
             config.Runtime.User.Password = "spwd";
 
             config.Caching.Enabled = false;
-            config.Caching.ProviderType = typeof(InMemoryCacheStore).AssemblyQualifiedName;
+            config.Caching.ProviderType = typeof (InMemoryCacheStore).AssemblyQualifiedName;
             config.Caching.Parameters = "-duration:30 -mode:Absolute";
 
             var configJson = config.ToJson();

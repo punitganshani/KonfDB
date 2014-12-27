@@ -70,7 +70,9 @@ namespace KonfDBCF.Core
                 throw new InvalidConfigurationException("Could not find Runtime Configuration for KonfDBCF");
 
             var cache = CacheFactory.Create(Config.Caching);
-            cache.ItemRemoved += (sender, args) => Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
+            cache.ItemRemoved +=
+                (sender, args) =>
+                    Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
 
             CurrentContext.CreateDefault(logger, new CommandArgs(string.Empty), cache);
         }
