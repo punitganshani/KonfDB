@@ -23,7 +23,9 @@
 
 #endregion
 
+using System;
 using System.Security.Cryptography.X509Certificates;
+using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Providers.Certificate;
@@ -46,7 +48,7 @@ namespace KonfDB.Tests.Configuration
             {
                 Runtime =
                 {
-                    Audit = true,
+                    Audit = new AuditElement { Enabled = true },
                     LogInfo = new LogElement
                     {
                         ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
@@ -63,8 +65,8 @@ namespace KonfDB.Tests.Configuration
             config.Runtime.SuperUser.Password = "spwd";
 
             config.Caching.Enabled = false;
-            config.Caching.DurationInSeconds = 30;
-            config.Caching.Mode = CacheMode.Absolute;
+            config.Caching.ProviderType = typeof (InMemoryCacheStore).AssemblyQualifiedName;
+            config.Caching.Parameters = "-duration:30 -mode:Absolute";
 
             config.Certificate.DefaultKey = "testCert";
             config.Certificate.Certificates.Add(new CertificateProviderConfiguration
@@ -125,9 +127,8 @@ namespace KonfDB.Tests.Configuration
             config.Runtime.User.Password = "spwd";
 
             config.Caching.Enabled = false;
-            config.Caching.DurationInSeconds = 30;
-            config.Caching.Mode = CacheMode.Absolute;
-
+            config.Caching.ProviderType = typeof(InMemoryCacheStore).AssemblyQualifiedName;
+            config.Caching.Parameters = "-duration:30 -mode:Absolute";
 
             var configJson = config.ToJson();
             var readBack = configJson.FromJsonToObject<ClientConfig>();

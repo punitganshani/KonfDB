@@ -78,7 +78,7 @@ namespace KonfDB.Engine.Commands.Shared
                     IsAuthenticated = authInfo.IsAuthenticated,
                     UserId = authInfo.UserId,
                     ExpireUtc = DateTime.MaxValue
-                }, InMemoryCacheStore.Mode.AlwaysLive);
+                }, CachePolicy.AlwaysLive);
 
             var output = new CommandOutput
             {

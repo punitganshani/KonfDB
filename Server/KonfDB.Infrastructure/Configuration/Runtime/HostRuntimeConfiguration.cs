@@ -33,7 +33,7 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
     internal class HostRuntimeConfiguration
     {
         [JsonProperty("audit")]
-        public bool Audit { get; set; }
+        public AuditElement Audit { get; set; }
 
         [JsonProperty("params")]
         public string Parameters { get; set; }
@@ -55,6 +55,8 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
         {
             Server = new List<ServiceTypeConfiguration>();
             SuperUser = new UserElement();
+            Audit = new AuditElement();
+            LogInfo = new LogElement();
         }
     }
 }

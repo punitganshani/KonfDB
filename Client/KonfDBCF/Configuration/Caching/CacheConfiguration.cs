@@ -34,11 +34,10 @@ namespace KonfDBCF.Configuration.Caching
         [JsonProperty("enabled")]
         public bool Enabled { get; set; }
 
-        [JsonProperty("mode")]
-        [JsonConverter(typeof (StringEnumConverter))]
-        public CacheMode Mode { get; set; }
+        [JsonProperty("providerType")]
+        public string ProviderType { get; set; }
 
-        [JsonProperty("duration")]
-        public long DurationInSeconds { get; set; }
+        [JsonProperty("params")]
+        public string Parameters { get; set; }
     }
 }

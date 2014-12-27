@@ -28,9 +28,11 @@ using System.Collections.Generic;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Factory;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
@@ -53,7 +55,7 @@ namespace KonfDB.Infrastructure.Shell
             }
         }
 
-        public bool AuditEnabled { get; private set; }
+        public AuditElement Audit { get; private set; }
         public IHostConfig Config { get; private set; }
         public BaseProvider Provider { get; private set; }
 
@@ -76,7 +78,7 @@ namespace KonfDB.Infrastructure.Shell
             set { CurrentContext.Default.Log = value; }
         }
 
-        public InMemoryCacheStore Cache
+        public BaseCacheStore Cache
         {
             get { return CurrentContext.Default.Cache; }
             set { CurrentContext.Default.Cache = value; }
@@ -84,22 +86,20 @@ namespace KonfDB.Infrastructure.Shell
 
         private CurrentHostContext(IHostConfig configuration)
         {
-            this.AuditEnabled = configuration.Runtime.Audit;
+            this.Audit = configuration.Runtime.Audit;
             this.Config = configuration;
             this.UserTokens = new List<string>();
 
             var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
-            var cache = new InMemoryCacheStore(configuration.Caching)
+            var cache = CacheFactory.Create(configuration.Caching);
+            cache.ItemRemoved += (sender, args) =>
             {
-                OnItemRemove = x =>
+                Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
+                if (args.Value is AuthenticationOutput)
                 {
-                    Log.Debug("Item removed from cache: " + x.CacheItem.Key + " Reason : " + x.RemovedReason);
-                    if (x.CacheItem.Value is AuthenticationOutput)
-                    {
-                        // User has been removed from cache. Login expired
-                        UserTokens.Remove(x.CacheItem.Key);
-                    }
+                    // User has been removed from cache. Login expired
+                    UserTokens.Remove(args.CacheKey);
                 }
             };
 

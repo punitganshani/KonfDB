@@ -28,6 +28,7 @@ using System.IO;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Factory;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
@@ -68,11 +69,8 @@ namespace KonfDBCF.Core
             if (configuration.Runtime == null)
                 throw new InvalidConfigurationException("Could not find Runtime Configuration for KonfDBCF");
 
-            var cache = new InMemoryCacheStore(Config.Caching)
-            {
-                OnItemRemove =
-                    x => Log.Debug("Item removed from cache: " + x.CacheItem.Key + " Reason : " + x.RemovedReason)
-            };
+            var cache = CacheFactory.Create(Config.Caching);
+            cache.ItemRemoved += (sender, args) => Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
 
             CurrentContext.CreateDefault(logger, new CommandArgs(string.Empty), cache);
         }
@@ -82,7 +80,7 @@ namespace KonfDBCF.Core
             get { return CurrentContext.Default.Log; }
         }
 
-        public InMemoryCacheStore Cache
+        public BaseCacheStore Cache
         {
             get { return CurrentContext.Default.Cache; }
         }

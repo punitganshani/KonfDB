@@ -25,42 +25,51 @@
 
 using System;
 using System.Runtime.Caching;
+using System.Security.Cryptography.X509Certificates;
+using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Shell;
+using KonfDB.Infrastructure.Utilities;
+using Newtonsoft.Json;
 
 namespace KonfDB.Infrastructure.Caching
 {
-    public class InMemoryCacheStore
+    public class InMemoryCacheStore : BaseCacheStore
     {
-        internal enum Mode
+        public enum CacheMode
         {
-            ExpireAsPerConfig,
-            ExpireByMidnight,
-            AlwaysLive
+            [JsonProperty("sliding")]
+            Sliding,
+            [JsonProperty("absolute")]
+            Absolute
         }
 
         private static readonly ObjectCache Cache;
-        private readonly ICacheConfiguration _configuration;
-        public CacheEntryRemovedCallback OnItemRemove;
-        private readonly bool _enabled;
-
-        public bool Enabled
-        {
-            get { return _enabled; }
-        }
-
+       
         static InMemoryCacheStore()
         {
             Cache = MemoryCache.Default;
         }
 
-        internal InMemoryCacheStore(ICacheConfiguration cacheConfiguration)
-        {
-            if (cacheConfiguration == null)
-                throw new ArgumentNullException("cacheConfiguration");
+        private readonly int _durationInSeconds = 30;
+        private readonly CacheMode _mode = CacheMode.Absolute;
 
-            _configuration = cacheConfiguration;
-            _enabled = _configuration.Enabled;
+        private readonly CacheEntryRemovedCallback _itemRemovedCallback;
+      
+        public InMemoryCacheStore(ICacheConfiguration cacheConfiguration)
+            : base(cacheConfiguration)
+        {
+            var args = new CommandArgs(Configuration.Parameters);
+            _durationInSeconds = int.Parse(args.GetValue("duration", "30"));
+            _mode = args.GetValue("mode", CacheMode.Absolute.ToString()).ToEnum<CacheMode>();
+
+            _itemRemovedCallback = x => base.OnItemRemoved(new CacheItemRemovedArgs
+            {
+                CacheKey = x.CacheItem.Key,
+                Value = x.CacheItem.Value,
+                RemoveReason = x.RemovedReason.ToString(),
+            });
         }
 
         private bool Add<T>(string key, string region, T value, CacheItemPolicy policy)
@@ -73,16 +82,16 @@ namespace KonfDB.Infrastructure.Caching
             var policy = new CacheItemPolicy
             {
                 Priority = CacheItemPriority.Default,
-                RemovedCallback = OnItemRemove
+                RemovedCallback = _itemRemovedCallback
             };
 
-            TimeSpan validUntil = _configuration.DurationInSeconds <= 0
+            TimeSpan validUntil = _durationInSeconds <= 0
                 ? TimeSpan.FromMinutes(10)
-                : TimeSpan.FromSeconds(_configuration.DurationInSeconds);
+                : TimeSpan.FromSeconds(_durationInSeconds);
 
-            if (_configuration.Mode == CacheMode.Sliding)
+            if (_mode == CacheMode.Sliding)
                 policy.SlidingExpiration = validUntil;
-            else if (_configuration.Mode == CacheMode.Absolute)
+            else if (_mode == CacheMode.Absolute)
                 policy.AbsoluteExpiration = DateTimeOffset.Now.Add(validUntil);
 
             return policy;
@@ -90,44 +99,44 @@ namespace KonfDB.Infrastructure.Caching
 
         private static string CreateUniqueKey<T>(string key, string region)
         {
-            return String.Format("[{0}|key={1}{2}]", region, key, typeof (T).FullName);
+            return String.Format("[{0}|key={1}{2}]", region, key, typeof(T).FullName);
         }
 
-        internal T Get<T>(string key)
+        public override T Get<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
             if (Cache.Contains(cacheKey))
             {
-                return (T) Cache[cacheKey];
+                return (T)Cache[cacheKey];
             }
 
             return default(T);
         }
 
-        internal T Get<T>(string key, Func<T> func, Mode mode)
+        public override T Get<T>(string key, Func<T> func, CachePolicy mode)
         {
             // If cache is not enabled
-            if (!_enabled && mode == Mode.ExpireAsPerConfig)
+            if (!Enabled && mode == CachePolicy.ExpireAsPerConfig)
                 return func();
 
             // Cache is enabled, so check in cache
             T newObject;
-            string region = typeof (T).Name;
+            string region = typeof(T).Name;
             string cacheKey = CreateUniqueKey<T>(key, region);
 
             if (Cache.Contains(cacheKey))
             {
                 CurrentContext.Default.Log.Debug("Got from cache :" + cacheKey);
-                newObject = (T) Cache[cacheKey];
+                newObject = (T)Cache[cacheKey];
             }
             else
             {
                 newObject = func();
 
                 CacheItemPolicy policy = null;
-                if (mode == Mode.ExpireByMidnight)
+                if (mode == CachePolicy.ExpireByMidnight)
                     policy = GetPolicyTillMidnight();
-                else if (mode == Mode.AlwaysLive)
+                else if (mode == CachePolicy.AlwaysLive)
                     policy = GetPolicyAlwaysLive();
 
                 CurrentContext.Default.Log.Debug("Added to cache :" + cacheKey + " > " +
@@ -137,15 +146,14 @@ namespace KonfDB.Infrastructure.Caching
             return newObject;
         }
 
-
-        internal T Get<T>(string key, Func<T> func)
+        public override T Get<T>(string key, Func<T> func)
         {
-            return Get(key, func, Mode.ExpireAsPerConfig);
+            return Get(key, func, CachePolicy.ExpireAsPerConfig);
         }
 
-        private void Remove<T>(string key)
+        public override void Remove<T>(string key)
         {
-            string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
+            string cacheKey = CreateUniqueKey<T>(key, typeof(T).Name);
 
             if (Cache.Contains(cacheKey))
                 Cache.Remove(cacheKey);
@@ -156,10 +164,9 @@ namespace KonfDB.Infrastructure.Caching
             return new CacheItemPolicy
             {
                 Priority = CacheItemPriority.NotRemovable,
-                RemovedCallback = OnItemRemove
+                RemovedCallback = _itemRemovedCallback
             };
         }
-
 
         private CacheItemPolicy GetPolicyTillMidnight()
         {
@@ -170,7 +177,7 @@ namespace KonfDB.Infrastructure.Caching
             return new CacheItemPolicy
             {
                 AbsoluteExpiration = DateTimeOffset.Now.Add(validUntil),
-                RemovedCallback = OnItemRemove,
+                RemovedCallback = _itemRemovedCallback,
                 Priority = CacheItemPriority.Default
             };
         }

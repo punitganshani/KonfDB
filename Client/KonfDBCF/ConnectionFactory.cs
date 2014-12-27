@@ -71,7 +71,7 @@ namespace KonfDBCF
             {
                 var authOutput = AuthenticateUser(_username, arguments["password"]);
                 return authOutput.IsAuthenticated ? authOutput.Token : null;
-            }, InMemoryCacheStore.Mode.AlwaysLive);
+            }, CachePolicy.AlwaysLive);
         }
 
         public static string GetUserToken(string serviceType, string host, int port, string username, string password)

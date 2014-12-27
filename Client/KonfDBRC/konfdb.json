@@ -15,8 +15,8 @@
         }
     },
     "cache": {
-        "enabled": false,
-        "mode": "Absolute",
-        "duration": 30
+        "providerType": "KonfDB.Infrastructure.Caching.InMemoryCacheStore, KonfDBC",
+        "params": "-mode:Absolute -duration:30",
+        "enabled": false
     }
 }

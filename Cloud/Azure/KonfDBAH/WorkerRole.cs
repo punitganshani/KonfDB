@@ -191,7 +191,7 @@ namespace KonfDBAH
             var databaseArgs = new CommandArgs(databaseConnectionString);
 
             IHostConfig hostConfig = new HostConfig();
-            hostConfig.Runtime.Audit = true;
+            hostConfig.Runtime.Audit = new AuditElement { Enabled = true };
             hostConfig.Runtime.LogInfo = new LogElement
             {
                 ProviderType = typeof(AzureLogger).AssemblyQualifiedName

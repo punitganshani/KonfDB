@@ -90,6 +90,10 @@
       <Link>Properties\TrustedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Adapter\ServiceOutputAdapter.cs" />
+    <Compile Include="Caching\BaseCacheStore.cs" />
+    <Compile Include="Caching\CacheItemRemovedArgs.cs" />
+    <Compile Include="Factory\CacheFactory.cs" />
+    <Compile Include="Caching\CachePolicy.cs" />
     <Compile Include="Configuration\Caching\CacheConfigurationSection.cs" />
     <Compile Include="Configuration\Interfaces\ICertificateConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IServiceTypeConfiguration.cs" />
@@ -124,7 +128,7 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Interfaces\IAuthenticationOutput.cs" />
     <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\LogFactory.cs" />
+    <Compile Include="Factory\LogFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationOutput.cs" />
     <Compile Include="Services\CommandOutput.cs" />

@@ -98,6 +98,7 @@
     <Compile Include="Configuration\Interfaces\IProviderTypeConfiguration.cs" />
     <Compile Include="Configuration\Providers\Certificate\CertificateProviderCollection.cs" />
     <Compile Include="Configuration\Providers\Certificate\CertificateProviderConfiguration.cs" />
+    <Compile Include="Configuration\Runtime\AuditElement.cs" />
     <Compile Include="Database\Metadata.cs" />
     <Compile Include="Database\StateActions\BaseStateAction.cs" />
     <Compile Include="Database\StateActions\DatabaseInitializedAction.cs" />

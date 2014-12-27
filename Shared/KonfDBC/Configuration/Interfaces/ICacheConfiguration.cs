@@ -30,13 +30,8 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
     public interface ICacheConfiguration
     {
         bool Enabled { get; set; }
-        CacheMode Mode { get; set; }
-        long DurationInSeconds { get; set; }
+        string ProviderType { get; set; }
+        string Parameters { get; set; }
     }
 
-    public enum CacheMode
-    {
-        [JsonProperty("sliding")] Sliding,
-        [JsonProperty("absolute")] Absolute
-    }
 }

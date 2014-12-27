@@ -27,9 +27,10 @@ using System;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Utilities;
 
-namespace KonfDB.Infrastructure.Logging
+namespace KonfDB.Infrastructure.Factory
 {
     public class LogFactory
     {

@@ -26,6 +26,7 @@
 using System.Collections.Generic;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
 using KonfDB.Infrastructure.Services;
 
@@ -37,7 +38,7 @@ namespace KonfDB.Infrastructure.Shell
 
         AppType ApplicationType { get; }
 
-        bool AuditEnabled { get; }
+        AuditElement Audit { get; }
 
         IHostConfig Config { get; }
 

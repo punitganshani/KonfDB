@@ -35,6 +35,6 @@ namespace KonfDB.Infrastructure.Shell
 
         BaseLogger Log { get; set; }
 
-        InMemoryCacheStore Cache { get; set; }
+        BaseCacheStore Cache { get; set; }
     }
 }

@@ -28,7 +28,9 @@ using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Extensions;
+using KonfDB.Infrastructure.Factory;
 using KonfDB.Infrastructure.Logging;
+using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
 using KonfDBCF.Configuration.Caching;
@@ -62,15 +64,12 @@ namespace KonfDBCF.Core
             var cacheConfig = new CacheConfiguration
             {
                 Enabled = bool.Parse(arguments.GetValue(@"cache-enabled", "false")),
-                DurationInSeconds = int.Parse(arguments.GetValue(@"cache-duration", "30")),
-                Mode = arguments.GetValue(@"cache-mode", "Absolute").ToEnum<CacheMode>()
+                ProviderType = typeof(InMemoryCacheStore).AssemblyQualifiedName,
+                Parameters = "-duration:30 -mode:Absolute"
             };
 
-            var cache = new InMemoryCacheStore(cacheConfig)
-            {
-                OnItemRemove =
-                    x => Log.Debug("Item removed from cache: " + x.CacheItem.Key + " Reason : " + x.RemovedReason)
-            };
+            var cache = CacheFactory.Create(cacheConfig);
+            cache.ItemRemoved += (sender, args) => Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
 
             CurrentContext.CreateDefault(logger, arguments, cache);
         }
@@ -102,7 +101,7 @@ namespace KonfDBCF.Core
             get { return CurrentContext.Default.Log; }
         }
 
-        public InMemoryCacheStore Cache
+        public BaseCacheStore Cache
         {
             get { return CurrentContext.Default.Cache; }
         }

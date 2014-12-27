@@ -133,7 +133,7 @@ namespace KonfDB.Engine.Services
             CommandInput input, ICommand commandObject)
         {
             // Audit an AUTH Command
-            if (CurrentHostContext.Default.AuditEnabled)
+            if (CurrentHostContext.Default.Audit.Enabled)
             {
                 var authCommand = commandObject as IAuditCommand;
                 if (authCommand != null)

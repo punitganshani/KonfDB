@@ -1,6 +1,8 @@
 ﻿{
     "runtime": {
-        "audit": true,
+        "audit": {
+            "enabled": true
+        },
         "log": {
             "provider": "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
             "params": "-logConfigPath:log4net-config.xml -ShowOnConsole:true"
@@ -30,9 +32,9 @@
         }
     },
     "cache": {
-        "enabled": false,
-        "mode": "Absolute",
-        "duration": 30
+        "providerType": "KonfDB.Infrastructure.Caching.InMemoryCacheStore, KonfDBC",
+        "params": "-mode:Absolute -duration:30",
+        "enabled": true
     },
     "database": {
         "default": "localsql",

@@ -1,6 +1,8 @@
 ﻿{
     "runtime": {
-        "audit": true,
+        "audit": {
+            "enabled": true
+        },
         "log": {
             "provider": "KonfDBAH.Logging.AzureLogger, KonfDBAH",
             "params": ""
@@ -30,9 +32,9 @@
         }
     },
     "cache": {
-        "enabled": false,
-        "mode": "Absolute",
-        "duration": 30
+        "providerType": "KonfDB.Infrastructure.Caching.InMemoryCacheStore, KonfDBC",
+        "params": "-mode:Absolute -duration:30",
+        "enabled": true
     },
     "database": {
         "default": "azure",

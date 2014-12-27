@@ -26,6 +26,7 @@
 using System;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Factory;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
@@ -83,7 +84,7 @@ namespace KonfDB.Tests.FakeObjects
             get { return CurrentContext.Default.Log; }
         }
 
-        public InMemoryCacheStore Cache
+        public BaseCacheStore Cache
         {
             get { return CurrentContext.Default.Cache; }
         }
