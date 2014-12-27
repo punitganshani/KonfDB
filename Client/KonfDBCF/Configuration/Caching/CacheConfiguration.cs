@@ -25,7 +25,6 @@
 
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace KonfDBCF.Configuration.Caching
 {

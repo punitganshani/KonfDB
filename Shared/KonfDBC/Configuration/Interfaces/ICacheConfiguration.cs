@@ -23,8 +23,6 @@
 
 #endregion
 
-using Newtonsoft.Json;
-
 namespace KonfDB.Infrastructure.Configuration.Interfaces
 {
     public interface ICacheConfiguration
@@ -33,5 +31,4 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
         string ProviderType { get; set; }
         string Parameters { get; set; }
     }
-
 }
