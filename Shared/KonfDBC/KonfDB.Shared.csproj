@@ -193,6 +193,7 @@
     <Compile Include="WCF\AddressInfo.cs">
       <!--<Link>WCF\AddressInfo.cs</Link>-->
     </Compile>
+    <Compile Include="WCF\Behavior\EnableCorsEndpointBehavior.cs" />
     <Compile Include="WCF\Behavior\FaultingWebHttpBehavior.cs">
       <!--<Link>WCF\Behavior\FaultingWebHttpBehavior.cs</Link>-->
     </Compile>
@@ -229,6 +230,7 @@
     <Compile Include="WCF\FaultReason.cs">
       <!--<Link>WCF\FaultReason.cs</Link>-->
     </Compile>
+    <Compile Include="WCF\Inspectors\CustomHeaderMessageInspector.cs" />
     <Compile Include="WCF\Interfaces\IBinding.cs">
       <!--<Link>WCF\Interfaces\IBinding.cs</Link>-->
     </Compile>

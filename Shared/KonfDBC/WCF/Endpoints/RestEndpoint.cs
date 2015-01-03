@@ -43,7 +43,7 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
             var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
             serviceEndpoint.Behaviors.Add(new WebHttpBehavior());
             serviceEndpoint.Behaviors.Add(new FaultingWebHttpBehavior());
-
+            serviceEndpoint.Behaviors.Add(new EnableCorsEndpointBehavior());
             return serviceEndpoint;
         }
 
