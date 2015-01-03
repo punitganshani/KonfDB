@@ -7,7 +7,7 @@
         $(document).ready(function () {
 
             $('#btnGet').click(function () {
-                var requestUrl = 'http://localhost:8082/CommandService/Execute?cmd=' + encodeURI('UserAuth /name=konfdbuser_ro /pwd=konfdbuser_ro') + '&token=';
+                var requestUrl = 'http://localhost:8882/CommandService/Execute?cmd=' + encodeURI('UserAuth /name=konfdbuser_ro /pwd=konfdbuser_ro') + '&token=';
                 var token = null;
                 $.ajax({
                     url: requestUrl,
@@ -28,7 +28,7 @@
             });
 
             function ExecuteOtherRequests(token) {
-                var requestUrl = 'http://localhost:8082/CommandService/Execute?cmd=' + encodeURI('get /app:6 /env:8 /region:8 /server:9') + '&token=' + token;
+                var requestUrl = 'http://localhost:8882/CommandService/Execute?cmd=' + encodeURI('get /app:6 /env:8 /region:8 /server:9') + '&token=' + token;
 
                 $.ajax({
                     url: requestUrl,

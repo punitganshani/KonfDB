@@ -34,6 +34,7 @@ namespace KonfDB.Infrastructure.WCF.Bindings
         {
             this.Namespace = ServiceConstants.Schema;
             this.Name = ServiceConstants.ServiceName;
+            this.CrossDomainScriptAccessEnabled = true;
         }
     }
 }

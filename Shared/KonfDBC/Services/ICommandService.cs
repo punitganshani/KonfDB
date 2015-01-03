@@ -32,13 +32,13 @@ namespace KonfDB.Infrastructure.Services
     public interface ICommandService<T> : IService
     {
         [OperationContract(Name = "Execute")]
-        [WebGet(ResponseFormat = WebMessageFormat.Json,
+        [WebInvoke(Method = "*", ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "/Execute?cmd={command}&token={token}")]
         ServiceCommandOutput<T> ExecuteCommand(string command, string token);
 
         [OperationContract(Name = "List")]
-        [WebGet(ResponseFormat = WebMessageFormat.Json,
+        [WebInvoke(Method = "*", ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "/List/{command}")]
         string[] GetCommandsStartingWith(string command);
