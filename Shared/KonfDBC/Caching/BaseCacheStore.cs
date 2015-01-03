@@ -60,6 +60,11 @@ namespace KonfDB.Infrastructure.Caching
             _enabled = configuration.Enabled;
         }
 
+        protected static string CreateUniqueKey<T>(string key, string region)
+        {
+            return String.Format("[{0}|key={1}{2}]", region, key, typeof(T).FullName);
+        }
+
         public abstract T Get<T>(string key);
         public abstract T Get<T>(string key, Func<T> func, CachePolicy mode);
         public abstract T Get<T>(string key, Func<T> func);

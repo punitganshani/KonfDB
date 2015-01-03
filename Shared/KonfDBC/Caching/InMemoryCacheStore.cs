@@ -67,37 +67,7 @@ namespace KonfDB.Infrastructure.Caching
                 RemoveReason = x.RemovedReason.ToString(),
             });
         }
-
-        private bool Add<T>(string key, string region, T value, CacheItemPolicy policy)
-        {
-            return Cache.Add(new CacheItem(CreateUniqueKey<T>(key, region), value), policy ?? CreatePolicy());
-        }
-
-        private CacheItemPolicy CreatePolicy()
-        {
-            var policy = new CacheItemPolicy
-            {
-                Priority = CacheItemPriority.Default,
-                RemovedCallback = _itemRemovedCallback
-            };
-
-            TimeSpan validUntil = _durationInSeconds <= 0
-                ? TimeSpan.FromMinutes(10)
-                : TimeSpan.FromSeconds(_durationInSeconds);
-
-            if (_mode == CacheMode.Sliding)
-                policy.SlidingExpiration = validUntil;
-            else if (_mode == CacheMode.Absolute)
-                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(validUntil);
-
-            return policy;
-        }
-
-        private static string CreateUniqueKey<T>(string key, string region)
-        {
-            return String.Format("[{0}|key={1}{2}]", region, key, typeof (T).FullName);
-        }
-
+        
         public override T Get<T>(string key)
         {
             string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);
@@ -176,6 +146,31 @@ namespace KonfDB.Infrastructure.Caching
                 RemovedCallback = _itemRemovedCallback,
                 Priority = CacheItemPriority.Default
             };
+        }
+
+        private bool Add<T>(string key, string region, T value, CacheItemPolicy policy)
+        {
+            return Cache.Add(new CacheItem(CreateUniqueKey<T>(key, region), value), policy ?? CreatePolicy());
+        }
+
+        private CacheItemPolicy CreatePolicy()
+        {
+            var policy = new CacheItemPolicy
+            {
+                Priority = CacheItemPriority.Default,
+                RemovedCallback = _itemRemovedCallback
+            };
+
+            TimeSpan validUntil = _durationInSeconds <= 0
+                ? TimeSpan.FromMinutes(10)
+                : TimeSpan.FromSeconds(_durationInSeconds);
+
+            if (_mode == CacheMode.Sliding)
+                policy.SlidingExpiration = validUntil;
+            else if (_mode == CacheMode.Absolute)
+                policy.AbsoluteExpiration = DateTimeOffset.Now.Add(validUntil);
+
+            return policy;
         }
     }
 }
