@@ -26,10 +26,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Text;
 
-namespace KonfDB.Infrastructure.WCF
+namespace KonfDB.Infrastructure.WCF.Inspectors
 {
     internal class CustomHeaderMessageInspector : IDispatchMessageInspector
     {
