@@ -32,9 +32,9 @@ namespace KonfDB.Infrastructure.WCF.Bindings
     {
         public RestBinding()
         {
-            this.Namespace = ServiceConstants.Schema;
-            this.Name = ServiceConstants.ServiceName;
-            this.CrossDomainScriptAccessEnabled = true;
+            Namespace = ServiceConstants.Schema;
+            Name = ServiceConstants.ServiceName;
+            CrossDomainScriptAccessEnabled = true;
         }
     }
 }

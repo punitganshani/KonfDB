@@ -33,17 +33,17 @@ namespace KonfDB.Infrastructure.WCF.Bindings
     {
         public HttpBinding()
         {
-            this.MaxReceivedMessageSize = 5242880;
+            MaxReceivedMessageSize = 5242880;
 
-            this.MaxBufferPoolSize = 5242880;
-            this.MaxBufferSize = 5242880;
-            this.ReceiveTimeout = TimeSpan.MaxValue;
-            this.SendTimeout = TimeSpan.MaxValue;
-            this.CloseTimeout = TimeSpan.MaxValue;
-            this.OpenTimeout = TimeSpan.MaxValue;
+            MaxBufferPoolSize = 5242880;
+            MaxBufferSize = 5242880;
+            ReceiveTimeout = TimeSpan.MaxValue;
+            SendTimeout = TimeSpan.MaxValue;
+            CloseTimeout = TimeSpan.MaxValue;
+            OpenTimeout = TimeSpan.MaxValue;
 
-            this.Namespace = ServiceConstants.Schema;
-            this.Name = ServiceConstants.ServiceName;
+            Namespace = ServiceConstants.Schema;
+            Name = ServiceConstants.ServiceName;
         }
     }
 }

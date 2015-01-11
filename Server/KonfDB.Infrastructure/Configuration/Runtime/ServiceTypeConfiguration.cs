@@ -42,7 +42,7 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
 
         public ServiceType GetWcfServiceType()
         {
-            return this.Type.GetWcfServiceType();
+            return Type.GetWcfServiceType();
         }
     }
 }

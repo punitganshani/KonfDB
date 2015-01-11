@@ -39,20 +39,20 @@ namespace KonfDB.Infrastructure.WCF.Bindings
         {
             CurrentContext.Default.Log.SvcInfo(
                 "NetTcp is used on Port-Sharing basis. Ensure port sharing is enabled. Execute: sc.exe config NetTcpPortSharing start= demand");
-            this.PortSharingEnabled = true;
+            PortSharingEnabled = true;
 
             // Buffer size
-            this.MaxReceivedMessageSize = 6553600;
-            this.MaxBufferPoolSize = 5242880;
+            MaxReceivedMessageSize = 6553600;
+            MaxBufferPoolSize = 5242880;
 
             // default time outs
-            this.CloseTimeout = _infiniteTime;
-            this.SendTimeout = _infiniteTime;
+            CloseTimeout = _infiniteTime;
+            SendTimeout = _infiniteTime;
 
-            this.ReceiveTimeout = _infiniteTime;
-            this.ReaderQuotas = XmlDictionaryReaderQuotas.Max;
+            ReceiveTimeout = _infiniteTime;
+            ReaderQuotas = XmlDictionaryReaderQuotas.Max;
 
-            this.Namespace = ServiceConstants.Schema;
+            Namespace = ServiceConstants.Schema;
         }
     }
 }

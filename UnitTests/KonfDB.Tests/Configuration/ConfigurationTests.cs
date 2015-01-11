@@ -116,7 +116,7 @@ namespace KonfDB.Tests.Configuration
                     {
                         ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
                         Parameters = @"-path:konfdb\log.txt"
-                    },
+                    }
                 }
             };
             config.Runtime.Client.Host = "localhost";

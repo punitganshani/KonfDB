@@ -33,7 +33,7 @@ namespace KonfDB.Infrastructure.Common
 
         public DataEventArgs(T data)
         {
-            this.Data = data;
+            Data = data;
         }
     }
 }

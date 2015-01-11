@@ -44,33 +44,39 @@ namespace KonfDBAH.Shell
 
         private static IHostConfig _config;
 
-        internal static AzureContext CreateFrom(string configFilePath)
+        internal static AzureContext CreateFrom(string configFilePath, ContextSettings settings)
         {
             if (string.IsNullOrEmpty(configFilePath))
                 throw new ArgumentNullException("configFilePath");
+
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             if (!File.Exists(configFilePath))
                 throw new ConfigurationErrorsException("Could not find config file: " + configFilePath);
 
             _config = File.ReadAllText(configFilePath).FromJsonToObject<HostConfig>();
-            _current = new AzureContext(_config);
+            _current = new AzureContext(_config, settings);
             return _current;
         }
 
-        internal static AzureContext CreateFrom(IHostConfig config)
+        internal static AzureContext CreateFrom(IHostConfig config, ContextSettings settings)
         {
             _config = config;
-            _current = new AzureContext(_config);
+            _current = new AzureContext(_config, settings);
             return _current;
         }
 
-        internal static AzureContext CreateFrom(Stream configStream)
+        internal static AzureContext CreateFrom(Stream configStream, ContextSettings settings)
         {
             if (configStream == null)
                 throw new ArgumentNullException("configStream");
 
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+
             _config = configStream.ReadToEnd().FromJsonToObject<HostConfig>();
-            _current = new AzureContext(_config);
+            _current = new AzureContext(_config, settings);
             return _current;
         }
 
@@ -86,9 +92,9 @@ namespace KonfDBAH.Shell
             }
         }
 
-        private AzureContext(IHostConfig configuration)
+        private AzureContext(IHostConfig configuration, ContextSettings settings)
         {
-            CurrentHostContext.CreateDefault(configuration);
+            CurrentHostContext.CreateDefault(configuration, settings);
         }
     }
 }

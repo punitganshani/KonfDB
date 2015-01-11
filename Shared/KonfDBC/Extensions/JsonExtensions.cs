@@ -39,7 +39,7 @@ namespace KonfDB.Infrastructure.Extensions
             {
                 Formatting = Formatting.Indented,
                 ObjectCreationHandling = ObjectCreationHandling.Auto,
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
             };
         }
 

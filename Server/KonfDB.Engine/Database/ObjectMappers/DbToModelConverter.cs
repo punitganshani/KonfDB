@@ -47,7 +47,7 @@ namespace KonfDB.Engine.Database.ObjectMappers
                 IsActive = input.IsActive,
                 SuiteId = input.SuiteId,
                 Description = input.Description,
-                Mappings = input.Mappings.ToList().ToModel(),
+                Mappings = input.Mappings.ToList().ToModel()
             };
         }
 
@@ -172,7 +172,7 @@ namespace KonfDB.Engine.Database.ObjectMappers
             {
                 SuiteId = input.SuiteId,
                 Role = input.Role.RoleName,
-                Username = input.User.UserName,
+                Username = input.User.UserName
             };
         }
 

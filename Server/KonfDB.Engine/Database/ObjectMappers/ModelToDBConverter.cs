@@ -42,7 +42,7 @@ namespace KonfDB.Engine.Database.ObjectMappers
                 SuiteName = suiteModel.SuiteName,
                 UsesSysEncryption = suiteModel.UsesSysEncryption,
                 SuiteType = EnumConverter.ConvertToInt(suiteModel.SuiteType),
-                CreatedDate = DateTime.Now.ToUniversalTime(),
+                CreatedDate = DateTime.Now.ToUniversalTime()
             };
         }
 
@@ -114,7 +114,7 @@ namespace KonfDB.Engine.Database.ObjectMappers
                 ParameterValue = parameter.ParameterValue,
                 IsActive = parameter.IsActive,
                 SuiteId = parameter.SuiteId,
-                IsEncrypted = parameter.IsEncrypted,
+                IsEncrypted = parameter.IsEncrypted
             };
         }
 

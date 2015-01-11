@@ -92,7 +92,7 @@ namespace KonfDB.Infrastructure.Database.Providers
             {
                 {"$MasterConnectionString$", GetMasterConnectionString()},
                 {"$InstanceConnectionString$", GetInstanceConnectionString()},
-                {"$Configuration$", Configuration},
+                {"$Configuration$", Configuration}
             };
 
             var providerSpecificDictionary = GetDataDictionary();

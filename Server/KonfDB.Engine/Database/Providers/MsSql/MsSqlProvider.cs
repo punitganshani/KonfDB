@@ -136,7 +136,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
         {
             return new Dictionary<string, object>
             {
-                {"$ResourceAssembly$", Assembly.GetAssembly(this.GetType())}
+                {"$ResourceAssembly$", Assembly.GetAssembly(GetType())}
             };
         }
     }

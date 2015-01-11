@@ -27,34 +27,24 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
+using KonfDB.Infrastructure.Commands;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Services;
-using KonfDB.Infrastructure.Shell;
 
 namespace KonfDB.Engine.Commands
 {
-    internal sealed class CommandFactory
+    internal sealed class CommandFactory : ICommandFactory
     {
         [ImportMany(typeof (ICommand))] private readonly IEnumerable<ICommand> _commands;
-        private readonly AppType _appType;
-
         public List<ICommand> Commands { get; private set; }
 
-        private static CommandFactory _commandFactory;
-
-        internal static CommandFactory Initiate()
+        public CommandFactory(AppType appType = AppType.Server)
         {
-            return _commandFactory ?? (_commandFactory = new CommandFactory(CurrentHostContext.Default.ApplicationType));
-        }
-
-        private CommandFactory(AppType appType)
-        {
-            _appType = appType;
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.dll"));
             catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.exe"));
             var container = new CompositionContainer(catalog);
-            _commands = container.GetExportedValues<ICommand>().Where(x => (x.Type & _appType) == _appType);
+            _commands = container.GetExportedValues<ICommand>().Where(x => (x.Type & appType) == appType);
             Commands = _commands.ToList();
         }
     }

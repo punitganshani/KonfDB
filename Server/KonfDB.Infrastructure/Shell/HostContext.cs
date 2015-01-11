@@ -47,10 +47,13 @@ namespace KonfDB.Infrastructure.Shell
         private static IHostConfig _config;
         private static string _configFilePath;
 
-        internal static HostContext CreateFrom(string configFilePath)
+        internal static HostContext CreateFrom(string configFilePath, ContextSettings settings)
         {
             if (string.IsNullOrEmpty(configFilePath))
                 throw new ArgumentNullException("configFilePath");
+
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
             // No change in config file, so dont need to re load it
             if (!string.IsNullOrEmpty(_configFilePath) && _configFilePath.Equals(configFilePath))
@@ -61,7 +64,7 @@ namespace KonfDB.Infrastructure.Shell
 
             _config = File.ReadAllText(configFilePath).FromJsonToObject<HostConfig>();
             _configFilePath = configFilePath;
-            _current = new HostContext(_config);
+            _current = new HostContext(_config, settings);
             return _current;
         }
 
@@ -76,9 +79,9 @@ namespace KonfDB.Infrastructure.Shell
             }
         }
 
-        private HostContext(IHostConfig configuration)
+        private HostContext(IHostConfig configuration, ContextSettings settings)
         {
-            CurrentHostContext.CreateDefault(configuration);
+            CurrentHostContext.CreateDefault(configuration, settings);
         }
     }
 }

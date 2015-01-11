@@ -27,7 +27,7 @@ using System;
 
 namespace KonfDB.Infrastructure.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class AuthenticateTokenAttribute : Attribute
     {
     }

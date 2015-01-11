@@ -137,7 +137,7 @@ namespace KonfDB.Engine.Database.Providers.AzureSql
         {
             return new Dictionary<string, object>
             {
-                {"$ResourceAssembly$", Assembly.GetAssembly(this.GetType())}
+                {"$ResourceAssembly$", Assembly.GetAssembly(GetType())}
             };
         }
     }

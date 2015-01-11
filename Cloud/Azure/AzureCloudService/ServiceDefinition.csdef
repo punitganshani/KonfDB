@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="AzureCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
+
+<ServiceDefinition name="AzureCloudService"
+                   xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
+                   schemaVersion="2014-06.2.4">
   <WorkerRole name="KonfDBAH" vmsize="Small">
     <Imports>
-      <Import moduleName="Diagnostics" />
+      <Import moduleName="Caching" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
       <Setting name="konfdb.runtime.superuser" />
@@ -10,10 +15,17 @@
       <Setting name="konfdb.configuration.mode" />
     </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="TCP" protocol="tcp" port="8885" localPort="8885" />
-      <InputEndpoint name="HTTP" protocol="http" port="8880" localPort="8880" />
-      <InputEndpoint name="WSHTTP" protocol="http" port="8890" localPort="8890" />
-      <InputEndpoint name="REST" protocol="http" port="8892" localPort="8892" />
+      <InputEndpoint name="KonfDB.Endpoint.TCP" protocol="tcp" port="8885" localPort="8885" />
+      <InputEndpoint name="KonfDB.Endpoint.HTTP" protocol="http" port="8880" localPort="8880" />
+      <InputEndpoint name="KonfDB.Endpoint.WSHTTP" protocol="http" port="8890" localPort="8890" />
+      <InputEndpoint name="KonfDB.Endpoint.REST" protocol="http" port="8892" localPort="8892" />
     </Endpoints>
+    <LocalResources>
+      <LocalStorage name="DiagnosticStore" sizeInMB="20000" cleanOnRoleRecycle="true" />
+    </LocalResources>
+    <Runtime executionContext="elevated" />
+    <Startup>
+      <Task commandLine="Scripts\NetPortSharing.cmd" executionContext="elevated" taskType="simple" />
+    </Startup>
   </WorkerRole>
 </ServiceDefinition>

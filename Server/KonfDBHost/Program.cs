@@ -28,6 +28,7 @@ using System.Configuration.Install;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading;
+using KonfDB.Engine.Commands;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
@@ -63,7 +64,11 @@ namespace KonfDBHost
             {
                 #region Console
 
-                HostContext.CreateFrom(argsDictionary.GetValue("configPath", "konfdb.json"));
+                var contextSettings = new ContextSettings
+                {
+                    CommandFactory = new CommandFactory()
+                };
+                HostContext.CreateFrom(argsDictionary.GetValue("configPath", "konfdb.json"), contextSettings);
                 CurrentHostContext.Default.Log.Debug("Running in Console Mode");
                 Console.SetWindowPosition(0, 0);
                 Console.BackgroundColor = ConsoleColor.DarkGray;

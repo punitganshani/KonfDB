@@ -24,6 +24,7 @@
 #endregion
 
 using System.Collections.Generic;
+using KonfDB.Infrastructure.Commands;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Runtime;
@@ -45,5 +46,7 @@ namespace KonfDB.Infrastructure.Shell
         List<string> UserTokens { get; }
 
         List<AuthenticationOutput> GetUsers();
+
+        ICommandFactory CommandFactory { get; }
     }
 }

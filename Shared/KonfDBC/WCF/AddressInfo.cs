@@ -50,11 +50,11 @@ namespace KonfDB.Infrastructure.WCF
             if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(port) || string.IsNullOrEmpty(serverName))
                 throw new ArgumentException("One or more arguments are either NULL or empty.");
 
-            this.Type = type;
-            this.ServerName = serverName;
-            this.Port = port;
-            this.ServiceName = serviceName;
-            this.SecurityMode = mode;
+            Type = type;
+            ServerName = serverName;
+            Port = port;
+            ServiceName = serviceName;
+            SecurityMode = mode;
         }
 
         public override string ToString()
@@ -67,7 +67,7 @@ namespace KonfDB.Infrastructure.WCF
                     case ServiceType.HTTP:
                     case ServiceType.REST:
                     case ServiceType.WSHTTP:
-                        prefix = this.SecurityMode == ServiceSecurityMode.BasicSSL ? "https" : "http";
+                        prefix = SecurityMode == ServiceSecurityMode.BasicSSL ? "https" : "http";
                         break;
                     case ServiceType.TCP:
                         prefix = "net.tcp";
@@ -84,7 +84,7 @@ namespace KonfDB.Infrastructure.WCF
             ChannelFactory<I> channelfactory = null;
             string prefix = string.Empty;
             Binding binding = null;
-            bool useSSL = this.SecurityMode == ServiceSecurityMode.BasicSSL;
+            bool useSSL = SecurityMode == ServiceSecurityMode.BasicSSL;
             switch (Type)
             {
                 case ServiceType.HTTP:

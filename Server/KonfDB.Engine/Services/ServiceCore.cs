@@ -29,8 +29,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KonfDB.Engine.Commands;
 using KonfDB.Infrastructure.Attributes;
+using KonfDB.Infrastructure.Commands;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Interfaces;
@@ -42,13 +42,13 @@ namespace KonfDB.Engine.Services
 {
     public class ServiceCore
     {
-        private readonly CommandFactory _commandFactory;
+        private readonly ICommandFactory _commandFactory;
         private readonly ICommand _helpCommand;
         private readonly ICommand _auditCommand;
 
         public ServiceCore()
         {
-            _commandFactory = CommandFactory.Initiate();
+            _commandFactory = CurrentHostContext.Default.CommandFactory;
             _helpCommand = _commandFactory.Commands.FirstOrDefault(x => x.GetType().Name == "HelpCommand");
             _auditCommand = _commandFactory.Commands.FirstOrDefault(x => x.GetType().Name == "AddAudit");
         }

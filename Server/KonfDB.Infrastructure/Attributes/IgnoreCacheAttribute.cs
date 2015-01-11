@@ -27,7 +27,7 @@ using System;
 
 namespace KonfDB.Infrastructure.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class IgnoreCacheAttribute : Attribute
     {
     }

@@ -68,9 +68,9 @@
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="Attributes\AuthenticateTokenAttribute.cs" />
     <Compile Include="Attributes\IgnoreCacheAttribute.cs" />
+    <Compile Include="Commands\ICommandFactory.cs" />
     <Compile Include="Configuration\Interfaces\IDatabaseProviderConfiguration.cs" />
     <Compile Include="Configuration\Interfaces\IHostConfig.cs" />
     <Compile Include="Configuration\Interfaces\IProviderTypeConfiguration.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Encryption\IEncryptionEngine.cs" />
     <Compile Include="Services\IAuditCommand.cs" />
     <Compile Include="Services\ICommand.cs" />
+    <Compile Include="Shell\ContextSettings.cs" />
     <Compile Include="Shell\CurrentHostContext.cs" />
     <Compile Include="Shell\HostContext.cs" />
     <Compile Include="Shell\IHostContext.cs" />
@@ -157,9 +159,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\KonfDBC\KonfDB.Shared.csproj">
       <Project>{75dbda1d-7776-45fd-82de-8c8eeca3ac1f}</Project>

@@ -35,7 +35,7 @@ namespace KonfDB.Engine.Database.Providers.MsSql
         {
             var result = false;
             var sqlCreateDBQuery = string.Format("SELECT database_id FROM sys.databases WHERE Name = '{0}'",
-                base.Configuration.InstanceName);
+                Configuration.InstanceName);
             try
             {
                 using (var connection = new SqlConnection(MasterConnectionString))

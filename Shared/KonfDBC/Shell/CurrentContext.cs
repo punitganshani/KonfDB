@@ -54,9 +54,9 @@ namespace KonfDB.Infrastructure.Shell
 
         private CurrentContext(BaseLogger baseLogger, IArguments arguments, BaseCacheStore cacheStore)
         {
-            this.Log = baseLogger;
-            this.ApplicationParams = arguments;
-            this.Cache = cacheStore;
+            Log = baseLogger;
+            ApplicationParams = arguments;
+            Cache = cacheStore;
         }
 
         public static IContext CreateDefault(BaseLogger baseLogger, IArguments arguments, BaseCacheStore cacheStore)

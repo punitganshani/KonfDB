@@ -195,48 +195,48 @@ namespace KonfDB.Infrastructure.Utilities
                                     Console.Write(key.KeyChar);
                             }
                         }
-                            //else if (key.Key == ConsoleKey.UpArrow)
-                            //{
-                            //    if (commandCounter == _commands.Count)
-                            //    {
-                            //        PrintCurrentCommand(line, left, top);
-                            //        continue;
-                            //    }
+                        //else if (key.Key == ConsoleKey.UpArrow)
+                        //{
+                        //    if (commandCounter == _commands.Count)
+                        //    {
+                        //        PrintCurrentCommand(line, left, top);
+                        //        continue;
+                        //    }
 
-                            //    Debug.WriteLine(commandCounter);
-                            //    lastCommand = GetLastCommand(-1, commandCounter);
-                            //    if (lastCommand != null)
-                            //    {
-                            //        PrintCurrentCommand(lastCommand, left, top);
-                            //        commandCounter++;
-                            //    }
-                            //    else
-                            //        PrintCurrentCommand(line, left, top);
-                            //}
-                            //else if (key.Key == ConsoleKey.DownArrow)
-                            //{
-                            //    if (commandCounter == -1)
-                            //    {
-                            //        PrintCurrentCommand(line, left, top);
-                            //        continue;
-                            //    }
+                        //    Debug.WriteLine(commandCounter);
+                        //    lastCommand = GetLastCommand(-1, commandCounter);
+                        //    if (lastCommand != null)
+                        //    {
+                        //        PrintCurrentCommand(lastCommand, left, top);
+                        //        commandCounter++;
+                        //    }
+                        //    else
+                        //        PrintCurrentCommand(line, left, top);
+                        //}
+                        //else if (key.Key == ConsoleKey.DownArrow)
+                        //{
+                        //    if (commandCounter == -1)
+                        //    {
+                        //        PrintCurrentCommand(line, left, top);
+                        //        continue;
+                        //    }
 
-                            //    Debug.WriteLine(commandCounter);
-                            //    lastCommand = GetLastCommand(1, commandCounter);
+                        //    Debug.WriteLine(commandCounter);
+                        //    lastCommand = GetLastCommand(1, commandCounter);
 
-                            //    if (lastCommand != null)
-                            //    {
-                            //        PrintCurrentCommand(lastCommand, left, top);
-                            //        commandCounter--;
-                            //    }
-                            //    else
-                            //        PrintCurrentCommand(line, left, top);
-                            //}
-                            //else if (key.Key == ConsoleKey.Escape)
-                            //{
-                            //    PrintCurrentCommand(line, left, top);
-                            //    lastCommand = null;
-                            //}
+                        //    if (lastCommand != null)
+                        //    {
+                        //        PrintCurrentCommand(lastCommand, left, top);
+                        //        commandCounter--;
+                        //    }
+                        //    else
+                        //        PrintCurrentCommand(line, left, top);
+                        //}
+                        //else if (key.Key == ConsoleKey.Escape)
+                        //{
+                        //    PrintCurrentCommand(line, left, top);
+                        //    lastCommand = null;
+                        //}
                         else
                         {
                             Console.Write(key.KeyChar);

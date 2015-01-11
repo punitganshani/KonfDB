@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Services;
+using KonfDB.Infrastructure.Shell;
 
 namespace KonfDB.Engine.Commands.Shared
 {
@@ -60,7 +61,7 @@ namespace KonfDB.Engine.Commands.Shared
 
         public CommandOutput OnExecute(CommandInput arguments)
         {
-            var commandFactory = CommandFactory.Initiate();
+            var commandFactory = CurrentHostContext.Default.CommandFactory;
             var commands = commandFactory.Commands.OrderBy(x => x.Keyword);
             var output = new CommandOutput();
             var builder = new StringBuilder();

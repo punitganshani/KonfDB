@@ -23,30 +23,27 @@
 
 #endregion
 
-using KonfDB.Infrastructure.WCF.Inspectors;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using System.Text;
+using KonfDB.Infrastructure.WCF.Inspectors;
 
 namespace KonfDB.Infrastructure.WCF.Behavior
 {
     public class EnableCorsEndpointBehavior : BehaviorExtensionElement, IEndpointBehavior
     {
-        public void AddBindingParameters(ServiceEndpoint endpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters)
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
         {
-
         }
 
-        public void ApplyClientBehavior(ServiceEndpoint endpoint, System.ServiceModel.Dispatcher.ClientRuntime clientRuntime)
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
         {
-
         }
 
-        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, System.ServiceModel.Dispatcher.EndpointDispatcher endpointDispatcher)
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
         {
             var requiredHeaders = new Dictionary<string, string>();
 
@@ -60,12 +57,11 @@ namespace KonfDB.Infrastructure.WCF.Behavior
 
         public void Validate(ServiceEndpoint endpoint)
         {
-
         }
 
         public override Type BehaviorType
         {
-            get { return typeof(EnableCorsEndpointBehavior); }
+            get { return typeof (EnableCorsEndpointBehavior); }
         }
 
         protected override object CreateBehavior()

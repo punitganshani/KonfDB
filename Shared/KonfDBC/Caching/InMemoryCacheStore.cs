@@ -60,14 +60,14 @@ namespace KonfDB.Infrastructure.Caching
             _durationInSeconds = int.Parse(args.GetValue("duration", "30"));
             _mode = args.GetValue("mode", CacheMode.Absolute.ToString()).ToEnum<CacheMode>();
 
-            _itemRemovedCallback = x => base.OnItemRemoved(new CacheItemRemovedArgs
+            _itemRemovedCallback = x => OnItemRemoved(new CacheItemRemovedArgs
             {
                 CacheKey = x.CacheItem.Key,
                 Value = x.CacheItem.Value,
-                RemoveReason = x.RemovedReason.ToString(),
+                RemoveReason = x.RemovedReason.ToString()
             });
         }
-        
+
         public override T Get<T>(string key)
         {
             string cacheKey = CreateUniqueKey<T>(key, typeof (T).Name);

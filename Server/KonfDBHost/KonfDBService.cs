@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.ServiceProcess;
 using System.Threading;
+using KonfDB.Engine.Commands;
 using KonfDB.Engine.Services;
 using KonfDB.Infrastructure.Enums;
 using KonfDB.Infrastructure.Extensions;
@@ -58,7 +59,12 @@ namespace KonfDBHost
         protected override void OnStart(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            HostContext.CreateFrom(_arguments.GetValue("configPath", "konfdb.json"));
+            var contextSettings = new ContextSettings
+            {
+                CommandFactory = new CommandFactory()
+            };
+
+            HostContext.CreateFrom(_arguments.GetValue("configPath", "konfdb.json"), contextSettings);
             CurrentHostContext.Default.Log.Info("Agent Started: DataManagement");
 
             #region Run Command Service
@@ -190,7 +196,7 @@ namespace KonfDBHost
             // 
             // KonfDBService
             // 
-            this.ServiceName = "KonfDBH";
+            ServiceName = "KonfDBH";
         }
     }
 }

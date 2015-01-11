@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using KonfDB.Infrastructure.Caching;
+using KonfDB.Infrastructure.Commands;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Runtime;
@@ -59,6 +60,8 @@ namespace KonfDB.Infrastructure.Shell
         public IHostConfig Config { get; private set; }
         public BaseProvider Provider { get; private set; }
 
+        public ICommandFactory CommandFactory { get; private set; }
+
         public AppType ApplicationType
         {
             get { return AppType.Server; }
@@ -84,11 +87,11 @@ namespace KonfDB.Infrastructure.Shell
             set { CurrentContext.Default.Cache = value; }
         }
 
-        private CurrentHostContext(IHostConfig configuration)
+        private CurrentHostContext(IHostConfig configuration, ContextSettings settings)
         {
-            this.Audit = configuration.Runtime.Audit;
-            this.Config = configuration;
-            this.UserTokens = new List<string>();
+            Audit = configuration.Runtime.Audit;
+            Config = configuration;
+            UserTokens = new List<string>();
 
             var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
@@ -103,14 +106,21 @@ namespace KonfDB.Infrastructure.Shell
                 }
             };
 
-            CurrentContext.CreateDefault(logger, commandArgs, cache);
+            CommandFactory = settings.CommandFactory;
 
+            CurrentContext.CreateDefault(logger, commandArgs, cache);
             Provider = GetDatabaseProviderInstance(configuration);
         }
 
-        public static IContext CreateDefault(IHostConfig configuration)
+        public static IContext CreateDefault(IHostConfig configuration, ContextSettings settings)
         {
-            return _defaultContext ?? (_defaultContext = new CurrentHostContext(configuration));
+            if (configuration == null)
+                throw new ArgumentNullException("configuration");
+
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+
+            return _defaultContext ?? (_defaultContext = new CurrentHostContext(configuration, settings));
         }
 
         public List<AuthenticationOutput> GetUsers()
@@ -143,5 +153,14 @@ namespace KonfDB.Infrastructure.Shell
             }
             throw new InvalidOperationException("Type : " + providerType + " does not inherit from BaseProvider");
         }
+
+        //public IEnumerable<ICommand> GetAllCommands()
+        //{
+        //    var catalog = new AggregateCatalog();
+        //    catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.dll"));
+        //    catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.exe"));
+        //    var container = new CompositionContainer(catalog);
+        //    return container.GetExportedValues<ICommand>().Where(x => (x.Type & ApplicationType) == ApplicationType);
+        //}
     }
 }

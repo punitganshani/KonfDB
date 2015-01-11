@@ -62,7 +62,7 @@ namespace KonfDB.Infrastructure.Caching
 
         protected static string CreateUniqueKey<T>(string key, string region)
         {
-            return String.Format("[{0}|key={1}{2}]", region, key, typeof(T).FullName);
+            return String.Format("[{0}|key={1}{2}]", region, key, typeof (T).FullName);
         }
 
         public abstract T Get<T>(string key);
