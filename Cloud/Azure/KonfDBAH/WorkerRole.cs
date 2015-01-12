@@ -57,8 +57,8 @@ namespace KonfDBAH
         private readonly ManualResetEvent _runCompleteEvent = new ManualResetEvent(false);
         private WcfService<ICommandService<object>, NativeCommandService> _serviceHostNative;
         private WcfService<ICommandService<string>, JsonCommandService> _serviceHostJson;
-        public ServiceCore ServiceFacade;
-        public string AuthenticationToken;
+        private ServiceCore _serviceFacade;
+        private string _authenticationToken;
 
         public override void Run()
         {
@@ -88,18 +88,26 @@ namespace KonfDBAH
 
         private void RunCommandService()
         {
-            ServiceFacade = new ServiceCore();
-
+            _serviceFacade = new ServiceCore();
+            string internalSessionId = Guid.NewGuid().ToString();
+            
             // Ensure that the super user admin exists
-            ServiceFacade.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                AzureContext.Current.Config.Runtime.SuperUser.Username,
-                AzureContext.Current.Config.Runtime.SuperUser.Password), null);
+            _serviceFacade.ExecuteCommand(new ServiceRequestContext
+                {
+                    Command = String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
+                        AzureContext.Current.Config.Runtime.SuperUser.Username,
+                        AzureContext.Current.Config.Runtime.SuperUser.Password),
+                    SessionId = internalSessionId
+                });
 
             // Ensure that the super user readonly exists
-            ServiceFacade.ExecuteCommand(
-                String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
+            _serviceFacade.ExecuteCommand(new ServiceRequestContext
+                {
+                    Command = String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
                     AzureContext.Current.Config.Runtime.SuperUser.Username,
-                    AzureContext.Current.Config.Runtime.SuperUser.Password), null);
+                    AzureContext.Current.Config.Runtime.SuperUser.Password),
+                    SessionId = internalSessionId
+                });
 
             var serviceConfig = AzureContext.Current.Config.Runtime.Server;
             _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost",
@@ -140,9 +148,13 @@ namespace KonfDBAH
             _serviceHostNative.Host();
             _serviceHostJson.Host();
 
-            var authOutput = ServiceFacade.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
+            var authOutput = _serviceFacade.ExecuteCommand(new ServiceRequestContext
+            {
+                Command = String.Format("UserAuth /name:{0} /pwd:{1}",
                 AzureContext.Current.Config.Runtime.SuperUser.Username,
-                AzureContext.Current.Config.Runtime.SuperUser.Password), null);
+                AzureContext.Current.Config.Runtime.SuperUser.Password),
+                SessionId = internalSessionId
+            });
 
             var authenticationOutput = authOutput.Data as AuthenticationOutput;
             if (authenticationOutput == null)
@@ -151,13 +163,13 @@ namespace KonfDBAH
                     "Could not authenticate server user: " + authOutput.DisplayMessage);
             }
 
-            AuthenticationToken = authenticationOutput.Token;
+            _authenticationToken = authenticationOutput.Token;
 
             // get settings from database
-            var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
+            var settingsOutput = _serviceFacade.ExecuteCommand(new ServiceRequestContext { Command = "GetSettings", SessionId = internalSessionId });
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>) settingsOutput.Data;
+                var settings = (Dictionary<string, string>)settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentContext.Default.ApplicationParams.Add(setting.Key, setting.Value);
@@ -218,13 +230,13 @@ namespace KonfDBAH
             var databaseArgs = new CommandArgs(databaseConnectionString);
 
             IHostConfig hostConfig = new HostConfig();
-            hostConfig.Caching.ProviderType = typeof (InRoleCacheStore).AssemblyQualifiedName;
+            hostConfig.Caching.ProviderType = typeof(InRoleCacheStore).AssemblyQualifiedName;
             hostConfig.Caching.Enabled = true;
 
-            hostConfig.Runtime.Audit = new AuditElement {Enabled = true};
+            hostConfig.Runtime.Audit = new AuditElement { Enabled = true };
             hostConfig.Runtime.LogInfo = new LogElement
             {
-                ProviderType = typeof (AzureLogger).AssemblyQualifiedName
+                ProviderType = typeof(AzureLogger).AssemblyQualifiedName
             };
             hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.None;
             hostConfig.Runtime.SuperUser = new UserElement

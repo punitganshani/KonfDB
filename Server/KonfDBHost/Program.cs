@@ -43,7 +43,7 @@ namespace KonfDBHost
         {
             IArguments argsDictionary = new CommandArgs(args);
             var backgroundService = new KonfDBH(argsDictionary);
-            var services = new ServiceBase[] {backgroundService};
+            var services = new ServiceBase[] { backgroundService };
 
             if (argsDictionary.ContainsKey("install"))
             {
@@ -89,7 +89,7 @@ namespace KonfDBHost
 
                 bool exitLoop = false;
                 var commandService = backgroundService.ServiceFacade;
-
+                string internalSessionId = Guid.NewGuid().ToString();
                 while (!exitLoop)
                 {
                     Console.Write(">");
@@ -97,7 +97,12 @@ namespace KonfDBHost
 
                     if (string.IsNullOrEmpty(line)) continue;
 
-                    var commandOutput = commandService.ExecuteCommand(line, backgroundService.AuthenticationToken);
+                    var commandOutput = commandService.ExecuteCommand(new ServiceRequestContext
+                    {
+                        Command = line,
+                        Token = backgroundService.AuthenticationToken,
+                        SessionId = internalSessionId
+                    });
                     if (commandOutput == null) continue;
 
                     if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Message)
@@ -121,48 +126,6 @@ namespace KonfDBHost
                         exitLoop = true;
                     }
                 }
-
-                #region SmartConsole
-
-                //ICommandService commandService = new CommandService();
-
-                //var console = new SmartConsole(3, ">")
-                //{
-                //    GetCommandLists = line => commandService.GetCommandsStartingWith(line),
-                //    OnCommandReceived = (consoleInstance, line) =>
-                //    {
-                //        Debug.WriteLine("Received: " + line);
-
-                //        var commandOutput = commandService.ExecuteCommand(line);
-                //        if (commandOutput == null) return;
-
-                //        if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Message)
-                //            Console.WriteLine(commandOutput.DisplayMessage);
-                //        else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
-                //            Console.WriteLine(commandOutput.DisplayMessage);
-
-                //        if (commandOutput.PostAction == CommandOutput.PostCommandAction.ExitApplication)
-                //        {
-
-                //            consoleInstance.Exit();
-                //        }
-                //    },
-                //    OnInit = () => Debug.WriteLine("Initialized"),
-                //    OnExit = () =>
-                //    {
-                //        shutdown.Set();
-                //        thread.Join();
-
-                //        services.StopService();
-
-                //        AppContext.Current.Log.Info("Exiting...");
-                //        Thread.Sleep(500);
-                //    }
-                //};
-
-                //console.Host();
-
-                #endregion
 
                 #endregion
             }

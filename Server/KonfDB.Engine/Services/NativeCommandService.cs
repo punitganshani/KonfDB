@@ -23,7 +23,10 @@
 
 #endregion
 
+using System;
+using System.ServiceModel;
 using KonfDB.Infrastructure.Adapter;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 
 namespace KonfDB.Engine.Services
@@ -34,13 +37,25 @@ namespace KonfDB.Engine.Services
 
         public ServiceCommandOutput<object> ExecuteCommand(string command, string token)
         {
-            var commandOutput = _core.ExecuteCommand(command, token);
+            var context = new ServiceRequestContext
+            {
+                SessionId = token,
+                Token = token,
+                Command = command
+            };
+            var commandOutput = _core.ExecuteCommand(context);
             return commandOutput.ConvertForNative();
         }
 
         public string[] GetCommandsStartingWith(string command)
         {
-            return _core.GetCommandsStartingWith(command);
+            var context = new ServiceRequestContext
+            {
+                SessionId = Guid.NewGuid().ToString(),
+                Token = null,
+                Command = command
+            };
+            return _core.GetCommandsStartingWith(context);
         }
     }
 }

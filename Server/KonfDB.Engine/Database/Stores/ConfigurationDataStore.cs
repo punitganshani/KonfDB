@@ -1285,7 +1285,7 @@ namespace KonfDB.Engine.Database.Stores
 
                 var mapping =
                     unitOfWork.Context.Mappings.FirstOrDefault(x => x.SuiteId == suiteId && x.MappingId == mappingId);
-                if (mappingId == null)
+                if (mapping == null)
                     throw new InvalidOperationException("No such mapping exists in the suite");
 
                 unitOfWork.Delete(mapping);

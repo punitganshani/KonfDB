@@ -40,27 +40,28 @@ using KonfDB.Infrastructure.Utilities;
 
 namespace KonfDB.Engine.Services
 {
-    public class ServiceCore
+    internal class ServiceCore
     {
         private readonly ICommandFactory _commandFactory;
         private readonly ICommand _helpCommand;
         private readonly ICommand _auditCommand;
 
-        public ServiceCore()
+        internal ServiceCore()
         {
             _commandFactory = CurrentHostContext.Default.CommandFactory;
             _helpCommand = _commandFactory.Commands.FirstOrDefault(x => x.GetType().Name == "HelpCommand");
             _auditCommand = _commandFactory.Commands.FirstOrDefault(x => x.GetType().Name == "AddAudit");
         }
 
-        public CommandOutput ExecuteCommand(string command, string token)
+        internal CommandOutput ExecuteCommand(ServiceRequestContext context)
         {
-            var userTokenFromCache = CurrentHostContext.Default.Cache.Get<AuthenticationOutput>(token);
+            var userTokenFromCache = CurrentHostContext.Default.Cache.Get<AuthenticationOutput>(context.Token);
 
             CommandOutput commandOutput = null;
             try
             {
-                var input = new CommandInput(new CommandArgs(command));
+                var input = new CommandInput(new CommandArgs(context.Command));
+                input.Add("Request.SessionId", context.SessionId);
                 if (input.Keyword == null)
                     throw new InvalidDataException("Could not parse the command");
 
@@ -76,7 +77,7 @@ namespace KonfDB.Engine.Services
                     if (RequiresCaching(commandObject))
                     {
                         // cache it
-                        commandOutput = CurrentHostContext.Default.Cache.Get(command, () =>
+                        commandOutput = CurrentHostContext.Default.Cache.Get(context.Command, () =>
                             ExecuteCommandInternal(input, commandObject));
                     }
                     else
@@ -87,7 +88,12 @@ namespace KonfDB.Engine.Services
                     AuditExecution(userTokenFromCache, input, commandObject);
 
                     // Execute all subcommands
-                    commandOutput.SubCommands.ForEach(x => ExecuteCommand(x, token));
+                    commandOutput.SubCommands.ForEach(x => ExecuteCommand(new ServiceRequestContext
+                    {
+                        Command = x,
+                        SessionId = context.SessionId,
+                        Token = context.Token
+                    }));
                 }
                 else
                 {
@@ -129,8 +135,20 @@ namespace KonfDB.Engine.Services
             return commandOutput;
         }
 
+        internal string[] GetCommandsStartingWith(ServiceRequestContext context)
+        {
+            string lowerCommand = context.Command.ToLowerInvariant();
+            return
+                _commandFactory.Commands.Where(x => x.Command.ToLowerInvariant().StartsWith(lowerCommand))
+                    .Select(x => x.Keyword)
+                    .OrderBy(x => x.Length)
+                    .ToArray();
+        }
+
+        #region Private Methods
+
         private void AuditExecution(IAuthenticationOutput userTokenFromCache,
-            CommandInput input, ICommand commandObject)
+    CommandInput input, ICommand commandObject)
         {
             // Audit an AUTH Command
             if (CurrentHostContext.Default.Audit.Enabled)
@@ -159,18 +177,6 @@ namespace KonfDB.Engine.Services
                 }
             }
         }
-
-        public string[] GetCommandsStartingWith(string command)
-        {
-            string lowerCommand = command.ToLowerInvariant();
-            return
-                _commandFactory.Commands.Where(x => x.Command.ToLowerInvariant().StartsWith(lowerCommand))
-                    .Select(x => x.Keyword)
-                    .OrderBy(x => x.Length)
-                    .ToArray();
-        }
-
-        #region Private Methods
 
         private CommandOutput ExecuteCommandInternal(CommandInput input, ICommand commandObject)
         {

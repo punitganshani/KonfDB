@@ -48,7 +48,7 @@ namespace KonfDBHost
         private ManualResetEvent _shutdownEvent;
         private WcfService<ICommandService<object>, NativeCommandService> _serviceHostNative;
         private WcfService<ICommandService<string>, JsonCommandService> _serviceHostJson;
-        public ServiceCore ServiceFacade;
+        internal ServiceCore ServiceFacade;
         public string AuthenticationToken;
 
         public KonfDBH(IArguments arguments)
@@ -70,17 +70,24 @@ namespace KonfDBHost
             #region Run Command Service
 
             ServiceFacade = new ServiceCore();
-
+            string internalSessionId = Guid.NewGuid().ToString();
             // Ensure that the super user admin exists
-            ServiceFacade.ExecuteCommand(String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
-                CurrentHostContext.Default.Config.Runtime.SuperUser.Password), null);
+            ServiceFacade.ExecuteCommand(new ServiceRequestContext
+            {
+                Command = String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Password),
+                SessionId = internalSessionId
+            });
 
             // Ensure that the super user readonly exists
-            ServiceFacade.ExecuteCommand(
-                String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
-                    CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
-                    CurrentHostContext.Default.Config.Runtime.SuperUser.Password), null);
+            ServiceFacade.ExecuteCommand(new ServiceRequestContext
+            {
+                Command = String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
+                        CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
+                        CurrentHostContext.Default.Config.Runtime.SuperUser.Password),
+                SessionId = internalSessionId
+            });
 
             var serviceConfig = CurrentHostContext.Default.Config.Runtime.Server;
             _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost",
@@ -121,9 +128,13 @@ namespace KonfDBHost
             _serviceHostNative.Host();
             _serviceHostJson.Host();
 
-            var authOutput = ServiceFacade.ExecuteCommand(String.Format("UserAuth /name:{0} /pwd:{1}",
-                CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
-                CurrentHostContext.Default.Config.Runtime.SuperUser.Password), null);
+            var authOutput = ServiceFacade.ExecuteCommand(new ServiceRequestContext
+            {
+                Command = String.Format("UserAuth /name:{0} /pwd:{1}",
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Password),
+                SessionId = internalSessionId
+            });
 
             var authenticationOutput = authOutput.Data as AuthenticationOutput;
             if (authenticationOutput == null)
@@ -135,10 +146,10 @@ namespace KonfDBHost
             AuthenticationToken = authenticationOutput.Token;
 
             // get settings from database
-            var settingsOutput = ServiceFacade.ExecuteCommand("GetSettings", null);
+            var settingsOutput = ServiceFacade.ExecuteCommand(new ServiceRequestContext { Command = "GetSettings", SessionId = internalSessionId });
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>) settingsOutput.Data;
+                var settings = (Dictionary<string, string>)settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentHostContext.Default.ApplicationParams.Add(setting.Key, setting.Value);
