@@ -43,6 +43,8 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
 
         string Location { get; set; }
 
+        bool IsEncrypted { get; set; }
+
         string Transform(string input);
     }
 }

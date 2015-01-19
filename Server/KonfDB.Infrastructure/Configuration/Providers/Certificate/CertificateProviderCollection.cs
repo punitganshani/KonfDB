@@ -34,10 +34,19 @@ namespace KonfDB.Infrastructure.Configuration.Providers.Certificate
         [JsonProperty("default")]
         public string DefaultKey { get; set; }
 
+        [JsonProperty("encryption")]
+        public string EncryptionKey { get; set; }
+
         [JsonIgnore]
         public CertificateProviderConfiguration Default
         {
             get { return Certificates.FirstOrDefault(x => x.CertificateKey == DefaultKey); }
+        }
+
+        [JsonIgnore]
+        public CertificateProviderConfiguration Encryption
+        {
+            get { return Certificates.FirstOrDefault(x => x.CertificateKey == EncryptionKey); }
         }
 
         [JsonProperty("certificate")]

@@ -148,7 +148,7 @@ namespace KonfDB.Engine.Services
         #region Private Methods
 
         private void AuditExecution(IAuthenticationOutput userTokenFromCache,
-    CommandInput input, ICommand commandObject)
+            CommandInput input, ICommand commandObject)
         {
             // Audit an AUTH Command
             if (CurrentHostContext.Default.Audit.Enabled)

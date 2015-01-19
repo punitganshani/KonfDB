@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ServiceDefinition name="AzureCloudService"
-                   xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2014-06.2.4">
+<ServiceDefinition name="AzureCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
   <WorkerRole name="KonfDBAH" vmsize="Small">
     <Imports>
       <Import moduleName="Caching" />
@@ -13,6 +10,8 @@
       <Setting name="konfdb.runtime.superuser" />
       <Setting name="konfdb.database" />
       <Setting name="konfdb.configuration.mode" />
+      <Setting name="konfdb.certificate.default" />
+      <Setting name="konfdb.certificate.encryption" />
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="KonfDB.Endpoint.TCP" protocol="tcp" port="8885" localPort="8885" />
@@ -27,5 +26,7 @@
     <Startup>
       <Task commandLine="Scripts\NetPortSharing.cmd" executionContext="elevated" taskType="simple" />
     </Startup>
+    <Certificates>
+    </Certificates>
   </WorkerRole>
 </ServiceDefinition>

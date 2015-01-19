@@ -28,7 +28,8 @@
         ],
         "superuser": {
             "username": "suser",
-            "password": "spwd"
+            "password": "spwd",
+            "isEncrypted": true
         }
     },
     "cache": {
@@ -62,6 +63,7 @@
     },
     "certificates": {
         "default": "testCert",
+        "encryption" : "testCert",
         "certificate": [
             {
                 "key": "testCert",

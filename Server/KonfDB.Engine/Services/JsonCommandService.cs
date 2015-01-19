@@ -24,9 +24,7 @@
 #endregion
 
 using System;
-using System.ServiceModel;
 using KonfDB.Infrastructure.Adapter;
-using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 
 namespace KonfDB.Engine.Services

@@ -35,5 +35,8 @@ namespace KonfDB.Infrastructure.Configuration.Runtime
 
         [JsonProperty("password")]
         public string Password { get; set; }
+
+        [JsonProperty("isEncrypted")]
+        public bool IsEncrypted { get; set; }
     }
 }

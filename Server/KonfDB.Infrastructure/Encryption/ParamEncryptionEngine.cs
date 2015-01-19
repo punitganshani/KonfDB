@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,7 +32,7 @@ namespace KonfDB.Infrastructure.Encryption
 {
     public class ParamEncryptionEngine : IEncryptionEngine
     {
-        public string Encrypt(string input, string publicKey)
+        public string Encrypt(string input, string publicKey, Dictionary<string, object> metadata= null)
         {
             CspParameters cspParams = new CspParameters {ProviderType = 1};
             RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider(cspParams);
@@ -44,7 +45,7 @@ namespace KonfDB.Infrastructure.Encryption
             return Convert.ToBase64String(encryptedBytes);
         }
 
-        public string Decrypt(string input, string privateKey)
+        public string Decrypt(string input, string privateKey, Dictionary<string, object> metadata = null)
         {
             var encryptedBytes = Convert.FromBase64String(input);
             CspParameters cspParams = new CspParameters {ProviderType = 1};

@@ -109,7 +109,7 @@ namespace KonfDB.Engine.Commands.Shared
                         if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                         {
                             config.ParameterValue = EncryptionEngine.Default.Decrypt(config.ParameterValue,
-                                suite.PrivateKey);
+                                suite.PrivateKey, null);
                         }
                     }
                 }

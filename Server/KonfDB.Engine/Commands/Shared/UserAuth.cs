@@ -61,7 +61,7 @@ namespace KonfDB.Engine.Commands.Shared
 
             string token =
                 EncryptionEngine.Get<SHA256Encryption>()
-                    .Encrypt(String.Format("{0}{1}{2}", uniqueTime, username, password), null);
+                    .Encrypt(String.Format("{0}{1}{2}", uniqueTime, username, password), null,null);
 
             // Authenticate in DB
             AuthenticationModel authInfo =

@@ -67,7 +67,7 @@ namespace KonfDB.Engine.Commands.Shared
                 var suite = CurrentHostContext.Default.Provider.ConfigurationStore.GetSuite(userId, suiteId);
                 if (suite != null)
                 {
-                    value = EncryptionEngine.Default.Encrypt(value, suite.PublicKey);
+                    value = EncryptionEngine.Default.Encrypt(value, suite.PublicKey, null);
                 }
                 else
                 {

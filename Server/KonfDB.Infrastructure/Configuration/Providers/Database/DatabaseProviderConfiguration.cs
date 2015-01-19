@@ -54,6 +54,9 @@ namespace KonfDB.Infrastructure.Configuration.Providers.Database
         [JsonProperty("location")]
         public string Location { get; set; }
 
+        [JsonProperty("isEncrypted")]
+        public bool IsEncrypted { get; set; }
+
         public string Transform(string input)
         {
             return input.Replace("$InstanceName$", InstanceName)

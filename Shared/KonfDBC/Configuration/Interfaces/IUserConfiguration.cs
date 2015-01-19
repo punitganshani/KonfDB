@@ -29,5 +29,7 @@ namespace KonfDB.Infrastructure.Configuration.Interfaces
     {
         string Username { get; set; }
         string Password { get; set; }
+
+        bool IsEncrypted { get; set; }
     }
 }

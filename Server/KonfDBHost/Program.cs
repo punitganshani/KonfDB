@@ -43,7 +43,7 @@ namespace KonfDBHost
         {
             IArguments argsDictionary = new CommandArgs(args);
             var backgroundService = new KonfDBH(argsDictionary);
-            var services = new ServiceBase[] { backgroundService };
+            var services = new ServiceBase[] {backgroundService};
 
             if (argsDictionary.ContainsKey("install"))
             {

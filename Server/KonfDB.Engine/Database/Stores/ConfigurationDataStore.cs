@@ -1337,7 +1337,7 @@ namespace KonfDB.Engine.Database.Stores
         {
             return
                 EncryptionEngine.Get<SHA256Encryption>()
-                    .Encrypt("@#" + username.ToUpperInvariant() + password + ".!@", salt);
+                    .Encrypt("@#" + username.ToUpperInvariant() + password + ".!@", salt, null);
         }
 
         public AuthenticationModel GetAuthenticatedInfo(string username, string password, string getHash)

@@ -110,6 +110,7 @@
     <Compile Include="Database\StateActions\DatabaseCheckAction.cs" />
     <Compile Include="Database\StateActions\DatabaseCreateAction.cs" />
     <Compile Include="Encryption\MD5EncryptionEngine.cs" />
+    <Compile Include="Encryption\RSAEncryptionEngine.cs" />
     <Compile Include="Encryption\SHA256Encryption.cs" />
     <Compile Include="Services\CommandInput.cs" />
     <Compile Include="Common\AppType.cs" />

@@ -23,6 +23,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using KonfDB.Infrastructure.Encryption;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,8 +41,8 @@ namespace KonfDB.Tests.Utilities
             string privateKey = keys.Item1;
             string publicKey = keys.Item2;
 
-            var encryptedValue = EncryptionEngine.Default.Encrypt(inputText, publicKey);
-            var decryptedValue = EncryptionEngine.Default.Decrypt(encryptedValue, privateKey);
+            var encryptedValue = EncryptionEngine.Default.Encrypt(inputText, publicKey, null);
+            var decryptedValue = EncryptionEngine.Default.Decrypt(encryptedValue, privateKey, null);
             Assert.AreEqual(inputText, decryptedValue);
         }
 
@@ -50,7 +52,7 @@ namespace KonfDB.Tests.Utilities
             const string inputText = "konfdbencryption";
             var engine = EncryptionEngine.Get<MD5EncryptionEngine>();
 
-            var actual = engine.Encrypt(inputText, null);
+            var actual = engine.Encrypt(inputText, null, null);
             Assert.AreEqual("25C58E164132538B20FC4866933DF126", actual);
         }
 
@@ -60,8 +62,21 @@ namespace KonfDB.Tests.Utilities
             const string inputText = "konfdbencryption";
             var engine = EncryptionEngine.Get<SHA256Encryption>();
 
-            var actual = engine.Encrypt(inputText, null);
+            var actual = engine.Encrypt(inputText, null, null);
             Assert.AreEqual("A4681013792D283BC472487C66449C53A30D4E9A3783952F1CF511F5E40C273A", actual);
+        }
+
+        [TestMethod]
+        public void TestRSAEncryption()
+        {
+            const string inputText = "konfdbencryption";
+           RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
+            var engine = EncryptionEngine.Get<RSAEncryptionEngine>();
+
+            var parameters = new Dictionary<string, object> {{"privatekey", csp}};
+            var decryptedValue = engine.Encrypt(inputText, null, parameters);
+            var actual = engine.Decrypt(decryptedValue, null, parameters);
+            Assert.AreEqual(inputText, actual);
         }
     }
 }

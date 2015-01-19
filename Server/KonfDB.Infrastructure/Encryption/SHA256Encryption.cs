@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,7 +32,7 @@ namespace KonfDB.Infrastructure.Encryption
 {
     public class SHA256Encryption : IEncryptionEngine
     {
-        public string Encrypt(string input, string publicKey)
+        public string Encrypt(string input, string publicKey, Dictionary<string, object> metadata = null)
         {
             SHA256 mySHA256 = SHA256.Create();
             byte[] inputBytes = Encoding.ASCII.GetBytes(input);
@@ -46,7 +47,7 @@ namespace KonfDB.Infrastructure.Encryption
             return sb.ToString();
         }
 
-        public string Decrypt(string input, string privateKey)
+        public string Decrypt(string input, string privateKey, Dictionary<string, object> metadata = null)
         {
             throw new NotImplementedException();
         }

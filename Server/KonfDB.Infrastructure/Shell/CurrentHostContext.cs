@@ -25,12 +25,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Commands;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Database.Providers;
+using KonfDB.Infrastructure.Encryption;
 using KonfDB.Infrastructure.Exceptions;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Factory;
@@ -93,6 +95,16 @@ namespace KonfDB.Infrastructure.Shell
             Config = configuration;
             UserTokens = new List<string>();
 
+            //override the passwords if encrypted
+            if (configuration.Certificate.Encryption != null)
+            {
+                var certificate = configuration.Certificate.Encryption.GetX509Certificate();
+                if (certificate != null)
+                {
+                    DecryptPasswords(configuration, certificate);
+                }
+            }
+
             var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
             var cache = CacheFactory.Create(configuration.Caching);
@@ -110,6 +122,24 @@ namespace KonfDB.Infrastructure.Shell
 
             CurrentContext.CreateDefault(logger, commandArgs, cache);
             Provider = GetDatabaseProviderInstance(configuration);
+        }
+
+        private static void DecryptPasswords(IHostConfig configuration, X509Certificate2 certificate)
+        {
+            var encryptionMetadata = new Dictionary<string, object> {{"privatekey", certificate.PrivateKey}};
+            var encryptionEngine = EncryptionEngine.Get<RSAEncryptionEngine>();
+            if (configuration.Database.Default.IsEncrypted)
+            {
+                configuration.Database.Default.Password =
+                    encryptionEngine.Decrypt(configuration.Database.Default.Password, string.Empty, encryptionMetadata);
+                ;
+            }
+
+            if (configuration.Runtime.SuperUser.IsEncrypted)
+            {
+                configuration.Runtime.SuperUser.Password =
+                    encryptionEngine.Decrypt(configuration.Runtime.SuperUser.Password, string.Empty, encryptionMetadata);
+            }
         }
 
         public static IContext CreateDefault(IHostConfig configuration, ContextSettings settings)
@@ -133,6 +163,7 @@ namespace KonfDB.Infrastructure.Shell
         private BaseProvider GetDatabaseProviderInstance(IHostConfig configuration)
         {
             var defaultDatabaseConfig = configuration.Database.Default;
+
             Type providerType = Type.GetType(defaultDatabaseConfig.ProviderType);
 
             if (providerType == null)
@@ -153,14 +184,5 @@ namespace KonfDB.Infrastructure.Shell
             }
             throw new InvalidOperationException("Type : " + providerType + " does not inherit from BaseProvider");
         }
-
-        //public IEnumerable<ICommand> GetAllCommands()
-        //{
-        //    var catalog = new AggregateCatalog();
-        //    catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.dll"));
-        //    catalog.Catalogs.Add(new DirectoryCatalog(@".", "*.exe"));
-        //    var container = new CompositionContainer(catalog);
-        //    return container.GetExportedValues<ICommand>().Where(x => (x.Type & ApplicationType) == ApplicationType);
-        //}
     }
 }

@@ -24,13 +24,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace KonfDB.Infrastructure.Encryption
 {
     public interface IEncryptionEngine
     {
-        string Encrypt(string input, string publicKey);
-        string Decrypt(string input, string privateKey);
+        string Encrypt(string input, string publicKey, Dictionary<string, object> metadata);
+        string Decrypt(string input, string privateKey, Dictionary<string, object> metadata);
         Tuple<string, string> CreateKeys();
     }
 }

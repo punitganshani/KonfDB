@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -36,8 +37,9 @@ namespace KonfDB.Infrastructure.Encryption
         /// </summary>
         /// <param name="input"></param>
         /// <param name="publicKey"></param>
+        /// <param name="metadata"></param>
         /// <returns></returns>
-        public string Encrypt(string input, string publicKey)
+        public string Encrypt(string input, string publicKey, Dictionary<string, object> metadata = null)
         {
             // step 1, calculate MD5 hash from input
             MD5 md5 = MD5.Create();
@@ -58,7 +60,7 @@ namespace KonfDB.Infrastructure.Encryption
             throw new NotImplementedException();
         }
 
-        public string Decrypt(string input, string privateKey)
+        public string Decrypt(string input, string privateKey, Dictionary<string, object> metadata)
         {
             throw new NotImplementedException();
         }

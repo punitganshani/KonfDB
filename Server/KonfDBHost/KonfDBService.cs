@@ -84,8 +84,8 @@ namespace KonfDBHost
             ServiceFacade.ExecuteCommand(new ServiceRequestContext
             {
                 Command = String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
-                        CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
-                        CurrentHostContext.Default.Config.Runtime.SuperUser.Password),
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Username,
+                    CurrentHostContext.Default.Config.Runtime.SuperUser.Password),
                 SessionId = internalSessionId
             });
 
@@ -146,10 +146,15 @@ namespace KonfDBHost
             AuthenticationToken = authenticationOutput.Token;
 
             // get settings from database
-            var settingsOutput = ServiceFacade.ExecuteCommand(new ServiceRequestContext { Command = "GetSettings", SessionId = internalSessionId });
+            var settingsOutput =
+                ServiceFacade.ExecuteCommand(new ServiceRequestContext
+                {
+                    Command = "GetSettings",
+                    SessionId = internalSessionId
+                });
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>)settingsOutput.Data;
+                var settings = (Dictionary<string, string>) settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentHostContext.Default.ApplicationParams.Add(setting.Key, setting.Value);

@@ -28,12 +28,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using KonfDB.Engine.Services;
 using KonfDB.Infrastructure.Common;
 using KonfDB.Infrastructure.Configuration;
 using KonfDB.Infrastructure.Configuration.Interfaces;
+using KonfDB.Infrastructure.Configuration.Providers.Certificate;
 using KonfDB.Infrastructure.Configuration.Providers.Database;
 using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Enums;
@@ -225,9 +227,14 @@ namespace KonfDBAH
         {
             var userConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.runtime.superuser");
             var databaseConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.database");
+            var defaultCertificateSettings = RoleEnvironment.GetConfigurationSettingValue("konfdb.certificate.default");
+            var encryptionCertificateSettings = RoleEnvironment.GetConfigurationSettingValue("konfdb.certificate.encryption");
 
             var superuserArgs = new CommandArgs(userConnectionString);
             var databaseArgs = new CommandArgs(databaseConnectionString);
+            var defaultCertificateArgs = new CommandArgs(defaultCertificateSettings);
+            var encryptionCertificateArgs = new CommandArgs(encryptionCertificateSettings);
+
 
             IHostConfig hostConfig = new HostConfig();
             hostConfig.Caching.ProviderType = typeof(InRoleCacheStore).AssemblyQualifiedName;
@@ -238,11 +245,49 @@ namespace KonfDBAH
             {
                 ProviderType = typeof(AzureLogger).AssemblyQualifiedName
             };
-            hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.None;
+
+            if (string.IsNullOrEmpty(defaultCertificateSettings))
+            {
+                hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.None;
+            }
+            else
+            {
+                hostConfig.Runtime.ServiceSecurity = ServiceSecurityMode.BasicSSL;
+                hostConfig.Certificate.DefaultKey = "default";
+                var certificateConfig = new CertificateProviderConfiguration
+                {
+                    CertificateKey = "default",
+                    FindBy = defaultCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString()).FromJsonToObject<X509FindType>(),
+                    StoreLocation = defaultCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString()).FromJsonToObject<StoreLocation>(),
+                    StoreName = defaultCertificateArgs.GetValue("storeName", StoreName.My.ToString()).FromJsonToObject<StoreName>(),
+                    Value = defaultCertificateArgs.GetValue("value", string.Empty)
+                };
+                hostConfig.Certificate.Certificates.Add(certificateConfig); 
+            }
+
+            if (string.IsNullOrEmpty(encryptionCertificateSettings))
+            {
+                hostConfig.Certificate.EncryptionKey = "default";
+            }
+            else
+            {
+                hostConfig.Certificate.EncryptionKey = "encryption";
+                var certificateConfig = new CertificateProviderConfiguration
+                {
+                    CertificateKey = "encryption",
+                    FindBy = encryptionCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString()).FromJsonToObject<X509FindType>(),
+                    StoreLocation = encryptionCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString()).FromJsonToObject<StoreLocation>(),
+                    StoreName = encryptionCertificateArgs.GetValue("storeName", StoreName.My.ToString()).FromJsonToObject<StoreName>(),
+                    Value = encryptionCertificateArgs.GetValue("value", string.Empty)
+                };
+                hostConfig.Certificate.Certificates.Add(certificateConfig);
+            }
+
             hostConfig.Runtime.SuperUser = new UserElement
             {
                 Username = superuserArgs.GetValue("username", "azureuser"),
-                Password = superuserArgs.GetValue("password", "aZuReu$rpWd")
+                Password = superuserArgs.GetValue("password", "aZuReu$rpWd"),
+                IsEncrypted = bool.Parse(databaseArgs.GetValue("isEncrypted", bool.FalseString.ToLower()))
             };
 
             hostConfig.Database.DefaultKey = "default";
@@ -254,6 +299,7 @@ namespace KonfDBAH
                 InstanceName = databaseArgs["instanceName"],
                 Username = databaseArgs["username"],
                 Password = databaseArgs["password"],
+                IsEncrypted = bool.Parse(databaseArgs.GetValue("isEncrypted", bool.FalseString.ToLower())),
                 ProviderType = GetProvider(databaseArgs["providerType"]),
                 Location = databaseArgs.GetValue("location", string.Empty)
             });
