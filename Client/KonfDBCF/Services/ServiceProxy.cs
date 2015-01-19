@@ -24,13 +24,18 @@
 #endregion
 
 using System;
+using System.IO;
 using System.ServiceModel;
+using System.Text;
 using KonfDB.Infrastructure.Caching;
+using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Interfaces;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Shell;
 using KonfDBCF.Configuration;
 using KonfDBCF.Core;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace KonfDBCF.Services
 {
@@ -47,8 +52,41 @@ namespace KonfDBCF.Services
             _configuration = configuration;
         }
 
+        public ServiceCommandOutput<object> ExecuteCommand(ClientCommand command)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException("command");
+            }
+
+            if (command.IsValid() == false)
+            {
+                throw new InvalidDataException("One or more mandatory values missing for command: " + command.Command);
+            }
+
+            var dictionary = command.GetAttributeDictionary<JsonPropertyAttribute>("PropertyName");
+            var builder = new StringBuilder();
+            builder.Append(dictionary["command"]);
+            foreach (var key in dictionary.Keys)
+            {
+                if (key == "command")
+                    continue;
+                if (dictionary[key] == null)
+                    continue;
+
+                builder.AppendFormat(@" /{0}:{1}", key, dictionary[key]);
+            }
+
+            return ExecuteCommand(builder.ToString());
+        }
+
         public ServiceCommandOutput<object> ExecuteCommand(string command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException("command");
+            }
+
             if (_authenticationOutput == null)
             {
                 _authenticationOutput = AuthenticateUser(_configuration.Runtime.User.Username,

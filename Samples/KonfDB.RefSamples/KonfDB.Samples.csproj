@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientFramework\WithClientCommand.cs" />
     <Compile Include="ClientFramework\WithConfigurationValues.cs" />
     <Compile Include="CoreWCF\HttpsService.cs" />
     <Compile Include="Program.cs" />

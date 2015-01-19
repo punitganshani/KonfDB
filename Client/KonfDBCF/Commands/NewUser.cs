@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'Program.cs' is part of KonfDB application - 
+//     This file 'NewUser.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,23 +23,25 @@
 
 #endregion
 
-using System.Text;
-using KonfDB.Infrastructure.Extensions;
-using KonfDB.RefSamples.ClientFramework;
-using KonfDB.RefSamples.CoreWCF;
-using KonfDBCF.Commands;
+using KonfDBCF.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace KonfDB.RefSamples
+namespace KonfDBCF.Commands
 {
-    internal class Program
+    public class NewUser : ClientCommand
     {
-        private static void Main(string[] args)
+        [JsonProperty("name")]
+        public string Username { get; set; }
+
+        [JsonProperty("pwd")]
+        public string Password { get; set; }
+
+        [JsonProperty("cpwd")]
+        public string ConfirmPassword { get; set; }
+
+        public NewUser()
         {
-            WithClientCommand.GetAppConfiguration();
-            HttpsService.GetAppConfiguration();
-            WithConfigurationValues.GetAppConfiguration();
+            Command = "NewUser";
         }
     }
 }

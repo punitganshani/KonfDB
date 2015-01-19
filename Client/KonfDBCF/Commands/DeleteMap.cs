@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'Program.cs' is part of KonfDB application - 
+//     This file 'DeleteMap.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,23 +23,27 @@
 
 #endregion
 
-using System.Text;
-using KonfDB.Infrastructure.Extensions;
-using KonfDB.RefSamples.ClientFramework;
-using KonfDB.RefSamples.CoreWCF;
-using KonfDBCF.Commands;
+using KonfDBCF.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace KonfDB.RefSamples
+namespace KonfDBCF.Commands
 {
-    internal class Program
+    public class DeleteMap : ClientCommand
     {
-        private static void Main(string[] args)
+        [JsonProperty("sid")]
+        public int? SuiteId { get; set; }
+
+        [JsonProperty("mid")]
+        public int? MapId { get; set; }
+
+        public DeleteMap()
         {
-            WithClientCommand.GetAppConfiguration();
-            HttpsService.GetAppConfiguration();
-            WithConfigurationValues.GetAppConfiguration();
+            Command = "DeleteMap";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId != null && MapId != null;
         }
     }
 }

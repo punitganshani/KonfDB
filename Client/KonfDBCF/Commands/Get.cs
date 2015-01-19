@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'Program.cs' is part of KonfDB application - 
+//     This file 'Get.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,23 +23,31 @@
 
 #endregion
 
-using System.Text;
-using KonfDB.Infrastructure.Extensions;
-using KonfDB.RefSamples.ClientFramework;
-using KonfDB.RefSamples.CoreWCF;
-using KonfDBCF.Commands;
+using KonfDBCF.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace KonfDB.RefSamples
+namespace KonfDBCF.Commands
 {
-    internal class Program
+    public class Get : ClientCommand
     {
-        private static void Main(string[] args)
+        [JsonProperty("app")]
+        public string Application { get; set; }
+
+        [JsonProperty("server")]
+        public string Server { get; set; }
+
+        [JsonProperty("env")]
+        public string Environment { get; set; }
+
+        [JsonProperty("region")]
+        public string Region { get; set; }
+
+        [JsonProperty("unprotect")]
+        public string Unprotect { get; set; }
+
+        public Get()
         {
-            WithClientCommand.GetAppConfiguration();
-            HttpsService.GetAppConfiguration();
-            WithConfigurationValues.GetAppConfiguration();
+            Command = "Get";
         }
     }
 }

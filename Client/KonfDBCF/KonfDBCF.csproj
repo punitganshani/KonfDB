@@ -96,6 +96,39 @@
     <Compile Include="..\..\TrustedAssemblyInfo.cs">
       <Link>Properties\TrustedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\DeleteApp.cs" />
+    <Compile Include="Commands\DeleteEnv.cs" />
+    <Compile Include="Commands\DeleteMap.cs" />
+    <Compile Include="Commands\DeleteParam.cs" />
+    <Compile Include="Commands\DeleteRegion.cs" />
+    <Compile Include="Commands\DeleteServer.cs" />
+    <Compile Include="Commands\DeleteSuite.cs" />
+    <Compile Include="Commands\Get.cs" />
+    <Compile Include="Commands\GetApp.cs" />
+    <Compile Include="Commands\GetApps.cs" />
+    <Compile Include="Commands\GetEnv.cs" />
+    <Compile Include="Commands\GetEnvs.cs" />
+    <Compile Include="Commands\GetMap.cs" />
+    <Compile Include="Commands\GetParam.cs" />
+    <Compile Include="Commands\GetParamLike.cs" />
+    <Compile Include="Commands\GetParams.cs" />
+    <Compile Include="Commands\GetRegion.cs" />
+    <Compile Include="Commands\GetRegions.cs" />
+    <Compile Include="Commands\GetServer.cs" />
+    <Compile Include="Commands\GetServers.cs" />
+    <Compile Include="Commands\GetSuite.cs" />
+    <Compile Include="Commands\GetSuites.cs" />
+    <Compile Include="Commands\GrantAccess.cs" />
+    <Compile Include="Commands\NewApp.cs" />
+    <Compile Include="Commands\NewEnv.cs" />
+    <Compile Include="Commands\NewMap.cs" />
+    <Compile Include="Commands\NewParam.cs" />
+    <Compile Include="Commands\NewRegion.cs" />
+    <Compile Include="Commands\NewServer.cs" />
+    <Compile Include="Commands\NewSuite.cs" />
+    <Compile Include="Commands\NewUser.cs" />
+    <Compile Include="Commands\RevokeAccess.cs" />
+    <Compile Include="Commands\UserAuth.cs" />
     <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Configuration\Caching\CacheConfiguration.cs" />
     <Compile Include="Configuration\Runtime\ClientServiceTypeConfiguration.cs" />
@@ -103,6 +136,7 @@
     <Compile Include="Configuration\Runtime\ClientRuntimeConfiguration.cs" />
     <Compile Include="Core\ClientContext.cs" />
     <Compile Include="Core\Utilities.cs" />
+    <Compile Include="Core\ClientCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ServiceProxy.cs" />
   </ItemGroup>
@@ -112,7 +146,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Service\" />
   </ItemGroup>

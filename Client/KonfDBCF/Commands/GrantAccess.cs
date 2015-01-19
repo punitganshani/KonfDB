@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'Program.cs' is part of KonfDB application - 
+//     This file 'GrantAccess.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,23 +23,28 @@
 
 #endregion
 
-using System.Text;
-using KonfDB.Infrastructure.Extensions;
-using KonfDB.RefSamples.ClientFramework;
-using KonfDB.RefSamples.CoreWCF;
-using KonfDBCF.Commands;
+using KonfDB.Infrastructure.Database.Enums;
+using KonfDBCF.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
-namespace KonfDB.RefSamples
+namespace KonfDBCF.Commands
 {
-    internal class Program
+    public class GrantAccess : ClientCommand
     {
-        private static void Main(string[] args)
+        [JsonProperty("sid")]
+        public int SuiteId { get; set; }
+
+        [JsonProperty("user")]
+        public string Username { get; set; }
+
+        [JsonProperty("role")]
+        [JsonConverter(typeof (StringEnumConverter))]
+        public RoleType Role { get; set; }
+
+        public GrantAccess()
         {
-            WithClientCommand.GetAppConfiguration();
-            HttpsService.GetAppConfiguration();
-            WithConfigurationValues.GetAppConfiguration();
+            Command = "GrantAccess";
         }
     }
 }

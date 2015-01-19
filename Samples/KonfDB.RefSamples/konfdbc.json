@@ -10,8 +10,8 @@
             "type": "TCP"
         },
         "user": {
-            "username": "suser",
-            "password": "spwd"
+            "username": "konfdbuser_ro",
+            "password": "konfdbuser_ro"
         }
     },
     "cache": {

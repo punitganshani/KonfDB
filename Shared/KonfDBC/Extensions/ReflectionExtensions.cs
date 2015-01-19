@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 
 namespace KonfDB.Infrastructure.Extensions
 {
@@ -121,5 +122,40 @@ namespace KonfDB.Infrastructure.Extensions
                 throw new InvalidDataException("Can not find resource:" + resourceName);
             }
         }
+
+        public static Dictionary<string, string> GetAttributeDictionary<T>(this object input, string attributeProperty)  where T: class
+        {
+            var output = new Dictionary<string, string>();
+
+            if (input == null) return output;
+
+            var inputType = input.GetType();
+            var attrType = typeof (T);
+            var publicProperties = inputType.GetProperties();
+            foreach (var publicProperty in publicProperties)
+            {
+                var attr = publicProperty.GetCustomAttributes(attrType, false);
+                if (attr.Length >= 1)
+                {
+                    var attrInstance = (attr [0] as T);
+                    if (attrInstance != null)
+                    {
+                        var attrValue = attrInstance.GetType().GetProperty(attributeProperty).GetValue(attrInstance, null);
+                        var prop = publicProperty.GetValue(input, null);
+
+                        if (attrValue != null && prop != null)
+                        {
+                            output.Add(attrValue.ToString(), prop.ToString());
+                        }
+                        else if (attrValue != null)
+                        {
+                            output.Add(attrValue.ToString(), null);
+                        }
+                    }
+                }
+            }
+
+            return output;
+        } 
     }
 }
