@@ -23,6 +23,7 @@
 
 #endregion
 
+using KonfDB.RefSamples.ClientFramework;
 using KonfDB.RefSamples.CoreWCF;
 
 namespace KonfDB.RefSamples
@@ -32,6 +33,7 @@ namespace KonfDB.RefSamples
         private static void Main(string[] args)
         {
             HttpsService.GetAppConfiguration();
+            WithConfigurationValues.GetAppConfiguration();
         }
     }
 }

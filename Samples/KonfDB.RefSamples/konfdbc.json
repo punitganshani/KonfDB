@@ -1,0 +1,22 @@
+﻿{
+    "runtime": {
+        "log": {
+            "provider": "KonfDB.Infrastructure.Logging.Logger, KonfDBC",
+            "params": "-ShowOnConsole:true"
+        },
+        "client": {
+            "host": "localhost",
+            "port": 8885,
+            "type": "TCP"
+        },
+        "user": {
+            "username": "suser",
+            "password": "spwd"
+        }
+    },
+    "cache": {
+        "providerType": "KonfDB.Infrastructure.Caching.InMemoryCacheStore, KonfDBC",
+        "params": "-mode:Absolute -duration:30",
+        "enabled": false
+    }
+}

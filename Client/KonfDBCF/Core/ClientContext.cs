@@ -25,12 +25,11 @@
 
 using System;
 using KonfDB.Infrastructure.Caching;
-using KonfDB.Infrastructure.Configuration.Runtime;
 using KonfDB.Infrastructure.Factory;
 using KonfDB.Infrastructure.Logging;
 using KonfDB.Infrastructure.Shell;
 using KonfDB.Infrastructure.Utilities;
-using KonfDBCF.Configuration.Caching;
+using KonfDBCF.Configuration;
 
 namespace KonfDBCF.Core
 {
@@ -40,59 +39,44 @@ namespace KonfDBCF.Core
     internal class ClientContext
     {
         private static ClientContext _current;
+        private static ClientConfig _config;
 
-        private ClientContext(IArguments arguments)
+        internal static ClientContext Current
         {
-            if (arguments == null)
+            get
+            {
+                if (_current == null)
+                {
+                    throw new InvalidOperationException("ClientContext should be created by CreateNew method");
+                }
+                return _current;
+            }
+        }
+
+        private ClientContext(ClientConfig configuration)
+        {
+            _config = configuration;
+
+            if (configuration == null)
                 throw new InvalidOperationException(
-                    "Current Context could not be initialized. No arguments passed to the context");
+                    "Current Context could not be initialized. No configuration passed to the context");
 
-            var element = new LogElement
-            {
-                Parameters = "-ShowOnConsole:true ",
-                ProviderType = "KonfDB.Infrastructure.Logging.Logger, KonfDBC"
-            };
+            var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
 
-            if (arguments.ContainsKey("runtime-logConfigPath"))
-                element.Parameters += "-path:" + arguments["runtime-logConfigPath"];
-
-            var logger = LogFactory.CreateInstance(element);
-
-            var cacheConfig = new CacheConfiguration
-            {
-                Enabled = bool.Parse(arguments.GetValue(@"cache-enabled", "false")),
-                ProviderType = typeof (InMemoryCacheStore).AssemblyQualifiedName,
-                Parameters = "-duration:30 -mode:Absolute"
-            };
-
-            var cache = CacheFactory.Create(cacheConfig);
+            var cache = CacheFactory.Create(configuration.Caching);
             cache.ItemRemoved +=
                 (sender, args) =>
                     Log.Debug("Item removed from cache: " + args.CacheKey + " Reason : " + args.RemoveReason);
 
-            CurrentContext.CreateDefault(logger, arguments, cache);
+            CurrentContext.CreateDefault(logger, new CommandArgs(string.Empty), cache);
         }
 
-        public static void CreateNew(IArguments arguments)
+        public static void CreateNew(ClientConfig configuration)
         {
-            // Validate the mandatory input params
-            if (!arguments.ContainsKey("type"))
-                throw new ArgumentException("-type not provided");
-
-            if (!arguments.ContainsKey("port"))
-                throw new ArgumentException("-port not provided");
-
-            if (!arguments.ContainsKey("host"))
-                throw new ArgumentException("-host not provided");
-
-            if (!arguments.ContainsKey("username"))
-                throw new ArgumentException("-username not provided");
-
-            if (!arguments.ContainsKey("password"))
-                throw new ArgumentException("-password not provided");
-
             if (_current == null)
-                _current = new ClientContext(arguments);
+            {
+                _current = new ClientContext(configuration);
+            }
         }
 
         public BaseLogger Log
@@ -108,6 +92,11 @@ namespace KonfDBCF.Core
         public IArguments ApplicationParams
         {
             get { return CurrentContext.Default.ApplicationParams; }
+        }
+
+        public ClientConfig Config
+        {
+            get { return _config; }
         }
     }
 }

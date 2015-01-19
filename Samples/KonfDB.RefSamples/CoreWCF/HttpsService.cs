@@ -25,9 +25,10 @@
 
 using System;
 using System.Collections.Generic;
+using KonfDB.Infrastructure.Configuration.Interfaces;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
-using KonfDB.Infrastructure.Utilities;
 using KonfDBCF;
+using KonfDBCF.Configuration;
 
 namespace KonfDB.RefSamples.CoreWCF
 {
@@ -35,25 +36,22 @@ namespace KonfDB.RefSamples.CoreWCF
     {
         public static void GetAppConfiguration()
         {
-            var args = new CommandArgs(string.Empty);
-            args.Add("type", "http");
-            args.Add("port", "8090");
-            args.Add("host", "localhost");
-            args.Add("username", "konfdbuser_ro");
-            args.Add("password", "konfdbuser_ro");
+            ClientConfig config = new ClientConfig();
+            config.Runtime.User.Username = "konfdbuser_ro";
+            config.Runtime.User.Password = "konfdbuser_ro";
+            config.Runtime.Client.Host = "localhost";
+            config.Runtime.Client.Port = 8880;
+            config.Runtime.Client.Type = EndPointType.HTTP;
 
-            args.Add("securityMode", "BasicSSL");
-
-            var userToken = ConnectionFactory.GetUserToken(args);
-            var commandService = ConnectionFactory.GetInstance();
-            var output = commandService.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9", userToken);
+            var commandService = ConnectionFactory.GetInstance(config); 
+            var output = commandService.Value.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9");
             if (output != null)
             {
                 var parameters = (List<ConfigurationModel>) output.Data;
                 parameters.ForEach(param => Console.WriteLine(param.ParameterName + "=" + param.ParameterValue));
             }
 
-
+            Console.WriteLine("Press any key to continue..");
             Console.ReadKey();
         }
     }

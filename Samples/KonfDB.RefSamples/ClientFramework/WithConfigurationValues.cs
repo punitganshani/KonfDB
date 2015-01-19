@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using KonfDB.Infrastructure.Database.Entities.Configuration;
 using KonfDBCF;
 
@@ -36,12 +37,12 @@ namespace KonfDB.RefSamples.ClientFramework
         {
             try
             {
-                var userToken = CConnectionFactory.GetUserToken();
-                var commandService = CConnectionFactory.GetInstance();
+               
+                var commandService = ConnectionFactory.GetInstance(new FileInfo("konfdbc.json"));
                 // If we got back a token, means user was authenticated
-                if (userToken != null)
+                if (commandService != null)
                 {
-                    var output = commandService.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9", userToken);
+                    var output = commandService.Value.ExecuteCommand("get /app:6 /env:8 /region:8 /server:9");
                     if (output != null)
                     {
                         var parameters = (List<ConfigurationModel>) output.Data;

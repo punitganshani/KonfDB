@@ -24,11 +24,13 @@
 #endregion
 
 using System;
+using System.IO;
 using System.ServiceModel;
 using KonfDB.Infrastructure.Extensions;
 using KonfDB.Infrastructure.Services;
 using KonfDB.Infrastructure.Utilities;
 using KonfDBCF;
+using KonfDBCF.Services;
 
 namespace KonfDBRC
 {
@@ -39,27 +41,34 @@ namespace KonfDBRC
         {
             Console.WriteLine(@"KonfDBRC : KonfDB Remote Console");
             Console.WriteLine(@"KonfDBRC : Initializing..");
+            var arguments = new CommandArgs(args);
 
-            if (args.Length > 0)
-                RunWithoutConfig(args);
+            if (arguments.ContainsKey("configFile"))
+            {
+                var configFile = arguments.GetValue("configFile", "konfdbc.json");
+                var instance = ConnectionFactory.GetInstance(new FileInfo(configFile));
+
+                RunFromConfig(instance);
+            }
+            else if (File.Exists("konfdbc.json"))
+            {
+                var configFile = arguments.GetValue("configFile", "konfdbc.json");
+                var instance = ConnectionFactory.GetInstance(new FileInfo(configFile));
+
+                RunFromConfig(instance);
+            }
             else
-                RunFromConfig();
+            {
+                Console.WriteLine(@" ");
+            }
 
             Console.WriteLine(@"Thanks for using KonfDBRC. Press any key to exit.");
             Console.ReadKey();
             Console.WriteLine();
         }
 
-        private static void RunFromConfig()
+        private static void RunFromConfig(Lazy<ServiceProxy> commandService)
         {
-            var token = CConnectionFactory.GetUserToken();
-            var commandService = CConnectionFactory.GetInstance();
-
-            if (token == null)
-            {
-                Console.WriteLine(@"User Authorization failed");
-                return;
-            }
             Console.WriteLine(@"KonfDBRC : Service connectivity established..");
             Console.WriteLine();
 
@@ -79,65 +88,7 @@ namespace KonfDBRC
                             break;
                         }
 
-                        var commandOutput = commandService.ExecuteCommand(line, token);
-
-                        if (commandOutput != null)
-                        {
-                            if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Message)
-                            {
-                                Console.WriteLine(commandOutput.Data != null
-                                    ? commandOutput.Data.ToJson()
-                                    : commandOutput.DisplayMessage);
-                            }
-                            else if (commandOutput.MessageType == CommandOutput.DisplayMessageType.Error)
-                            {
-                                Console.WriteLine(commandOutput.DisplayMessage);
-                            }
-                        }
-                    }
-                    catch (FaultException fexception)
-                    {
-                        Console.WriteLine(fexception.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
-        }
-
-        private static void RunWithoutConfig(string[] args)
-        {
-            var arguments = new CommandArgs(args);
-            var token = ConnectionFactory.GetUserToken(arguments);
-            var commandService = ConnectionFactory.GetInstance();
-
-            if (token == null)
-            {
-                Console.WriteLine(@"User Authorization failed");
-                return;
-            }
-            Console.WriteLine(@"KonfDBRC : Service connectivity established..");
-            Console.WriteLine();
-
-            bool exitLoop = false;
-
-            while (!exitLoop)
-            {
-                Console.Write(">");
-                string line = Console.ReadLine();
-
-                if (!string.IsNullOrEmpty(line))
-                {
-                    try
-                    {
-                        if (line.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            break;
-                        }
-
-                        var commandOutput = commandService.ExecuteCommand(line, token);
+                        var commandOutput = commandService.Value.ExecuteCommand(line);
 
                         if (commandOutput != null)
                         {

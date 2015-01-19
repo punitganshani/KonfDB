@@ -23,13 +23,14 @@
 
 #endregion
 
+using KonfDB.Infrastructure.Caching;
 using KonfDB.Infrastructure.Configuration.Caching;
 using KonfDBCF.Configuration.Runtime;
 using Newtonsoft.Json;
 
 namespace KonfDBCF.Configuration
 {
-    internal class ClientConfig
+    public class ClientConfig
     {
         [JsonProperty("runtime")]
         public ClientRuntimeConfiguration Runtime { get; set; }
@@ -40,7 +41,11 @@ namespace KonfDBCF.Configuration
         public ClientConfig()
         {
             Runtime = new ClientRuntimeConfiguration();
-            Caching = new CacheConfigurationSection();
+            Caching = new CacheConfigurationSection
+            {
+                Enabled = true,
+                ProviderType = typeof (InMemoryCacheStore).AssemblyQualifiedName
+            };
         }
     }
 }

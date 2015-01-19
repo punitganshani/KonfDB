@@ -24,11 +24,12 @@
 #endregion
 
 using KonfDB.Infrastructure.Configuration.Runtime;
+using KonfDB.Infrastructure.Logging;
 using Newtonsoft.Json;
 
 namespace KonfDBCF.Configuration.Runtime
 {
-    internal class ClientRuntimeConfiguration
+    public class ClientRuntimeConfiguration
     {
         [JsonProperty("log")]
         public LogElement LogInfo { get; set; }
@@ -43,6 +44,10 @@ namespace KonfDBCF.Configuration.Runtime
         {
             User = new UserElement();
             Client = new ClientServiceTypeConfiguration();
+            LogInfo = new LogElement
+            {
+                ProviderType = typeof (Logger).AssemblyQualifiedName
+            };
         }
     }
 }

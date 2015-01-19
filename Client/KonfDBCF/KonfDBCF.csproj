@@ -96,17 +96,15 @@
     <Compile Include="..\..\TrustedAssemblyInfo.cs">
       <Link>Properties\TrustedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Configuration\Caching\CacheConfiguration.cs" />
     <Compile Include="Configuration\Runtime\ClientServiceTypeConfiguration.cs" />
-    <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Configuration\ClientConfig.cs" />
     <Compile Include="Configuration\Runtime\ClientRuntimeConfiguration.cs" />
-    <Compile Include="CConnectionFactory.cs" />
-    <Compile Include="ConnectionProxy.cs" />
     <Compile Include="Core\ClientContext.cs" />
-    <Compile Include="Core\ClientContextFromConfig.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ServiceProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -116,7 +114,6 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
     <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
