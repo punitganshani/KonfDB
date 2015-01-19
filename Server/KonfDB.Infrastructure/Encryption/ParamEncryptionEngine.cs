@@ -32,7 +32,7 @@ namespace KonfDB.Infrastructure.Encryption
 {
     public class ParamEncryptionEngine : IEncryptionEngine
     {
-        public string Encrypt(string input, string publicKey, Dictionary<string, object> metadata= null)
+        public string Encrypt(string input, string publicKey, Dictionary<string, object> metadata = null)
         {
             CspParameters cspParams = new CspParameters {ProviderType = 1};
             RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider(cspParams);

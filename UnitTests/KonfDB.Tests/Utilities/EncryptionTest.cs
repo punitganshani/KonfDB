@@ -70,7 +70,7 @@ namespace KonfDB.Tests.Utilities
         public void TestRSAEncryption()
         {
             const string inputText = "konfdbencryption";
-           RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
             var engine = EncryptionEngine.Get<RSAEncryptionEngine>();
 
             var parameters = new Dictionary<string, object> {{"privatekey", csp}};

@@ -90,7 +90,8 @@ namespace KonfDB.Engine.Commands.Shared
                         listOfParams.ForEach(
                             x =>
                             {
-                                x.ParameterValue = EncryptionEngine.Default.Decrypt(x.ParameterValue, suite.PrivateKey, null);
+                                x.ParameterValue = EncryptionEngine.Default.Decrypt(x.ParameterValue, suite.PrivateKey,
+                                    null);
                             });
                     }
                     else

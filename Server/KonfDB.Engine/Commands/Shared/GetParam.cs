@@ -97,7 +97,8 @@ namespace KonfDB.Engine.Commands.Shared
 
                     if (suite.PublicKey.Equals(pk, StringComparison.InvariantCulture))
                     {
-                        model.ParameterValue = EncryptionEngine.Default.Decrypt(model.ParameterValue, suite.PrivateKey, null);
+                        model.ParameterValue = EncryptionEngine.Default.Decrypt(model.ParameterValue, suite.PrivateKey,
+                            null);
                     }
                     else
                     {

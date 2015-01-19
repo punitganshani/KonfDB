@@ -92,24 +92,24 @@ namespace KonfDBAH
         {
             _serviceFacade = new ServiceCore();
             string internalSessionId = Guid.NewGuid().ToString();
-            
+
             // Ensure that the super user admin exists
             _serviceFacade.ExecuteCommand(new ServiceRequestContext
-                {
-                    Command = String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
-                        AzureContext.Current.Config.Runtime.SuperUser.Username,
-                        AzureContext.Current.Config.Runtime.SuperUser.Password),
-                    SessionId = internalSessionId
-                });
+            {
+                Command = String.Format("NewUser /name:{0} /pwd:{1} /cpwd:{1} /role:admin /silent",
+                    AzureContext.Current.Config.Runtime.SuperUser.Username,
+                    AzureContext.Current.Config.Runtime.SuperUser.Password),
+                SessionId = internalSessionId
+            });
 
             // Ensure that the super user readonly exists
             _serviceFacade.ExecuteCommand(new ServiceRequestContext
-                {
-                    Command = String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
+            {
+                Command = String.Format("NewUser /name:{0}_ro /pwd:{1} /cpwd:{1} /role:readonly /silent",
                     AzureContext.Current.Config.Runtime.SuperUser.Username,
                     AzureContext.Current.Config.Runtime.SuperUser.Password),
-                    SessionId = internalSessionId
-                });
+                SessionId = internalSessionId
+            });
 
             var serviceConfig = AzureContext.Current.Config.Runtime.Server;
             _serviceHostNative = new WcfService<ICommandService<object>, NativeCommandService>("localhost",
@@ -153,8 +153,8 @@ namespace KonfDBAH
             var authOutput = _serviceFacade.ExecuteCommand(new ServiceRequestContext
             {
                 Command = String.Format("UserAuth /name:{0} /pwd:{1}",
-                AzureContext.Current.Config.Runtime.SuperUser.Username,
-                AzureContext.Current.Config.Runtime.SuperUser.Password),
+                    AzureContext.Current.Config.Runtime.SuperUser.Username,
+                    AzureContext.Current.Config.Runtime.SuperUser.Password),
                 SessionId = internalSessionId
             });
 
@@ -168,10 +168,15 @@ namespace KonfDBAH
             _authenticationToken = authenticationOutput.Token;
 
             // get settings from database
-            var settingsOutput = _serviceFacade.ExecuteCommand(new ServiceRequestContext { Command = "GetSettings", SessionId = internalSessionId });
+            var settingsOutput =
+                _serviceFacade.ExecuteCommand(new ServiceRequestContext
+                {
+                    Command = "GetSettings",
+                    SessionId = internalSessionId
+                });
             if (settingsOutput != null && settingsOutput.Data != null)
             {
-                var settings = (Dictionary<string, string>)settingsOutput.Data;
+                var settings = (Dictionary<string, string>) settingsOutput.Data;
                 foreach (var setting in settings)
                 {
                     CurrentContext.Default.ApplicationParams.Add(setting.Key, setting.Value);
@@ -228,7 +233,8 @@ namespace KonfDBAH
             var userConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.runtime.superuser");
             var databaseConnectionString = RoleEnvironment.GetConfigurationSettingValue("konfdb.database");
             var defaultCertificateSettings = RoleEnvironment.GetConfigurationSettingValue("konfdb.certificate.default");
-            var encryptionCertificateSettings = RoleEnvironment.GetConfigurationSettingValue("konfdb.certificate.encryption");
+            var encryptionCertificateSettings =
+                RoleEnvironment.GetConfigurationSettingValue("konfdb.certificate.encryption");
 
             var superuserArgs = new CommandArgs(userConnectionString);
             var databaseArgs = new CommandArgs(databaseConnectionString);
@@ -237,13 +243,13 @@ namespace KonfDBAH
 
 
             IHostConfig hostConfig = new HostConfig();
-            hostConfig.Caching.ProviderType = typeof(InRoleCacheStore).AssemblyQualifiedName;
+            hostConfig.Caching.ProviderType = typeof (InRoleCacheStore).AssemblyQualifiedName;
             hostConfig.Caching.Enabled = true;
 
-            hostConfig.Runtime.Audit = new AuditElement { Enabled = true };
+            hostConfig.Runtime.Audit = new AuditElement {Enabled = true};
             hostConfig.Runtime.LogInfo = new LogElement
             {
-                ProviderType = typeof(AzureLogger).AssemblyQualifiedName
+                ProviderType = typeof (AzureLogger).AssemblyQualifiedName
             };
 
             if (string.IsNullOrEmpty(defaultCertificateSettings))
@@ -257,12 +263,18 @@ namespace KonfDBAH
                 var certificateConfig = new CertificateProviderConfiguration
                 {
                     CertificateKey = "default",
-                    FindBy = defaultCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString()).FromJsonToObject<X509FindType>(),
-                    StoreLocation = defaultCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString()).FromJsonToObject<StoreLocation>(),
-                    StoreName = defaultCertificateArgs.GetValue("storeName", StoreName.My.ToString()).FromJsonToObject<StoreName>(),
+                    FindBy =
+                        defaultCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString())
+                            .FromJsonToObject<X509FindType>(),
+                    StoreLocation =
+                        defaultCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString())
+                            .FromJsonToObject<StoreLocation>(),
+                    StoreName =
+                        defaultCertificateArgs.GetValue("storeName", StoreName.My.ToString())
+                            .FromJsonToObject<StoreName>(),
                     Value = defaultCertificateArgs.GetValue("value", string.Empty)
                 };
-                hostConfig.Certificate.Certificates.Add(certificateConfig); 
+                hostConfig.Certificate.Certificates.Add(certificateConfig);
             }
 
             if (string.IsNullOrEmpty(encryptionCertificateSettings))
@@ -275,9 +287,15 @@ namespace KonfDBAH
                 var certificateConfig = new CertificateProviderConfiguration
                 {
                     CertificateKey = "encryption",
-                    FindBy = encryptionCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString()).FromJsonToObject<X509FindType>(),
-                    StoreLocation = encryptionCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString()).FromJsonToObject<StoreLocation>(),
-                    StoreName = encryptionCertificateArgs.GetValue("storeName", StoreName.My.ToString()).FromJsonToObject<StoreName>(),
+                    FindBy =
+                        encryptionCertificateArgs.GetValue("findBy", X509FindType.FindByThumbprint.ToString())
+                            .FromJsonToObject<X509FindType>(),
+                    StoreLocation =
+                        encryptionCertificateArgs.GetValue("storeLocation", StoreLocation.CurrentUser.ToString())
+                            .FromJsonToObject<StoreLocation>(),
+                    StoreName =
+                        encryptionCertificateArgs.GetValue("storeName", StoreName.My.ToString())
+                            .FromJsonToObject<StoreName>(),
                     Value = encryptionCertificateArgs.GetValue("value", string.Empty)
                 };
                 hostConfig.Certificate.Certificates.Add(certificateConfig);

@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="AzureCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2" osVersion="*" schemaVersion="2014-06.2.4">
+
+<ServiceConfiguration serviceName="AzureCloudService"
+                      xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2"
+                      osVersion="*" schemaVersion="2014-06.2.4">
   <Role name="KonfDBAH">
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="konfdb.runtime.superuser" value="-username:azureuser -password:aZuReu$rpWd" />
-      <Setting name="konfdb.database" value="-providerType=AzureSqlProvider -host=tcp:host.database.windows.net -port=1433 -instanceName=konfdb -username=user@host -password=dBPassword" />
+      <Setting name="konfdb.database"
+               value="-providerType=AzureSqlProvider -host=tcp:host.database.windows.net -port=1433 -instanceName=konfdb -username=user@host -password=dBPassword" />
       <Setting name="konfdb.configuration.mode" value="Azure" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Caching.NamedCaches" value="{&quot;caches&quot;:[{&quot;name&quot;:&quot;default&quot;,&quot;policy&quot;:{&quot;eviction&quot;:{&quot;type&quot;:0},&quot;expiration&quot;:{&quot;defaultTTL&quot;:10,&quot;isExpirable&quot;:true,&quot;type&quot;:1},&quot;serverNotification&quot;:{&quot;isEnabled&quot;:false}},&quot;secondaries&quot;:0}]}" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Caching.NamedCaches"
+               value="{&quot;caches&quot;:[{&quot;name&quot;:&quot;default&quot;,&quot;policy&quot;:{&quot;eviction&quot;:{&quot;type&quot;:0},&quot;expiration&quot;:{&quot;defaultTTL&quot;:10,&quot;isExpirable&quot;:true,&quot;type&quot;:1},&quot;serverNotification&quot;:{&quot;isEnabled&quot;:false}},&quot;secondaries&quot;:0}]}" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.DiagnosticLevel" value="1" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Caching.CacheSizePercentage" value="15" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ConfigStoreConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Caching.ConfigStoreConnectionString"
+               value="UseDevelopmentStorage=true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="punitganshani" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2016-01-15T23:59:59.0000000+08:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration"
+               value="2016-01-15T23:59:59.0000000+08:00" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
-      <Setting name="konfdb.certificate.default" value="-findBy:FindByThumbprint -storeLocation:CurrentUser -storeName:My -value:F55BD5A7F247C1251154671821E45396913FEF16" />
-      <Setting name="konfdb.certificate.encryption" value="-findBy:FindByThumbprint -storeLocation:CurrentUser -storeName:My -value:F55BD5A7F247C1251154671821E45396913FEF16" />
+      <Setting name="konfdb.certificate.default"
+               value="-findBy:FindByThumbprint -storeLocation:CurrentUser -storeName:My -value:F55BD5A7F247C1251154671821E45396913FEF16" />
+      <Setting name="konfdb.certificate.encryption"
+               value="-findBy:FindByThumbprint -storeLocation:CurrentUser -storeName:My -value:F55BD5A7F247C1251154671821E45396913FEF16" />
     </ConfigurationSettings>
     <Certificates>
-      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="F55BD5A7F247C1251154671821E45396913FEF16" thumbprintAlgorithm="sha1" />
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption"
+                   thumbprint="F55BD5A7F247C1251154671821E45396913FEF16" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
 </ServiceConfiguration>
