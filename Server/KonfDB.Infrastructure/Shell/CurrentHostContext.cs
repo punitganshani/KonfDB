@@ -95,16 +95,6 @@ namespace KonfDB.Infrastructure.Shell
             Config = configuration;
             UserTokens = new List<string>();
 
-            //override the passwords if encrypted
-            if (configuration.Certificate.Encryption != null)
-            {
-                var certificate = configuration.Certificate.Encryption.GetX509Certificate();
-                if (certificate != null)
-                {
-                    DecryptPasswords(configuration, certificate);
-                }
-            }
-
             var logger = LogFactory.CreateInstance(configuration.Runtime.LogInfo);
             var commandArgs = new CommandArgs(configuration.Runtime.Parameters);
             var cache = CacheFactory.Create(configuration.Caching);
@@ -118,9 +108,19 @@ namespace KonfDB.Infrastructure.Shell
                 }
             };
 
-            CommandFactory = settings.CommandFactory;
-
             CurrentContext.CreateDefault(logger, commandArgs, cache);
+
+            //override the passwords if encrypted
+            if (configuration.Certificate.Encryption != null)
+            {
+                var certificate = configuration.Certificate.Encryption.GetX509Certificate();
+                if (certificate != null)
+                {
+                    DecryptPasswords(configuration, certificate);
+                }
+            }
+
+            CommandFactory = settings.CommandFactory;
             Provider = GetDatabaseProviderInstance(configuration);
         }
 
