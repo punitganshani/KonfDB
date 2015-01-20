@@ -43,7 +43,7 @@ namespace KonfDBCF.Commands
 
         public override bool IsValid()
         {
-            return RegionId.HasValue && !string.IsNullOrEmpty(RegionName);
+            return RegionId.HasValue || !string.IsNullOrEmpty(RegionName);
         }
     }
 }

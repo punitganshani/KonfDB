@@ -31,11 +31,16 @@ namespace KonfDBCF.Commands
     public class DeleteRegion : ClientCommand
     {
         [JsonProperty("rid")]
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
 
         public DeleteRegion()
         {
             Command = "DeleteRegion";
+        }
+
+        public override bool IsValid()
+        {
+            return RegionId.HasValue;
         }
     }
 }

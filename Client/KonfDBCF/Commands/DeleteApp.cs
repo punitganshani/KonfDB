@@ -40,7 +40,7 @@ namespace KonfDBCF.Commands
 
         public override bool IsValid()
         {
-            return ApplicationId != null;
+            return ApplicationId.HasValue;
         }
     }
 }

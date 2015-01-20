@@ -43,7 +43,7 @@ namespace KonfDBCF.Commands
 
         public override bool IsValid()
         {
-            return ServerId.HasValue && !string.IsNullOrEmpty(ServerName);
+            return ServerId.HasValue || !string.IsNullOrEmpty(ServerName);
         }
     }
 }

@@ -31,11 +31,16 @@ namespace KonfDBCF.Commands
     public class DeleteSuite : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         public DeleteSuite()
         {
             Command = "DeleteSuite";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue;
         }
     }
 }

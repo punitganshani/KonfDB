@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class NewParam : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("pid")]
         public string ParameterName { get; set; }
@@ -45,6 +45,11 @@ namespace KonfDBCF.Commands
         public NewParam()
         {
             Command = "NewParam";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue && !string.IsNullOrEmpty(ParameterName);
         }
     }
 }

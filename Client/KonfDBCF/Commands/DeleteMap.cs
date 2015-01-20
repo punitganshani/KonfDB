@@ -43,7 +43,7 @@ namespace KonfDBCF.Commands
 
         public override bool IsValid()
         {
-            return SuiteId != null && MapId != null;
+            return SuiteId.HasValue && MapId.HasValue;
         }
     }
 }
