@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class NewApp : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("name")]
         public string ApplicationName { get; set; }
@@ -39,6 +39,11 @@ namespace KonfDBCF.Commands
         public NewApp()
         {
             Command = "NewApp";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue && !string.IsNullOrEmpty(ApplicationName);
         }
     }
 }

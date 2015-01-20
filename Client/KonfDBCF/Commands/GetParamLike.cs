@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class GetParamLike : ClientCommand
     {
         [JsonProperty("id")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("name")]
         public string ParameterName { get; set; }
@@ -42,6 +42,11 @@ namespace KonfDBCF.Commands
         public GetParamLike()
         {
             Command = "GetParamLike";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue && !string.IsNullOrEmpty(ParameterName);
         }
     }
 }

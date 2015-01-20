@@ -31,11 +31,16 @@ namespace KonfDBCF.Commands
     public class GetApps : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         public GetApps()
         {
             Command = "GetApps";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue;
         }
     }
 }

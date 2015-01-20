@@ -34,11 +34,16 @@ namespace KonfDBCF.Commands
         public string ApplicationName { get; set; }
 
         [JsonProperty("id")]
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
 
         public GetApp()
         {
             Command = "GetApp";
+        }
+
+        public override bool IsValid()
+        {
+            return ApplicationId.HasValue;
         }
     }
 }

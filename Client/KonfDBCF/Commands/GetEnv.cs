@@ -34,11 +34,16 @@ namespace KonfDBCF.Commands
         public string EnvironmentName { get; set; }
 
         [JsonProperty("id")]
-        public int EnvironmentId { get; set; }
+        public int? EnvironmentId { get; set; }
 
         public GetEnv()
         {
             Command = "GetEnv";
+        }
+
+        public override bool IsValid()
+        {
+            return EnvironmentId.HasValue || !string.IsNullOrEmpty(EnvironmentName);
         }
     }
 }

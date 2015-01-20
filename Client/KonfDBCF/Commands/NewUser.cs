@@ -23,6 +23,7 @@
 
 #endregion
 
+using System;
 using KonfDBCF.Core;
 using Newtonsoft.Json;
 
@@ -42,6 +43,14 @@ namespace KonfDBCF.Commands
         public NewUser()
         {
             Command = "NewUser";
+        }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Username)
+                   && !string.IsNullOrEmpty(Password)
+                   && !string.IsNullOrEmpty(ConfirmPassword)
+                   && Password.Equals(ConfirmPassword, StringComparison.InvariantCulture);
         }
     }
 }

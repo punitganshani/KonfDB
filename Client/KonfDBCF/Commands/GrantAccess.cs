@@ -33,7 +33,7 @@ namespace KonfDBCF.Commands
     public class GrantAccess : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("user")]
         public string Username { get; set; }
@@ -45,6 +45,11 @@ namespace KonfDBCF.Commands
         public GrantAccess()
         {
             Command = "GrantAccess";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue && !string.IsNullOrEmpty(Username);
         }
     }
 }

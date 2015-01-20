@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class RevokeAccess : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("user")]
         public string Username { get; set; }
@@ -39,6 +39,12 @@ namespace KonfDBCF.Commands
         public RevokeAccess()
         {
             Command = "RevokeAccess";
+        }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Username)
+                   && SuiteId.HasValue;
         }
     }
 }

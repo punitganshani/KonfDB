@@ -31,10 +31,10 @@ namespace KonfDBCF.Commands
     public class NewMap : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         [JsonProperty("pid")]
-        public int ParameterId { get; set; }
+        public int? ParameterId { get; set; }
 
         [JsonProperty("srid")]
         public int? ServerId { get; set; }
@@ -48,6 +48,11 @@ namespace KonfDBCF.Commands
         public NewMap()
         {
             Command = "NewMap";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue && ParameterId.HasValue;
         }
     }
 }

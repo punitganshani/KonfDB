@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class GetRegion : ClientCommand
     {
         [JsonProperty("id")]
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
 
         [JsonProperty("name")]
         public string RegionName { get; set; }
@@ -39,6 +39,11 @@ namespace KonfDBCF.Commands
         public GetRegion()
         {
             Command = "GetRegion";
+        }
+
+        public override bool IsValid()
+        {
+            return RegionId.HasValue && !string.IsNullOrEmpty(RegionName);
         }
     }
 }

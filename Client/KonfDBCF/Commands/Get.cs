@@ -49,5 +49,10 @@ namespace KonfDBCF.Commands
         {
             Command = "Get";
         }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Application);
+        }
     }
 }

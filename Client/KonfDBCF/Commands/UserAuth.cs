@@ -40,5 +40,11 @@ namespace KonfDBCF.Commands
         {
             Command = "UserAuth";
         }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Username)
+                   && !string.IsNullOrEmpty(Password);
+        }
     }
 }

@@ -31,11 +31,16 @@ namespace KonfDBCF.Commands
     public class DeleteServer : ClientCommand
     {
         [JsonProperty("sid")]
-        public int ServerId { get; set; }
+        public int? ServerId { get; set; }
 
         public DeleteServer()
         {
             Command = "DeleteServer";
+        }
+
+        public override bool IsValid()
+        {
+            return ServerId.HasValue;
         }
     }
 }

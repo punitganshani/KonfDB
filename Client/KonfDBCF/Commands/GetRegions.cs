@@ -31,11 +31,16 @@ namespace KonfDBCF.Commands
     public class GetRegions : ClientCommand
     {
         [JsonProperty("sid")]
-        public int SuiteId { get; set; }
+        public int? SuiteId { get; set; }
 
         public GetRegions()
         {
             Command = "GetRegions";
+        }
+
+        public override bool IsValid()
+        {
+            return SuiteId.HasValue;
         }
     }
 }

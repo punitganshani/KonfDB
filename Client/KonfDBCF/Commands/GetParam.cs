@@ -31,7 +31,7 @@ namespace KonfDBCF.Commands
     public class GetParameter : ClientCommand
     {
         [JsonProperty("id")]
-        public int ParameterId { get; set; }
+        public int? ParameterId { get; set; }
 
         [JsonProperty("name")]
         public string ParameterName { get; set; }
@@ -42,6 +42,11 @@ namespace KonfDBCF.Commands
         public GetParameter()
         {
             Command = "GetParam";
+        }
+
+        public override bool IsValid()
+        {
+            return ParameterId.HasValue || !string.IsNullOrEmpty(ParameterName);
         }
     }
 }
