@@ -244,6 +244,7 @@
     <Compile Include="WCF\ServiceError.cs">
       <!--<Link>WCF\ServiceError.cs</Link>-->
     </Compile>
+    <Compile Include="WCF\ServiceInfo.cs" />
     <Compile Include="WCF\ServiceType.cs">
       <!--<Link>WCF\ServiceType.cs</Link>-->
     </Compile>

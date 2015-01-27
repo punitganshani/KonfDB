@@ -110,7 +110,7 @@ namespace KonfDB.Tests.Service
 
             service.Host();
 
-            var client = WcfClient<ICommandService<object>>.Create(type, "localhost", port, ServiceName, mode);
+            var client = WcfClient<ICommandService<object>>.Create(type, "localhost", port, ServiceName, "api", mode);
             var output = client.Contract.ExecuteCommand("test", "token");
 
             service.Stop();
@@ -135,7 +135,7 @@ namespace KonfDB.Tests.Service
 
             service.Host();
 
-            var client = WcfClient<ICommandService<string>>.Create(type, "localhost", port, ServiceName, mode);
+            var client = WcfClient<ICommandService<string>>.Create(type, "localhost", port, ServiceName, "api", mode);
             var output = client.Contract.ExecuteCommand("test", "token");
 
             service.Stop();

@@ -43,6 +43,7 @@ namespace KonfDB.Infrastructure.WCF
     {
         private readonly string _serverName;
         private readonly string _serviceName;
+        private readonly string _folder;
         private ServiceHost _svcHost;
         private AutoResetEvent _pause = new AutoResetEvent(false);
         private Hashtable _ports = new Hashtable();
@@ -52,16 +53,26 @@ namespace KonfDB.Infrastructure.WCF
         private bool _secured;
         private ISecurity _security;
 
-        public WcfService(string serverName, string serviceName)
+        public WcfService(string serverName, string serviceName, string folder = "api")
         {
+            if (string.IsNullOrEmpty(serverName))
+                throw new ArgumentNullException("serverName");
+
+            if (string.IsNullOrEmpty(serviceName))
+                throw new ArgumentNullException("serviceName");
+
+            if (string.IsNullOrEmpty(folder))
+                throw new ArgumentNullException("folder");
+
             //creating binding list
             Bindings = new List<IBinding>();
 
             _serverName = serverName;
             _serviceName = serviceName;
+            _folder = folder;
 
             //create Service host
-            _svcHost = new ServiceHost(typeof (TService));
+            _svcHost = new ServiceHost(typeof(TService));
             _svcHost.Faulted += _svcHost_Faulted;
         }
 
@@ -73,7 +84,7 @@ namespace KonfDB.Infrastructure.WCF
                 Stop();
                 _svcHost.Abort();
                 CurrentContext.Default.Log.Debug("Service is stopped");
-                _svcHost = new ServiceHost(typeof (TService));
+                _svcHost = new ServiceHost(typeof(TService));
                 Host();
                 CurrentContext.Default.Log.Info("Service was in Faulted state. Re-hosting the service");
             }
@@ -126,11 +137,6 @@ namespace KonfDB.Infrastructure.WCF
             _pause.Set();
         }
 
-        private string GetAddressUrl()
-        {
-            return Bindings.Aggregate(string.Empty, (current, t) => current + (t.ToString() + Environment.NewLine));
-        }
-
         private void StartService()
         {
             if (Bindings.Count == 0)
@@ -165,19 +171,27 @@ namespace KonfDB.Infrastructure.WCF
             bool needsSecuredBindings = _security != null && _security.SecurityMode != ServiceSecurityMode.None;
             foreach (var binding in Bindings)
             {
+                var serviceInfo = new ServiceInfo
+                {
+                    Binding = binding,
+                    Security = _security,
+                    ServerName = _serverName,
+                    ServiceName = _serviceName,
+                    Folder = _folder
+                };
+
                 var endPointTypeInstance = Activator.CreateInstance(binding.EndPointType);
                 if (endPointTypeInstance.InheritsFrom<IEndPoint>())
                 {
-                    var endPoint = (IEndPoint) endPointTypeInstance;
+                    var endPoint = (IEndPoint)endPointTypeInstance;
                     ServiceEndpoint wcfEndpoint;
                     if (needsSecuredBindings)
                     {
-                        wcfEndpoint = endPoint.HostSecured<TInterface>(_svcHost, _serverName, _serviceName, binding,
-                            _security);
+                        wcfEndpoint = endPoint.HostSecured<TInterface>(_svcHost, serviceInfo);
                     }
                     else
                     {
-                        wcfEndpoint = endPoint.Host<TInterface>(_svcHost, _serverName, _serviceName, binding);
+                        wcfEndpoint = endPoint.Host<TInterface>(_svcHost, serviceInfo);
                     }
 
                     CurrentContext.Default.Log.Debug("Endpoint available: " + wcfEndpoint.Address + " for type : " +
@@ -198,7 +212,7 @@ namespace KonfDB.Infrastructure.WCF
         public override string ToString()
         {
             var builder = new StringBuilder();
-            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof (TService).Name, x.ToString())));
+            Bindings.ForEach(x => builder.Append(String.Format("{0} on {1} ", typeof(TService).Name, x.ToString())));
             return builder.ToString().Trim();
         }
 

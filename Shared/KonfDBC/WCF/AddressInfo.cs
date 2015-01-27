@@ -36,7 +36,7 @@ namespace KonfDB.Infrastructure.WCF
     public class AddressInfo
     {
         private string _address;
-        private const string UriFormat = "{0}://{1}:{2}/{3}/";
+        private const string UriFormat = "{0}://{1}:{2}/{3}/{4}";
 
         public ServiceType Type { get; private set; }
         public string ServerName { get; private set; }
@@ -44,10 +44,11 @@ namespace KonfDB.Infrastructure.WCF
         public string ServiceName { get; private set; }
         public ServiceSecurityMode SecurityMode { get; private set; }
 
-        public AddressInfo(ServiceType type, string serverName, string port, string serviceName,
+        public AddressInfo(ServiceType type, string serverName, string port, string serviceName, string folder,
             ServiceSecurityMode mode)
         {
-            if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(port) || string.IsNullOrEmpty(serverName))
+            if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(port) || string.IsNullOrEmpty(serverName)
+                || string.IsNullOrEmpty(folder))
                 throw new ArgumentException("One or more arguments are either NULL or empty.");
 
             Type = type;

@@ -32,12 +32,13 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
 {
     public class WsHttpEndpoint : IEndPoint
     {
-        public ServiceEndpoint Host<T>(ServiceHost host, string serverName, string serviceName, IBinding binding)
+        public ServiceEndpoint Host<T>(ServiceHost host, ServiceInfo serviceInfo)
         {
-            const string addressUriFormat = "{0}://{1}:{2}/{3}/";
-            string endpointAddress = string.Format(addressUriFormat, "http", serverName, binding.Configuration.Port,
-                serviceName);
-            ;
+            const string addressUriFormat = "{0}://{1}:{2}/{3}/{4}/";
+            string endpointAddress = string.Format(addressUriFormat, "http", serviceInfo.ServerName, serviceInfo.Binding.Configuration.Port,
+                serviceInfo.Folder,
+                serviceInfo.ServiceName);
+             
             var smb = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
             if (smb == null)
             {
@@ -49,20 +50,20 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
             smb.HttpGetEnabled = true;
             smb.HttpGetUrl = mexAddress;
 
-            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            var serviceEndpoint = host.AddServiceEndpoint(typeof(T), serviceInfo.Binding.WcfBinding, endpointAddress);
             host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
                 MetadataExchangeBindings.CreateMexHttpBinding(), mexAddress);
 
             return serviceEndpoint;
         }
 
-        public ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
-            ISecurity security)
+        public ServiceEndpoint HostSecured<T>(ServiceHost host, ServiceInfo serviceInfo)
         {
-            const string addressUriFormat = "{0}://{1}:{2}/{3}/";
-            string endpointAddress = string.Format(addressUriFormat, "https", serverName, binding.Configuration.Port,
-                serviceName);
-            var httpBinding = binding.WcfBinding as WSHttpBinding;
+            const string addressUriFormat = "{0}://{1}:{2}/{3}/{4}";
+            string endpointAddress = string.Format(addressUriFormat, "https", serviceInfo.ServerName, serviceInfo.Binding.Configuration.Port,
+                serviceInfo.Folder,
+                serviceInfo.ServiceName);
+            var httpBinding = serviceInfo.Binding.WcfBinding as WSHttpBinding;
             var smb = host.Description.Behaviors.Find<ServiceMetadataBehavior>();
             if (smb == null)
             {
@@ -78,7 +79,7 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
             smb.HttpsGetEnabled = true;
             smb.HttpsGetUrl = mexAddress;
 
-            var serviceEndpoint = host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            var serviceEndpoint = host.AddServiceEndpoint(typeof(T), serviceInfo.Binding.WcfBinding, endpointAddress);
             host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
                 MetadataExchangeBindings.CreateMexHttpsBinding(), mexAddress);
 

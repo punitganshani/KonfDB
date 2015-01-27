@@ -1,7 +1,7 @@
 ﻿#region License and Product Information
 
 // 
-//     This file 'IEndPoint.cs' is part of KonfDB application - 
+//     This file 'ServiceInfo.cs' is part of KonfDB application - 
 //     a project perceived and developed by Punit Ganshani.
 // 
 //     KonfDB is free software: you can redistribute it and/or modify
@@ -23,15 +23,19 @@
 
 #endregion
 
-using System.ServiceModel;
-using System.ServiceModel.Description;
+using KonfDB.Infrastructure.WCF.Interfaces;
 
-namespace KonfDB.Infrastructure.WCF.Interfaces
+namespace KonfDB.Infrastructure.WCF
 {
-    public interface IEndPoint
+    public class ServiceInfo
     {
-        ServiceEndpoint Host<T>(ServiceHost host, ServiceInfo serviceInfo);
+        public string ServerName { get; set; }
+        public string ServiceName { get; set; }
 
-        ServiceEndpoint HostSecured<T>(ServiceHost host, ServiceInfo serviceInfo);
+        public string Folder { get; set; }
+
+        public IBinding Binding { get; set; }
+
+        public ISecurity Security { get; set; }
     }
 }

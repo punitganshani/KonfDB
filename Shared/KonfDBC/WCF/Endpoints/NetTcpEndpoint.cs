@@ -32,22 +32,22 @@ namespace KonfDB.Infrastructure.WCF.Endpoints
 {
     public class NetTcpEndpoint : IEndPoint
     {
-        public ServiceEndpoint Host<T>(ServiceHost host, string serverName, string serviceName, IBinding binding)
+        public ServiceEndpoint Host<T>(ServiceHost host, ServiceInfo serviceInfo)
         {
-            const string addressUriFormat = "{0}://{1}:{2}/{3}/";
-            string endpointAddress = string.Format(addressUriFormat, "net.tcp", serverName, binding.Configuration.Port,
-                serviceName);
+            const string addressUriFormat = "{0}://{1}:{2}/{3}/{4}/";
+            string endpointAddress = string.Format(addressUriFormat, "net.tcp", serviceInfo.ServerName, serviceInfo.Binding.Configuration.Port,
+                serviceInfo.Folder,
+                serviceInfo.ServiceName);
 
-            return host.AddServiceEndpoint(typeof (T), binding.WcfBinding, endpointAddress);
+            return host.AddServiceEndpoint(typeof(T), serviceInfo.Binding.WcfBinding, endpointAddress);
         }
 
-        public ServiceEndpoint HostSecured<T>(ServiceHost host, string serverName, string serviceName, IBinding binding,
-            ISecurity security)
+        public ServiceEndpoint HostSecured<T>(ServiceHost host, ServiceInfo serviceInfo)
         {
-            CurrentContext.Default.Log.Info("TCP does not support " + security.SecurityMode +
+            CurrentContext.Default.Log.Info("TCP does not support " + serviceInfo.Security.SecurityMode +
                                             ". Communication will be setup without SSL");
 
-            return Host<T>(host, serverName, serviceName, binding);
+            return Host<T>(host, serviceInfo);
         }
     }
 }

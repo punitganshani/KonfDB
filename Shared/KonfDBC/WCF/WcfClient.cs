@@ -36,33 +36,25 @@ namespace KonfDB.Infrastructure.WCF
     public sealed class WcfClient<T>
     {
         private T _contract;
-        private readonly string _serverName;
 
         public string ServerName
         {
-            get { return _serverName; }
+            get { return _addressInfo.ServerName; }
         }
-
-        private readonly string _port;
 
         public string Port
         {
-            get { return _port; }
+            get { return _addressInfo.Port; }
         }
-
-        private readonly string _serviceName;
 
         public string ServiceName
         {
-            get { return _serviceName; }
+            get { return _addressInfo.ServiceName; }
         }
-
-
-        private readonly ServiceType _type;
 
         public ServiceType Type
         {
-            get { return _type; }
+            get { return _addressInfo.Type; }
         }
 
         public T Contract
@@ -71,7 +63,7 @@ namespace KonfDB.Infrastructure.WCF
             private set
             {
                 _contract = value;
-                Channel = ((ICommunicationObject) value);
+                Channel = ((ICommunicationObject)value);
                 if (Channel != null)
                 {
                     Channel.Faulted += Channel_Faulted;
@@ -107,43 +99,20 @@ namespace KonfDB.Infrastructure.WCF
                 OnFaulted(sender, new DataEventArgs<WcfClient<T>>(this));
         }
 
-        private WcfClient(T contract, ServiceType type, string serverName, string port, string serviceName)
-        {
-            _type = type;
-            _serverName = serverName;
-            _port = port;
-            _serviceName = serviceName;
+        private readonly AddressInfo _addressInfo;
 
-            Contract = contract;
+        private WcfClient(AddressInfo addressInfo)
+        {
+            Contract = addressInfo.CreateChannel<T>();
+            _addressInfo = addressInfo;
         }
 
         public static WcfClient<T> Create(ServiceType type, string serverName,
-            string port, string serviceName, ServiceSecurityMode mode = ServiceSecurityMode.None)
+                                            string port, string serviceName, string folder = "api",
+                                            ServiceSecurityMode mode = ServiceSecurityMode.None)
         {
-            var address = new AddressInfo(type, serverName, port, serviceName, mode);
-            var obj = address.CreateChannel<T>();
-            return new WcfClient<T>(obj, type, serverName, port, serviceName);
-        }
-
-        public static List<WcfClient<T>> Create(List<AddressInfo> serviceInfo)
-        {
-            var channels = new List<WcfClient<T>>();
-            Parallel.For(0, serviceInfo.Count, i =>
-            {
-                try
-                {
-                    var obj = serviceInfo[i].CreateChannel<T>();
-                    channels.Add(new WcfClient<T>(obj, serviceInfo[i].Type, serviceInfo[i].ServerName,
-                        serviceInfo[i].Port, serviceInfo[i].ServiceName));
-                }
-                catch (Exception ex)
-                {
-                    CurrentContext.Default.Log.SvcInfo("An exception occured", ex);
-                    throw;
-                }
-            });
-
-            return channels;
+            var address = new AddressInfo(type, serverName, port, serviceName, folder, mode);
+            return new WcfClient<T>(address);
         }
     }
 }
